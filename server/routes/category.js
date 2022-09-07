@@ -1,5 +1,6 @@
 const category = require("express").Router();
-const CategoryController = require("../controller/categoryController");
+const CategoryController = require("../controllers/category");
+
 category.get("/", CategoryController.getCategories);
 category.post("/", CategoryController.addCategory);
 category.put("/:categoryId", CategoryController.updateCategory);

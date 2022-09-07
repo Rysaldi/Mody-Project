@@ -1,11 +1,11 @@
 const express = require("express");
-const router = express.Router();
-const walletController = require("../controllers/wallet");
+const wallet = express.Router();
+const WalletController = require("../controllers/wallet");
 
-router.get("/", walletController.getAllWallet);
-router.get("/:walletId", walletController.getDetailWallet);
-router.post("/", walletController.addNewWallet);
-router.delete("/wallets/:walletId", walletController.deleteWallet);
-router.put("/wallets/:walletId", walletController.updateWallet);
+wallet.get("/", WalletController.getAllWallet);
+wallet.get("/:walletId", WalletController.getDetailWallet);
+wallet.post("/", WalletController.addNewWallet);
+wallet.delete("/wallets/:walletId", WalletController.deleteWallet);
+wallet.put("/wallets/:walletId", WalletController.updateWallet);
 
-module.exports = router;
+module.exports = wallet;
