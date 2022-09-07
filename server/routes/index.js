@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
-// const user = require("./user");
+
 const category = require("./category");
-// router.use("/users", user);
+const wallet = require("./wallet");
+
 router.use("/categories", category);
+router.use("/wallets", wallet);
+
 module.exports = router;
