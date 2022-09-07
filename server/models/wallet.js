@@ -30,5 +30,8 @@ module.exports = (sequelize, DataTypes) => {
 			modelName: "Wallet",
 		}
 	);
+	Wallet.beforeCreate((wallet, options) => {
+		wallet.totalAmount = 0;
+	});
 	return Wallet;
 };

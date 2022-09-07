@@ -1,4 +1,5 @@
 function errorHandler(error, req, res, next) {
+	console.log(error);
 	if (
 		error.name === "SequelizeValidationError" ||
 		error.name === "SequelizeUniqueConstraintError"
@@ -16,10 +17,7 @@ function errorHandler(error, req, res, next) {
 		res.status(401).json({ message: "Invalid email/password" });
 	} else if (error.name === "NoToken") {
 		res.status(401).json({ message: "Please login first" });
-	} else if (
-		error.name === "Unauthorized" ||
-		error.name === "JsonWebTokenError"
-	) {
+	} else if (error.name === "Unauthorized" || error.name === "JsonWebTokenError") {
 		res.status(401).json({ message: "Invalid token" });
 	} else if (error.name === "Forbidden") {
 		res.status(403).json({ message: "Forbidden" });
