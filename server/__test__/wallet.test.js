@@ -178,9 +178,9 @@ describe("POST /wallets", () => {
 
 			const response = await request(app).post("/wallets").send(newWallet);
 			expect(response.status).toBe(400);
-      expect(response.body).toBeInstanceOf(Object);
+			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
-      expect(response.body.message).toBeInstanceOf(Object);
+			expect(response.body.message).toBeInstanceOf(Object);
 		});
 	});
 
@@ -190,7 +190,7 @@ describe("POST /wallets", () => {
 			expect(response.status).toBe(400);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
-      expect(response.body.message).toBeInstanceOf(Object);
+			expect(response.body.message).toBeInstanceOf(Object);
 		});
 	});
 });
