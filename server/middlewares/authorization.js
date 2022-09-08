@@ -13,15 +13,12 @@ async function authorizationTransactionRole(req, res, next) {
         if (!findWallet) {
             throw { name: "NotFound" };
         }
-        console.log(req.user.id);
-        console.log(findTransaction.WalletId);
         const findUserWallet = await UserWallet.findOne({
             where: {
                 UserId: req.user.id,
                 WalletId: findTransaction.WalletId
             }
         });
-        console.log(findUserWallet);
         if (!findUserWallet) {
             throw { name: "Forbidden" };
         } else if (findUserWallet.role === "Owner" || findUserWallet.role === "Manager") {

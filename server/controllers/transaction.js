@@ -87,27 +87,9 @@ class TransactionsController {
 				message: "Succes Edit Transaction with Id " + id,
 			});
 		} catch (error) {
-			console.log(error);
 			next(error);
 			await t.rollback();
-
-			// 	if (error.name === "TransactionsNotFound") {
-			// 		res.status(404).json({
-			// 			message: "Transaction cannot be found",
-			// 		});
-			// 	} else if (error.name === "SequelizeValidationError") {
-			// 		res.status(400).json({
-			// 			message: error.errors.map((el) => {
-			// 				return el.message;
-			// 			}),
-			// 		});
-			// 	} else {
-			// 		res.status(500).json({
-			// 			message: "Internal Server Error",
-			// 		});
-			// 	}
 		}
-		// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjYyNjUxMjAyfQ.61ApU7DedjhQdq7AMhgcOMlV1fnCXIUlbkPymS_EFt4
 	}
 
 	static async deleteTransaction(req, res, next) {
@@ -127,15 +109,6 @@ class TransactionsController {
 			});
 		} catch (error) {
 			next(error);
-			// if (error.name === "TransactionsNotFound") {
-			// 	res.status(404).json({
-			// 		message: "Transaction cannot be found",
-			// 	});
-			// } else {
-			// 	res.status(500).json({
-			// 		message: "Internal Server Error",
-			// 	});
-			// }
 		}
 	}
 }

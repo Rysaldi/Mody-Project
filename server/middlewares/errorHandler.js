@@ -6,7 +6,6 @@ function errorHandler(error, req, res, next) {
 		const errors = error.errors.map((error) => {
 			return error.message;
 		});
-		console.log(errors);
 		res.status(400).json({ message: errors });
 	}
 	if (error.name === "Invalid input") {

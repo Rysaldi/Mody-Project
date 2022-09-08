@@ -52,7 +52,6 @@ class Controller {
 				message: `Success delete category with  ${response.name} and type ${response.type}`,
 			});
 		} catch (error) {
-			console.log(error);
 			next(error);
 		}
 	}
