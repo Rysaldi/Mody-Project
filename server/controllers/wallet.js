@@ -78,7 +78,7 @@ class Controller {
 	static async deleteWallet(req, res, next) {
 		try {
 			const { walletId } = req.params;
-			if (isNan(+walletId)) throw { name: "Invalid id" };
+			if (isNaN(+walletId)) throw { name: "Invalid id" };
 
 			const deletedWallet = await Wallet.destroy({
 				where: {
@@ -88,19 +88,20 @@ class Controller {
 			if (deletedWallet) {
 				res.status(200).json({ message: `Wallet with id ${walletId} successfully deleted` });
 			} else {
-				throw { name: "Data not found" };
+				throw { name: "NotFound" };
 			}
 		} catch (error) {
-			if (error.name === "not a number")
-				res.status(404).json({ message: "Wallet ID is not a number" });
+			if (error.name === "Invalid id")
+			res.status(404).json({ message: "Wallet ID is not a number" });
 			next(error);
 		}
 	}
 
-	static async updateWallet(req, res) {
+	static async updateWallet(req, res,next) {
+		
 		try {
-			const { name, totalAmount } = req.body;
 			const { walletId } = req.params;
+			const { name, totalAmount } = req.body;
 			if (isNaN(+walletId)) throw { name: "Invalid id" };
 
 			const updatedWallet = await Wallet.update(
@@ -114,10 +115,10 @@ class Controller {
 			if (updatedWallet) {
 				res.status(200).json({ message: `Wallet with id ${walletId} successfully updated` });
 			} else {
-				throw { name: "Data not found" };
+				throw { name: "NotFound" };
 			}
 		} catch (error) {
-			if (error.name === "not a number")
+			if (error.name === "Invalid id")
 				res.status(404).json({ message: "Wallet ID is not a number" });
 			next(error);
 		}
