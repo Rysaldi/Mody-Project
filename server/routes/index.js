@@ -11,4 +11,4 @@ router.use("/categories", category);
 router.use("/wallets", wallet);
 router.use("/transactions", transactions);
 
-module.exports = router;
+module.exports = router
