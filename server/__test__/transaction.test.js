@@ -1,6 +1,6 @@
 const request = require("supertest");
 const app = require("../app");
-const { sequelize, Transaction } = require("../models");
+const { sequelize } = require("../models");
 const { queryInterface } = sequelize;
 
 const userData = require("../data/user.json");
@@ -37,7 +37,7 @@ const transactionsData = [
 	{
 		name: "test",
 		amount: 10000,
-		data: new Date(),
+		date: new Date(),
 		UserId: 1,
 		CategoryId: 1,
 		WalletId: 1,
@@ -47,7 +47,7 @@ const transactionsData = [
 	{
 		name: "test2",
 		amount: 10000,
-		data: new Date(),
+		date: new Date(),
 		UserId: 1,
 		CategoryId: 1,
 		WalletId: 1,
@@ -58,22 +58,10 @@ const transactionsData = [
 
 beforeAll(async () => {
 	try {
-		const user = await queryInterface.bulkInsert("Users", userData, {
-			truncate: true,
-			restartIdentity: true,
-		});
-		const wallet = await queryInterface.bulkInsert("Wallet", walletData, {
-			truncate: true,
-			restartIdentity: true,
-		});
-		const category = await queryInterface.bulkInsert("Category", categoryData, {
-			truncate: true,
-			restartIdentity: true,
-		});
-		const transactions = await queryInterface.bulkInsert("Transaction", transactionsData, {
-			truncate: true,
-			restartIdentity: true,
-		});
+		const user = await queryInterface.bulkInsert("Users", userData);
+		const wallet = await queryInterface.bulkInsert("Wallets", walletData);
+		const category = await queryInterface.bulkInsert("Categories", categoryData);
+		const transactions = await queryInterface.bulkInsert("Transactions", transactionsData);
 	} catch (error) {
 		console.log(error);
 	}
@@ -87,17 +75,17 @@ afterAll(async () => {
 			{ truncate: true, restartIdentity: true, cascade: true }
 		);
 		const wallet = await queryInterface.bulkDelete(
-			"Wallet",
+			"Wallets",
 			{},
 			{ truncate: true, restartIdentity: true, cascade: true }
 		);
 		const category = await queryInterface.bulkDelete(
-			"Category",
+			"Categories",
 			{},
 			{ truncate: true, restartIdentity: true, cascade: true }
 		);
 		const transactions = await queryInterface.bulkDelete(
-			"Transaction",
+			"Transactions",
 			{},
 			{ truncate: true, restartIdentity: true, cascade: true }
 		);

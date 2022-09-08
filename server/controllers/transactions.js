@@ -31,6 +31,7 @@ class TransactionsController {
 				message: "Succes Edit Transaction with Id " + id,
 			});
 		} catch (error) {
+            console.log(error);
 			await t.rollback();
 			// next(error);
 			if (error.name === "TransactionsNotFound") {
