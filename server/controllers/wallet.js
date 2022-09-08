@@ -79,7 +79,6 @@ class Controller {
 		try {
 			const { walletId } = req.params;
 			if (isNaN(+walletId)) throw { name: "Invalid id" };
-			// if (+walletId!=='number') throw { name: "Invalid id" }; tbh ini sama aja hehe
 
 			const deletedWallet = await Wallet.destroy({
 				where: {
@@ -93,17 +92,17 @@ class Controller {
 			}
 		} catch (error) {
 			if (error.name === "Invalid id")
-				res.status(404).json({ message: "Wallet ID is not a number" });
+			res.status(404).json({ message: "Wallet ID is not a number" });
 			next(error);
 		}
 	}
 
 	static async updateWallet(req, res,next) {
+		
 		try {
-			const { name, totalAmount } = req.body;
 			const { walletId } = req.params;
+			const { name, totalAmount } = req.body;
 			if (isNaN(+walletId)) throw { name: "Invalid id" };
-			// if (+walletId!=='number') throw { name: "Invalid id" }; tbh ini sama aja hehe
 
 			const updatedWallet = await Wallet.update(
 				{ name, totalAmount: Number(totalAmount) },
