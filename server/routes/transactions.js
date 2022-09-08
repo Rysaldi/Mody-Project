@@ -1,4 +1,4 @@
-const TransactionsController = require("../controllers/transactions");
+const TransactionsController = require("../controllers/transaction");
 const transactions = require("express").Router();
 
 transactions.delete("/:id", TransactionsController.deleteTransaction);
