@@ -19,6 +19,22 @@ class userController {
       next(error);
     }
   }
+  static async findById(request, response, next) {
+    try {
+      const { userId } = request.params;
+      const findUser = await User.findByPk(userId, {
+        attributes: {
+          exclude: ["password"],
+        },
+      });
+      if (!findUser) {
+        throw { name: "NotFound" };
+      }
+      response.status(200).json(findUser);
+    } catch (error) {
+      next(error);
+    }
+  }
   static async login(request, response, next) {
     try {
       try {
