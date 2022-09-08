@@ -22,7 +22,11 @@ class userController {
   static async findById(request, response, next) {
     try {
       const { userId } = request.params;
-      const findUser = await User.findByPk(userId);
+      const findUser = await User.findByPk(userId, {
+        attributes: {
+          exclude: ["password"],
+        },
+      });
       if (!findUser) {
         throw { name: "NotFound" };
       }
