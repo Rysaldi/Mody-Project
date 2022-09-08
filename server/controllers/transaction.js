@@ -7,7 +7,7 @@ class TransactionsController {
 			const { id } = req.params;
 
 			let { name, amount, CategoryId, date } = req.body;
-
+ 
 			const findTransactions = await Transaction.findByPk(id, { transaction: t, });
 
 			if (!findTransactions) {
