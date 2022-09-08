@@ -5,7 +5,7 @@ class TransactionsController {
 		const t = await sequelize.transaction();
 		try {
 			const { id } = req.params;
-			const { name, amount, CategoryId } = req.body;
+			const { name, amount, CategoryId, date } = req.body;
 			const findTransactions = await Transaction.findByPk(id);
 			if (!findTransactions) {
 				throw { name: "TransactionsNotFound" };
