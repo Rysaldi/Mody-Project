@@ -15,7 +15,7 @@ const authentication = async (request, response, next) => {
       throw { name: "Unauthorized" };
     }
     // assign user id to request
-    req.user = {
+    request.user = {
       id: currentUser.id,
     };
     next();
