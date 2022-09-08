@@ -1,8 +1,10 @@
 function errorHandler(error, req, res, next) {
 	if (
 		error.name === "SequelizeValidationError" ||
-		error.name === "SequelizeUniqueConstraintError"
+		error.name === "SequelizeUniqueConstraintError"||
+		error.name === "SequelizeDatabaseError"
 	) {
+		// console.log(error);
 		const errors = error.errors.map((error) => {
 			return error.message;
 		});
