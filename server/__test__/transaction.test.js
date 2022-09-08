@@ -3,6 +3,8 @@ const app = require("../app");
 const { sequelize } = require("../models");
 const { queryInterface } = sequelize;
 
+const access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYyNjQ0NjQyfQ.7DbeRaoNhylwZeCJCDBcmi0adQT_mt2smI12eFVpKSM";
+
 const userData = require("../data/user.json");
 userData.forEach((el) => {
 	el.createdAt = new Date();
@@ -108,6 +110,7 @@ describe("PUT /transactions/:id", () => {
 			};
 			const response = await request(app)
 				.put("/transactions/" + id)
+				.set("access_token", access_token)
 				.send(data);
 			expect(response.status).toBe(200);
 			expect(response.body).toBeInstanceOf(Object);
@@ -128,6 +131,7 @@ describe("PUT /transactions/:id", () => {
 			};
 			const response = await request(app)
 				.put("/transactions/" + id)
+				.set("access_token", access_token)
 				.send(data);
 			expect(response.status).toBe(404);
 			expect(response.body).toBeInstanceOf(Object);
@@ -148,6 +152,7 @@ describe("PUT /transactions/:id", () => {
 			};
 			const response = await request(app)
 				.put("/transactions/" + id)
+				.set("access_token", access_token)
 				.send(data);
 			expect(response.status).toBe(400);
 			expect(response.body).toBeInstanceOf(Object);
@@ -169,6 +174,7 @@ describe("PUT /transactions/:id", () => {
 			};
 			const response = await request(app)
 				.put("/transactions/" + id)
+				.set("access_token", access_token)
 				.send(data);
 			expect(response.status).toBe(400);
 			expect(response.body).toBeInstanceOf(Object);
@@ -190,6 +196,7 @@ describe("PUT /transactions/:id", () => {
 			};
 			const response = await request(app)
 				.put("/transactions/" + id)
+				.set("access_token", access_token)
 				.send(data);
 			expect(response.status).toBe(400);
 			expect(response.body).toBeInstanceOf(Object);
@@ -204,7 +211,7 @@ describe("Delete /transactions/:id", () => {
 	describe("Delete /transactions/:id - Succes test", () => {
 		it("should return a success message", async () => {
 			const id = 1;
-			const response = await request(app).delete("/transactions/" + id);
+			const response = await request(app).delete("/transactions/" + id).set("access_token", access_token);
 			expect(response.status).toBe(200);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
@@ -214,7 +221,7 @@ describe("Delete /transactions/:id", () => {
 	describe("Delete /transactions/:id - Transactions not found", () => {
 		it("should return error message", async () => {
 			const id = 100;
-			const response = await request(app).delete("/transactions/" + id);
+			const response = await request(app).delete("/transactions/" + id).set("access_token", access_token);
 			expect(response.status).toBe(404);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");

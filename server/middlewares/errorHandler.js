@@ -6,6 +6,7 @@ function errorHandler(error, req, res, next) {
 		const errors = error.errors.map((error) => {
 			return error.message;
 		});
+		console.log(errors);
 		res.status(400).json({ message: errors });
 	}
 	if (error.name === "Invalid input") {
@@ -22,7 +23,12 @@ function errorHandler(error, req, res, next) {
 		res.status(403).json({ message: "Forbidden" });
 	} else if (error.name === "NotFound") {
 		res.status(404).json({ message: "Data not found" });
-	} else {
+	} else if (error.name === "TransactionsNotFound") {
+		res.status(404).json({
+			message: "Transaction cannot be found",
+		});
+	}
+	else {
 		res.status(500).json({ message: "Internal server error" });
 	}
 }

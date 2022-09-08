@@ -4,6 +4,7 @@ const authentication = async (request, response, next) => {
   try {
     const { access_token } = request.headers;
     // check if token exist
+    console.log(access_token);
     if (!access_token) {
       throw { name: "Unauthorized" };
     }

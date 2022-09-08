@@ -56,17 +56,17 @@ class Controller {
 
 	static async addNewWallet(req, res, next) {
 		try {
-			const UserId = 1;
 			const { name } = req.body;
+			const { id } = req.user;
 
 			const newWallet = await Wallet.create({
 				name,
 			});
 
-			const asd = await UserWallet.create({
-				UserId,
+			await UserWallet.create({
+				UserId: id,
 				WalletId: newWallet.id,
-				role: "editor",
+				role: "Owner",
 			});
 
 			res.status(201).json(newWallet);

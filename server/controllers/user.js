@@ -33,6 +33,7 @@ class userController {
           },
         });
         // check if user exist
+        console.log(user);
         if (user) {
           const isPasswordValid = comparePassword(password, user.password);
           // check if password valid
