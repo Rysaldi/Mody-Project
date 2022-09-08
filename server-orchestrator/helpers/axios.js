@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-const user = axios.create({
-  baseURL: "http://localhost:4001",
+const app = axios.create({
+  baseURL: "http://localhost:3000",
 });
 
-module.exports = { user };
+module.exports = { app };

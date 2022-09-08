@@ -1,6 +1,6 @@
 const { User } = require("../models");
 const { verifyToken } = require("../helpers/jwt");
-const authentication = async (request, response, next) => {
+const authentication = async (req, res, next) => {
   try {
     const { access_token } = request.headers;
     // check if token exist
