@@ -1,12 +1,9 @@
-const { Transaction, sequelize, Category, Wallet, UserWallet } = require("../models");
+const { Transaction, sequelize, Category, Wallet } = require("../models");
 
 class TransactionsController {
 	static async updateTransaction(req, res, next) {
 		const t = await sequelize.transaction();
 		try {
-			
-
-
 			const { id } = req.params;
 
 			let { name, amount, CategoryId, date } = req.body;

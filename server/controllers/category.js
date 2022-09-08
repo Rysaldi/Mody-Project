@@ -51,7 +51,11 @@ class Controller {
 			res.status(200).json({
 				message: `Success delete category with  ${response.name} and type ${response.type}`,
 			});
+<<<<<<< HEAD
 		} catch (error) {
+=======
+		} catch (error) {		
+>>>>>>> 74a6c441c03e6d716c7922143593fd0a16847277
 			next(error);
 		}
 	}
