@@ -1,4 +1,4 @@
-const { Transaction, sequelize, Category, Wallet } = require("../models");
+const { Transaction, sequelize, Category, User, Wallet } = require("../models");
 
 class TransactionsController {
 	static async updateTransaction(req, res, next) {
@@ -84,8 +84,8 @@ class TransactionsController {
 				message: "Succes Edit Transaction with Id " + id,
 			});
 		} catch (error) {
-			next(error);
 			await t.rollback();
+			next(error);
 		}
 	}
 
@@ -104,6 +104,38 @@ class TransactionsController {
 			res.status(200).json({
 				message: "Success delete Transaction with Id " + id,
 			});
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	static async createTransaction(req, res, next) {
+		try {
+			const { name, amount, date, CategoryId, WalletId } = req.body;
+
+			const { id: UserId } = req.user;
+			const transaction = await Transaction.create({
+				name,
+				amount,
+				date,
+				UserId,
+				CategoryId,
+				WalletId,
+			});
+			res.status(201).json({
+				message: "Success Create Data",
+				transaction,
+			});
+		} catch (error) {
+			console.log(error);
+			next(error);
+		}
+	}
+
+	static async getTransaction(req, res, next) {
+		try {
+			const transaction = await Transaction.findAll({ include: [Category, Wallet] });
+			res.status(200).json({ transaction });
 		} catch (error) {
 			next(error);
 		}
