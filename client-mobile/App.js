@@ -16,8 +16,8 @@ export default function App() {
     <NavigationContainer>
       {/* <DashboardScreen /> */}
       {/* <ProfileScreen/> */}
-      {/* <LoginScreen/> */}
-      <LogoutScreen />
+      <LoginScreen/>
+      {/* <LogoutScreen /> */}
         <StatusBar style="auto" />
     </NavigationContainer>
   );
