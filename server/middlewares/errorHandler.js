@@ -1,9 +1,8 @@
 function errorHandler(error, req, res, next) {
-	console.log(error);
+	console.log(error.name);
 	if (
 		error.name === "SequelizeValidationError" ||
-		error.name === "SequelizeUniqueConstraintError" ||
-		error.name === "SequelizeDatabaseError"
+		error.name === "SequelizeUniqueConstraintError"
 	) {
 		const errors = error.errors.map((error) => {
 			return error.message;
@@ -26,6 +25,14 @@ function errorHandler(error, req, res, next) {
 		res.status(404).json({ message: "Data not found" });
 	} else if (error.name === "TransactionsNotFound") {
 		res.status(404).json({ message: "Transaction cannot be found" });
+	} else if (error.name === "CategoryNotFound") {
+		res.status(404).json({ message: "Category cannot be found" });
+	} else if (error.name === "WalletNotFound") {
+		res.status(404).json({ message: "Wallet cannot be found" });
+	} else if (error.name === "SequelizeForeignKeyConstraintError") {
+		res.status(404).json({ message: "Category or Wallet not found" });
+	} else if (error.name === "SequelizeDatabaseError") {
+		res.status(400).json({ message: "Invalid input" });
 	} else {
 		res.status(500).json({ message: "Internal server error" });
 	}

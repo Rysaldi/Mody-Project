@@ -31,7 +31,30 @@ async function authorizationTransactionRole(req, res, next) {
     }
 }
 
+async function readOrCreateTransaction(req, res, next) {
+    try {
+        const { WalletId } = req.body;
+        const findWallet = await Wallet.findByPk(WalletId);
+        if (!findWallet) {
+            throw { name: "WalletNotFound" };
+        }
+        const findUserWallet = await UserWallet.findOne({
+            where: {
+                UserId: req.user.id,
+                WalletId: WalletId
+            }
+        });
+        if (!findUserWallet) {
+            throw { name: "Forbidden" };
+        }
+        next();
+    } catch (error) {
+        next(error);
+    }
+}
+
 
 module.exports = {
-    authorizationTransactionRole
+    authorizationTransactionRole,
+    readOrCreateTransaction
 };

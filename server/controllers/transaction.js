@@ -1,4 +1,4 @@
-const { Op } = require("sequelize/types");
+const { Op } = require("sequelize");
 const { Transaction, sequelize, Category, User, Wallet } = require("../models");
 
 class TransactionsController {
@@ -113,8 +113,8 @@ class TransactionsController {
 	static async createTransaction(req, res, next) {
 		const t = await sequelize.transaction();
 		try {
-			console.log("masuk create");
 			const { name, amount, date, CategoryId, WalletId } = req.body;
+
 			const createTransaction = await Transaction.create(
 				{
 					name,
@@ -128,9 +128,10 @@ class TransactionsController {
 					returning: true,
 					transaction: t,
 				});
-			const findCategory = await Category.findByPk(CategoryId, { transaction: t, });
 
-			const findWallet = await Wallet.findByPk(WalletId, { transaction: t, });
+			const findCategory = await Category.findByPk(CategoryId, { transaction: t });
+
+			const findWallet = await Wallet.findByPk(WalletId, { transaction: t });
 
 			if (findCategory.type === "Income") {
 				await Wallet.update({
@@ -158,7 +159,6 @@ class TransactionsController {
 				Transaction: createTransaction
 			});
 		} catch (error) {
-			console.log(error);
 			await t.rollback();
 			next(error);
 		}
@@ -172,6 +172,7 @@ class TransactionsController {
 				include: [
 					{
 						model: Category,
+						attributes: { exclude: ["createdAt", "updatedAt"] }
 					},
 				],
 				order: [
