@@ -14,9 +14,9 @@ export default function App() {
   const Tab = createBottomTabNavigator();
   return (
     <NavigationContainer>
-      {/* <DashboardScreen /> */}
+      <DashboardScreen />
       {/* <ProfileScreen/> */}
-      <LoginScreen/>
+      {/* <LoginScreen/> */}
       {/* <LogoutScreen /> */}
         <StatusBar style="auto" />
     </NavigationContainer>

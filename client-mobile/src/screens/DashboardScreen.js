@@ -1,4 +1,5 @@
 import { View, Image, Dimensions, Text, ScrollView, StyleSheet } from "react-native"
+import CardLatesHistory from "../components/CardLatesHistory"
 export default function DashboardScreen() {
     return (
         <>
@@ -84,39 +85,14 @@ export default function DashboardScreen() {
                 </ScrollView>
             </View>
 
-            {/* Quick Actions */}
-            <View style={{ flex: 1, paddingHorizontal: 20 }}>
-                <Text style={styles.textHeader}>Quick Actions</Text>
-                <View style={styles.quickActionMainContainer}>
-                    {/* Items */}
-                    <View style={styles.quickActionMainItem}>
-                        <View style={styles.frameQuickActionsLogo}>
-                            <Image style={styles.iconQuickAction} source={require('../../assets/icons/send.png')} />
-                        </View>
-                        <Text>Send</Text>
-                    </View>
-                    {/* Items */}
-                    <View style={styles.quickActionMainItem}>
-                        <View style={styles.frameQuickActionsLogo}>
-                            <Image style={styles.iconQuickAction} source={require('../../assets/icons/topUp.png')} />
-                        </View>
-                        <Text>Top Up</Text>
-                    </View>
-                </View>
-            </View>
-
             {/* latest history */}
-            <View style={{ flex: 1, paddingHorizontal: 20 }}>
+            <View style={{ flex: 2, paddingHorizontal: 20 }}>
                 <View>
                     <Text style={styles.textHeader}>Latest History</Text>
-                    <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                        <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                            <View style={styles.framePictureHistory}>
-                                <Image style={{ width: 50, height: 50 }} source={require('../../assets/pp.jpg')} />
-                            </View>
-                            <Text style={styles.textHeader}>Rohmat Hidayattullah</Text>
-                        </View>
-                        <Text style={styles.plusNumber}>Rp. 20.000,00</Text>
+                    <CardLatesHistory />
+                    <CardLatesHistory />
+                    <View style={{alignItems:"center"}}>
+                    <Text style={{textAlign:"center",backgroundColor:"#ddd", padding:5, width:100, borderRadius:8, color:"#808090", marginTop:10}}>Show More</Text>
                     </View>
                 </View>
             </View>
@@ -240,40 +216,5 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 10
     },
-    quickActionMainContainer: {
-        marginTop: 20,
-        display: "flex",
-        flexDirection: 'row'
-    },
-    quickActionMainItem: {
-        display: "flex",
-        alignItems: "center",
-        marginRight: 20
-    },
-    frameQuickActionsLogo: {
-        width: 45,
-        height: 45,
-        backgroundColor: "#ddd",
-        borderRadius: 50,
-        overflow: "hidden",
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: 10
-    },
-    iconQuickAction: {
-        width: 30,
-        height: 30
-    },
-    framePictureHistory: {
-        width: 50,
-        height: 50,
-        backgroundColor: "#ddd",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 70,
-        overflow: "hidden",
-        marginTop: 10,
-        marginRight: 20
-    }
+    
 })
