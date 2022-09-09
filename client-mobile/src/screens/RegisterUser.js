@@ -18,12 +18,7 @@ export default function RegisterUser() {
   return (
     <View style={styles.container}>
       <StatusBar translucent backgroundColor="transparent" />
-      <View style={styles.imageBackground}>
-        <Image
-          source={require("../../assets/icons/moody_pertama.png")}
-          style={styles.image}
-        />
-      </View>
+
       <View style={styles.form}>
         <View style={styles.signUp}>
           <Text style={styles.fontInter}>Sign Up</Text>
@@ -67,18 +62,17 @@ export default function RegisterUser() {
               secureTextEntry={true}
             />
           </View>
-          <View style={styles.formInputButton}>
-            <Pressable style={styles.buttonTemp}>
-              <Text style={styles.buttonText}>Submit</Text>
+
+          <Pressable style={styles.buttonTemp}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </Pressable>
+          <View style={styles.registerAccount}>
+            <Text style={styles.textDetail}>
+              Already have an account? click{" "}
+            </Text>
+            <Pressable>
+              <Text style={styles.toLogin}>here</Text>
             </Pressable>
-            <View style={styles.registerAccount}>
-              <Text style={styles.textDetail}>
-                Already have an account? click{" "}
-              </Text>
-              <Pressable>
-                <Text style={styles.toLogin}>here</Text>
-              </Pressable>
-            </View>
           </View>
         </View>
       </View>
@@ -88,84 +82,78 @@ export default function RegisterUser() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  form: {
+    width: Dimensions.get("window").width * 0.8,
+    height: Dimensions.get("window").height * 0.45,
+    padding: 25,
     backgroundColor: "#fff",
   },
-  imageBackground: {
-    flex: 1,
-    alignItems: "center",
-  },
-  form: {
-    flex: 1.2,
-  },
   signUp: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    paddingLeft: 35,
-    paddingRight: 35,
+    justifyContent: "center",
   },
   formInput: {
-    flex: 5,
-    paddingLeft: 35,
-    paddingRight: 35,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
   fontInter: {
-    flex: 1,
     fontWeight: "bold",
     fontSize: 24,
   },
   formInputEmail: {
-    flex: 4.5,
     flexDirection: "row",
     alignItems: "center",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
 
-    paddingRight: 35,
+    height: Dimensions.get("window").height * 0.05,
   },
   emailIcon: {
     width: Dimensions.get("window").width * 0.05,
     height: Dimensions.get("window").height * 0.03,
   },
   formInputFullName: {
-    flex: 4.5,
     flexDirection: "row",
     alignItems: "center",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+
+    height: Dimensions.get("window").height * 0.05,
   },
   accountIcon: {
     width: Dimensions.get("window").width * 0.045,
     height: Dimensions.get("window").height * 0.03,
   },
   formInputPassword: {
-    flex: 4.5,
     flexDirection: "row",
     alignItems: "center",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+
+    height: Dimensions.get("window").height * 0.05,
   },
-  formInputButton: {
-    flex: 20,
-  },
+
   image: {
     width: Dimensions.get("window").width * 0.7,
     height: Dimensions.get("window").height * 0.5,
   },
   input: {
     height: Dimensions.get("window").height * 0.03,
-    width: Dimensions.get("window").width * 0.7,
+    width: Dimensions.get("window").width * 0.55,
     marginLeft: 20,
 
     paddingRight: 10,
     borderBottomWidth: 2,
+    borderColor: "#d9d9d9",
   },
+
   buttonTemp: {
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 5,
-    paddingHorizontal: 25,
+    height: Dimensions.get("window").height * 0.045,
+    width: Dimensions.get("window").width * 0.67,
     borderRadius: 20,
     backgroundColor: "#2F6FFF",
     marginTop: 30,
@@ -177,6 +165,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    height: Dimensions.get("window").height * 0.045,
+    width: Dimensions.get("window").width * 0.67,
     marginTop: 15,
   },
   textDetail: {
@@ -189,5 +179,3 @@ const styles = StyleSheet.create({
     color: "#2F6FFF",
   },
 });
-
-//exp://192.168.1.4:19000
