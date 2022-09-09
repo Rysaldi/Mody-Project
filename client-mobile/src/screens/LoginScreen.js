@@ -5,25 +5,29 @@ export default function LoginScreen() {
     const [password, onChangePassword] = React.useState("");
     return (
         <>
-            <View style={styles.containerImage}>
-                <Image style={styles.imgHeader} source={require('../../assets/moody_pertama.png')} />
-            </View>
-            <View style={styles.containerContent}>
-                <View style={{ flex: 0.3 }}>
-                    <Text style={styles.textHeader}>Sign In</Text>
-                </View>
-                <View style={styles.containerInput}>
-                    <Image style={styles.imgIcon} source={require('../../assets/ad.png')} />
-                    <TextInput style={styles.input} onChangeText={onChangeUser} value={user} placeholder="Email" />
-                </View>
-                <View style={styles.containerInput}>
-                    <Image style={styles.imgIcon} source={require('../../assets/password.png')} />
-                    <TextInput style={styles.input} onChangeText={onChangePassword} value={password} secureTextEntry={true} placeholder="Password" />
-                </View>
-                <Text style={styles.button}>Submit</Text>
-                <View style={{ flex: 1, flexDirection: "row", justifyContent: 'center', marginTop: 20 }}>
-                    <Text>Don't have account ? </Text>
-                    <Text style={{ color: '#2F6FFF' }}>Create an Account</Text>
+            <View style={styles.container}>
+                <View style={styles.container}>
+                    <View style={styles.containerImage}>
+                        <Image style={styles.imgHeader} source={require('../../assets/moody_pertama.png')} />
+                    </View>
+                    <View style={styles.containerContent}>
+                        <View style={{ flex: 0.3 }}>
+                            <Text style={styles.textHeader}>Sign In</Text>
+                        </View>
+                        <View style={styles.containerInput}>
+                            <Image style={styles.imgIcon} source={require('../../assets/icons/ad.png')} />
+                            <TextInput style={styles.input} onChangeText={onChangeUser} value={user} placeholder="Email" />
+                        </View>
+                        <View style={styles.containerInput}>
+                            <Image style={styles.imgIcon} source={require('../../assets/icons/password.png')} />
+                            <TextInput style={styles.input} onChangeText={onChangePassword} value={password} secureTextEntry={true} placeholder="Password" />
+                        </View>
+                        <Text style={styles.button}>Submit</Text>
+                        <View style={{ flex: 1, flexDirection: "row", justifyContent: 'center', marginTop: 20 }}>
+                            <Text>Don't have account ? </Text>
+                            <Text style={{ color: '#2F6FFF' }}>Create an Account</Text>
+                        </View>
+                    </View>
                 </View>
             </View>
         </>
@@ -31,6 +35,11 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#fff",
+        padding: 30
+    },
     containerImage: {
         flex: 1,
         justifyContent: 'center',

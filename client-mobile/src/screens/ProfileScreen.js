@@ -9,7 +9,7 @@ export default function ProfileScreen() {
         <>
             <View style={styles.containerHeader}>
                 <View style={styles.frame}>
-                    <Image style={styles.profilePicture} source={require('../../assets/account.png')} />
+                    <Image style={styles.profilePicture} source={require('../../assets/icons/account.png')} />
                 </View>
             </View>
             <View style={{ flex: 2.5 }}>
@@ -32,6 +32,11 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#fff",
+        padding: 30
+    },
     containerHeader: {
         flex: 1,
         alignItems: "center",
@@ -50,7 +55,7 @@ const styles = StyleSheet.create({
         overflow: "hidden"
     },
     textHeader: {
-        fontWeight: "bold",
+        fontWeight: "700",
         fontSize: 23,
         color: '#242525'
     },
