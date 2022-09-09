@@ -8,7 +8,7 @@
   },
   "test": {
     "username": "postgres",
-    "password": "hacktiv123",
+    "password": "postgres",
     "database": "mody_DB_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
