@@ -7,22 +7,26 @@ export default function ProfileScreen() {
     const [profilePicture, onChangeProfilePicture] = React.useState("");
     return (
         <>
-            <View style={styles.containerHeader}>
-                <View style={styles.frame}>
-                    <Image style={styles.profilePicture} source={require('../../assets/icons/account.png')} />
+            <View style={styles.container}>
+                <View style={styles.containerHeader}>
+                    <View style={styles.outlineFrame}>
+                        <View style={styles.frame}>
+                            <Image style={styles.profilePicture} source={require('../../assets/pp.jpg')} />
+                        </View>
+                    </View>
                 </View>
-            </View>
-            <View style={{ flex: 2.5 }}>
-                <Text style={styles.textHeader}>Full Name</Text>
-                <TextInput style={styles.input} onChangeText={onChangeFullName} value={fullName} />
-                <Text style={styles.textHeader}>Email</Text>
-                <TextInput style={styles.input} onChangeText={onChangeEmail} value={email} />
-                <Text style={styles.textHeader}>Password</Text>
-                <TextInput style={styles.input} onChangeText={onChangePassword} value={password} secureTextEntry={true} />
-                <Text style={styles.textHeader}>Profile Picture</Text>
-                <TextInput style={styles.input} onChangeText={onChangeProfilePicture} value={profilePicture} />
-                <View style={{ display: "flex", alignItems: "center" }}>
-                    <Text style={styles.button}>Edit</Text>
+                <View style={{ flex: 2.5 }}>
+                    <Text style={styles.textHeader}>Full Name</Text>
+                    <TextInput style={styles.input} onChangeText={onChangeFullName} value={fullName} />
+                    <Text style={styles.textHeader}>Email</Text>
+                    <TextInput style={styles.input} onChangeText={onChangeEmail} value={email} />
+                    <Text style={styles.textHeader}>Password</Text>
+                    <TextInput style={styles.input} onChangeText={onChangePassword} value={password} secureTextEntry={true} />
+                    <Text style={styles.textHeader}>Profile Picture</Text>
+                    <TextInput style={styles.input} onChangeText={onChangeProfilePicture} value={profilePicture} />
+                    <View style={{ display: "flex", alignItems: "center" }}>
+                        <Text style={styles.button}>Edit</Text>
+                    </View>
                 </View>
             </View>
 
@@ -43,16 +47,29 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     profilePicture: {
-        width: Dimensions.get('window').width * 0.22,
-        height: Dimensions.get('window').height * 0.16
+        width: 120,
+        height: 120,
+
+    },
+    outlineFrame: {
+        backgroundColor: '#d9d9d9',
+        padding: 10,
+        justifyContent: "center",
+        alignItems: "center",
+        width: 130,
+        height: 130,
+        borderRadius: 70,
+        elevation: 5,
     },
     frame: {
         backgroundColor: 'white',
         padding: 10,
+        justifyContent: "center",
+        alignItems: "center",
         width: 120,
         height: 120,
         borderRadius: 70,
-        overflow: "hidden"
+        overflow: "hidden",
     },
     textHeader: {
         fontWeight: "700",
