@@ -1,3 +1,4 @@
+const { Op } = require("sequelize/types");
 const { Transaction, sequelize, Category, User, Wallet } = require("../models");
 
 class TransactionsController {
@@ -166,7 +167,8 @@ class TransactionsController {
 	static async getTransaction(req, res, next) {
 		try {
 			const { WalletId } = req.body;
-			const findTransactions = await Transaction.findAll({
+			const { search } = req.query;
+			const param = {
 				include: [
 					{
 						model: Category,
@@ -178,7 +180,16 @@ class TransactionsController {
 				where: {
 					WalletId: WalletId
 				}
-			});
+			};
+			if (search) {
+				param.where = {
+					...param.where,
+					name: {
+						[Op.iLike]: `%${search}%`
+					}
+				};
+			}
+			const findTransactions = await Transaction.findAll(param);
 			if (findTransactions.length === 0) {
 				throw { name: "TransactionsNotFound" };
 			}
