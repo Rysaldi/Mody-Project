@@ -2,11 +2,13 @@ const request = require("supertest");
 const app = require("../app");
 const { sequelize } = require("../models");
 const { queryInterface } = sequelize;
+const { hashPassword } = require("../helpers/bcrypt");
 
-const access_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYyNjQ0NjQyfQ.7DbeRaoNhylwZeCJCDBcmi0adQT_mt2smI12eFVpKSM";
+let access_token;
 
 const userData = require("../data/user.json");
 userData.forEach((el) => {
+	el.password = hashPassword(el.password);
 	el.createdAt = new Date();
 	el.updatedAt = new Date();
 });
@@ -29,7 +31,13 @@ const walletData = [
 const categoryData = [
 	{
 		name: "test",
-		type: "test",
+		type: "Income",
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	},
+	{
+		name: "test",
+		type: "Expense",
 		createdAt: new Date(),
 		updatedAt: new Date(),
 	},
@@ -58,10 +66,21 @@ const transactionsData = [
 	},
 ];
 
+const userWalletData = [
+	{
+		UserId: 1,
+		WalletId: 1,
+		role: "Owner",
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	}
+];
+
 beforeAll(async () => {
 	try {
 		const user = await queryInterface.bulkInsert("Users", userData);
 		const wallet = await queryInterface.bulkInsert("Wallets", walletData);
+		const userWallet = await queryInterface.bulkInsert("UserWallets", userWalletData);
 		const category = await queryInterface.bulkInsert("Categories", categoryData);
 		const transactions = await queryInterface.bulkInsert("Transactions", transactionsData);
 	} catch (error) {
@@ -78,6 +97,11 @@ afterAll(async () => {
 		);
 		const wallet = await queryInterface.bulkDelete(
 			"Wallets",
+			{},
+			{ truncate: true, restartIdentity: true, cascade: true }
+		);
+		const userWallet = await queryInterface.bulkDelete(
+			"UserWallets",
 			{},
 			{ truncate: true, restartIdentity: true, cascade: true }
 		);
@@ -108,6 +132,8 @@ describe("PUT /transactions/:id", () => {
 				UserId: 1,
 				WalletId: 1,
 			};
+			const login = await request(app).post("/users/login").send({ email: "admin@mail.com", password: "admin" });
+			access_token = login.body.access_token;
 			const response = await request(app)
 				.put("/transactions/" + id)
 				.set("access_token", access_token)
@@ -180,7 +206,7 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBeInstanceOf(Array);
-			expect(response.body.message[0]).toBe("Transaction amount is required");
+			expect(response.body.message[0]).toBe("Minimum transaction amount is 1");
 		});
 	});
 	describe("PUT /transactions/:id - not provide input date", () => {
@@ -231,43 +257,47 @@ describe("Delete /transactions/:id", () => {
 });
 
 describe('GET /transactions success', () => {
-    it('Should be return an object', async () => {
-        return request(app)
-            .get('/transactions')
-            .then(response => {
-                expect(response.status).toBe(200)
-                expect(response.body).toBeInstanceOf(Object)
-                expect(response.body).toHaveProperty('transaction')
-                expect(response.body).toHaveProperty('transaction', expect.any(Object))
-            })
-    })
-})
+	it('Should be return an object', async () => {
+		return request(app)
+			.get('/transactions')
+			.set("access_token", access_token)
+			.send({ WalletId: 1 })
+			.then(response => {
+				expect(response.status).toBe(200);
+				expect(response.body).toBeInstanceOf(Object);
+			});
+	});
+});
 
 describe('POST /transactions success', () => {
-    it('Should be return an object', async () => {
-        return request(app)
-            .post('/transactions')
-            .send({ name: "test", amount: 1000000, date: new Date(), UserId: 1, CategoryId: 1, WalletId: 1 })
-            .then((response) => {
-                expect(response.status).toBe(201)
-                expect(response.body).toBeInstanceOf(Object)
-                expect(response.body).toHaveProperty('message')
-                expect(response.body).toHaveProperty('transaction')
-                expect(response.body).toHaveProperty('transaction', expect.any(Object))
-            })
-    })
-})
+	it('Should be return an object', async () => {
+		const login = await request(app).post("/users/login").send({ email: "admin@mail.com", password: "admin" });
+		access_token = login.body.access_token;
+		return request(app)
+			.post('/transactions')
+			.set("access_token", access_token)
+			.send({ name: "test", amount: 1000000, date: new Date(), CategoryId: 1, WalletId: 1 })
+			.then(response => {
+				expect(response.status).toBe(201);
+				expect(response.body).toBeInstanceOf(Object);
+				expect(response.body).toHaveProperty('message');
+				expect(response.body).toHaveProperty('Transaction');
+				expect(response.body).toHaveProperty('Transaction', expect.any(Object));
+			});
+	});
+});
 
 describe('POST /transactions error input field not exist or empty string', () => {
-    it("Should be return an object", async () => {
-        return request(app)
-            .post('/transactions')
-            .send({})
-            .then((response) => {
-                expect(response.status).toBe(400)
-                expect(response.body).toBeInstanceOf(Object)
-                expect(response.body).toHaveProperty('message')
-                expect(response.body).toHaveProperty('message', expect.any(Object))
-            })
-    })
-})
+	it("Should be return an object", async () => {
+		return request(app)
+			.post('/transactions')
+			.set("access_token", access_token)
+			.send({ WalletId: 1 })
+			.then((response) => {
+				expect(response.status).toBe(400);
+				expect(response.body).toBeInstanceOf(Object);
+				expect(response.body).toHaveProperty('message');
+				expect(response.body).toHaveProperty('message', expect.any(Object));
+			});
+	});
+});
