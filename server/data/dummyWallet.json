@@ -1,0 +1,24 @@
+{
+  "wallets": [
+    {
+      "name": "tes edit",
+      "totalAmount": "999232212221",
+      "id": 6
+    },
+    {
+      "id": 7,
+      "name": "dummy",
+      "totalAmount": 999999
+    },
+    {
+      "id": 8,
+      "name": "dummy",
+      "totalAmount": 999999
+    },
+    {
+      "id": 9,
+      "name": "dummy",
+      "totalAmount": 999999
+    }
+  ]
+}

@@ -2,11 +2,13 @@
 	"name": "server",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "app.js",
 	"scripts": {
 		"start": "node ./bin/www",
-		"test": "jest --runInBand --forceExit",
-		"dev": "nodemon ./bin/www"
+		"test": "npx jest --forceExit --runInBand",
+		"dev": "nodemon ./bin/www",
+		"create-db-test": "npx sequelize-cli --env=test db:drop && npx sequelize-cli --env=test db:create && npx sequelize-cli --env=test db:migrate",
+		"db": "npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all"
 	},
 	"keywords": [],
 	"author": "",
