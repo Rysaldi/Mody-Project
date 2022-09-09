@@ -108,6 +108,8 @@ class TransactionsController {
 			next(error);
 		}
 	}
+
+	
 }
 
 module.exports = TransactionsController;
