@@ -4,8 +4,12 @@ class TransactionsController {
         try {
             const { name, amount, date, UserId, CategoryId, WalletId } = req.body
             const transaction = await Transaction.create({ name, amount, date, UserId, CategoryId, WalletId })
-            res.status(201).json(transaction)
+            res.status(201).json({
+                message: "Success Create Data",
+                transaction
+            })
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }
@@ -13,9 +17,8 @@ class TransactionsController {
     static async getTransaction(req, res, next){ 
         try {
             const transaction = await Transaction.findAll({include: [ Category, Wallet]})
-            res.status(200).json(transaction)
+            res.status(200).json({transaction})
         } catch (error) {
-            console.log(error)
             next(error)
         }
     }
