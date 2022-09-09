@@ -1,4 +1,4 @@
-const { Transaction, sequelize } = require("../models");
+const { Transaction, sequelize, Category, User, Wallet } = require("../models");
 
 class TransactionsController {
 	static async updateTransaction(req, res, next) {
@@ -31,24 +31,8 @@ class TransactionsController {
 				message: "Succes Edit Transaction with Id " + id,
 			});
 		} catch (error) {
-            console.log(error);
 			await t.rollback();
-			// next(error);
-			if (error.name === "TransactionsNotFound") {
-				res.status(404).json({
-					message: "Transaction cannot be found",
-				});
-			} else if (error.name === "SequelizeValidationError") {
-				res.status(400).json({
-					message: error.errors.map((el) => {
-						return el.message;
-					}),
-				});
-			} else {
-				res.status(500).json({
-					message: "Internal Server Error",
-				});
-			}
+			next(error);
 		}
 	}
 
@@ -68,16 +52,39 @@ class TransactionsController {
 				message: "Success delete Transaction with Id " + id,
 			});
 		} catch (error) {
-			// next(error);
-			if (error.name === "TransactionsNotFound") {
-				res.status(404).json({
-					message: "Transaction cannot be found",
-				});
-			} else {
-				res.status(500).json({
-					message: "Internal Server Error",
-				});
-			}
+			next(error);
+		}
+	}
+
+	static async createTransaction(req, res, next) {
+		try {
+			const { name, amount, date, CategoryId, WalletId } = req.body;
+
+			const { id: UserId } = req.user;
+			const transaction = await Transaction.create({
+				name,
+				amount,
+				date,
+				UserId,
+				CategoryId,
+				WalletId,
+			});
+			res.status(201).json({
+				message: "Success Create Data",
+				transaction,
+			});
+		} catch (error) {
+			console.log(error);
+			next(error);
+		}
+	}
+
+	static async getTransaction(req, res, next) {
+		try {
+			const transaction = await Transaction.findAll({ include: [Category, Wallet] });
+			res.status(200).json({ transaction });
+		} catch (error) {
+			next(error);
 		}
 	}
 }
