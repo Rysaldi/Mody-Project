@@ -1,10 +1,10 @@
 [
 	{
 		"name": "wallet admin",
-    "totalAmount": 0
+    "balance": 0
 	},
 	{
 		"name": "wallet user",
-    "totalAmount": 0
+    "balance": 0
 	}
 ]

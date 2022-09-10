@@ -89,7 +89,6 @@ class userController {
 					throw { name: "invalid email/password" };
 				}
 			} catch (error) {
-				// console.log(error);
 				next(error);
 			}
 		} catch (error) {

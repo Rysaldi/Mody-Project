@@ -15,13 +15,12 @@ class TransactionsController {
 				throw { name: "TransactionsNotFound" };
 			}
 			const findCategory = await Category.findByPk(findTransactions.CategoryId, { transaction: t });
-
 			const findWallet = await Wallet.findByPk(findTransactions.WalletId, { transaction: t });
 
 			if (findCategory.type === "Income") {
 				await Wallet.update(
 					{
-						totalAmount: findWallet.totalAmount - findTransactions.amount,
+						balance: findWallet.balance - findTransactions.amount,
 					},
 					{
 						where: {
@@ -33,7 +32,7 @@ class TransactionsController {
 			} else if (findCategory.type === "Expense") {
 				await Wallet.update(
 					{
-						totalAmount: findWallet.totalAmount + findTransactions.amount,
+						balance: findWallet.balance + findTransactions.amount,
 					},
 					{
 						where: {
@@ -68,7 +67,7 @@ class TransactionsController {
 			if (updatedCategory.type === "Income") {
 				await Wallet.update(
 					{
-						totalAmount: updatedWallet.totalAmount + Number(amount),
+						balance: updatedWallet.balance + Number(amount),
 					},
 					{
 						where: {
@@ -80,7 +79,7 @@ class TransactionsController {
 			} else if (updatedCategory.type === "Expense") {
 				await Wallet.update(
 					{
-						totalAmount: updatedWallet.totalAmount - Number(amount),
+						balance: updatedWallet.balance - Number(amount),
 					},
 					{
 						where: {
@@ -94,7 +93,7 @@ class TransactionsController {
 			await t.commit();
 
 			res.status(200).json({
-				message: "Succes Edit Transaction with Id " + id,
+				message: "Succes Edit Transaction with Id " + transactionId,
 			});
 		} catch (error) {
 			await t.rollback();
@@ -103,21 +102,56 @@ class TransactionsController {
 	}
 
 	static async deleteTransaction(req, res, next) {
+		const t = await sequelize.transaction();
 		try {
 			const { transactionId } = req.params;
-			const findTransactions = await Transaction.findByPk(transactionId);
+			const findTransactions = await Transaction.findByPk(transactionId, { transaction: t });
+			const findWallet = await Wallet.findByPk(findTransactions.WalletId, { transaction: t });
+			const findCategory = await Category.findByPk(findTransactions.CategoryId, { transaction: t });
+
 			if (!findTransactions) {
 				throw { name: "TransactionsNotFound" };
 			}
-			const deleteTransaction = await Transaction.destroy({
+
+			if (findCategory.type === "Income") {
+				await Wallet.update(
+					{
+						balance: findWallet.balance - Number(findTransactions.amount),
+					},
+					{
+						where: {
+							id: findWallet.id,
+						},
+						transaction: t,
+					}
+				);
+			} else if (findCategory.type === "Expense") {
+				await Wallet.update(
+					{
+						balance: findWallet.balance + Number(findTransactions.amount),
+					},
+					{
+						where: {
+							id: findWallet.id,
+						},
+						transaction: t,
+					}
+				);
+			}
+
+			await Transaction.destroy({
 				where: {
 					id: transactionId,
 				},
+				transaction: t,
 			});
+
+			await t.commit();
 			res.status(200).json({
-				message: "Success delete Transaction with Id " + id,
+				message: "Success delete Transaction with Id " + transactionId,
 			});
 		} catch (error) {
+			await t.rollback();
 			next(error);
 		}
 	}
@@ -149,7 +183,7 @@ class TransactionsController {
 			if (findCategory.type === "Income") {
 				await Wallet.update(
 					{
-						totalAmount: findWallet.totalAmount + Number(amount),
+						balance: findWallet.balance + Number(amount),
 					},
 					{
 						where: {
@@ -161,7 +195,7 @@ class TransactionsController {
 			} else if (findCategory.type === "Expense") {
 				await Wallet.update(
 					{
-						totalAmount: findWallet.totalAmount - Number(amount),
+						balance: findWallet.balance - Number(amount),
 					},
 					{
 						where: {
@@ -212,6 +246,39 @@ class TransactionsController {
 				throw { name: "TransactionsNotFound" };
 			}
 			res.status(200).json(findTransactions);
+		} catch (error) {
+			next(error);
+		}
+	}
+
+	static async getDetailTransaction(req, res, next) {
+		try {
+			const { transactionId } = req.params;
+
+			if (isNaN(+transactionId)) {
+				throw { name: "Invalid Id" };
+			}
+
+			const transaction = await Transaction.findByPk(transactionId, {
+				include: [
+					{
+						model: User,
+						attributes: { exclude: ["createdAt", "updatedAt", "password"] },
+					},
+					{
+						model: Category,
+						attributes: { exclude: ["createdAt", "updatedAt"] },
+					},
+					{
+						model: Wallet,
+						attributes: { exclude: ["createdAt", "updatedAt"] },
+					},
+				],
+			});
+			if (!transaction) {
+				throw { name: "NotFound" };
+			}
+			res.status(200).json(transaction);
 		} catch (error) {
 			next(error);
 		}

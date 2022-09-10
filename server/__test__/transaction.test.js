@@ -16,13 +16,13 @@ userData.forEach((el) => {
 const walletData = [
 	{
 		name: "walletTest",
-		totalAmount: 1000000,
+		balance: 1000000,
 		createdAt: new Date(),
 		updatedAt: new Date(),
 	},
 	{
 		name: "walletTest2",
-		totalAmount: 1000000,
+		balance: 1000000,
 		createdAt: new Date(),
 		updatedAt: new Date(),
 	},

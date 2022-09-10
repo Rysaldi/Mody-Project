@@ -422,11 +422,11 @@ class Controller {
 		
 <span class="cstat-no" title="statement not covered" >		try {</span>
 			const { walletId } = <span class="cstat-no" title="statement not covered" >req.params;</span>
-			const { name, totalAmount } = <span class="cstat-no" title="statement not covered" >req.body;</span>
+			const { name, balance } = <span class="cstat-no" title="statement not covered" >req.body;</span>
 <span class="cstat-no" title="statement not covered" >			if (isNaN(+walletId)) <span class="cstat-no" title="statement not covered" >throw { name: "Invalid id" };</span></span>
 &nbsp;
 			const updatedWallet = <span class="cstat-no" title="statement not covered" >await Wallet.update(</span>
-				{ name, totalAmount: Number(totalAmount) },
+				{ name, balance: Number(balance) },
 				{
 					where: {
 						id: walletId,
