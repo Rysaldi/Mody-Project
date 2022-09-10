@@ -1,5 +1,5 @@
 [
   { "username": "admin", "email": "admin@mail.com", "password": "admin" },
-  { "username": "user1", "email": "user1@mail.com", "password": "user" },
-  { "username": "user2", "email": "user2@mail.com", "password": "user" }
+  { "username": "user1", "email": "user1@mail.com", "password": "user1" },
+  { "username": "user2", "email": "user2@mail.com", "password": "user2" }
 ]
