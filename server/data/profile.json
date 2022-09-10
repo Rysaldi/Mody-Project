@@ -1,0 +1,16 @@
+[
+  {
+    "firstName": "mody",
+    "lastName": "admin",
+    "profilePicture": "",
+    "phone": "123",
+    "UserId": 1
+  },
+  {
+    "firstName": "user1",
+    "lastName": "user1",
+    "profilePicture": "",
+    "phone": "123",
+    "UserId": 2
+  }
+]

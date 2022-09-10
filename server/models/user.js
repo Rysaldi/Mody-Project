@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
           },
           len: {
             args: [4, Infinity],
-            msg: "Minimum password length is 4",
+            msg: "Minimum password length is 4 characters",
           },
         },
       },

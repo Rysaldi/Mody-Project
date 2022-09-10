@@ -1,0 +1,162 @@
+[
+	{
+		"name": "Stock Divident",
+		"amount": 90000,
+		"date": "2022-03-29",
+		"UserId": 2,
+		"CategoryId": 3,
+		"WalletId": 2
+	},
+	{
+		"name": "Watching Thor Love and Thunder",
+		"amount": 100000,
+		"date": "2022-01-21",
+		"UserId": 3,
+		"CategoryId": 13,
+		"WalletId": 2
+	},
+	{
+		"name": "Train Ticket Jakarta-Bandung",
+		"amount": 100000,
+		"date": "2022-01-10",
+		"UserId": 2,
+		"CategoryId": 16,
+		"WalletId": 2
+	},
+	{
+		"name": "Charity for the less fortunate",
+		"amount": 500000,
+		"date": "2022-06-27",
+		"UserId": 3,
+		"CategoryId": 10,
+		"WalletId": 2
+	},
+	{
+		"name": "Investing in DOGE Coin",
+		"amount": 5000000,
+		"date": "2022-01-25",
+		"UserId": 2,
+		"CategoryId": 8,
+		"WalletId": 2
+	},
+	{
+		"name": "Business profit",
+		"amount": 300000,
+		"date": "2022-02-18",
+		"UserId": 1,
+		"CategoryId": 5,
+		"WalletId": 1
+	},
+	{
+		"name": "Watching The Script Concert",
+		"amount": 1000000,
+		"date": "2022-07-25",
+		"UserId": 3,
+		"CategoryId": 13,
+		"WalletId": 2
+	},
+	{
+		"name": "Gym Membership",
+		"amount": 300000,
+		"date": "2022-07-16",
+		"UserId": 3,
+		"CategoryId": 11,
+		"WalletId": 2
+	},
+	{
+		"name": "ATM Withdrawal",
+		"amount": 500000,
+		"date": "2022-06-20",
+		"UserId": 2,
+		"CategoryId": 6,
+		"WalletId": 1
+	},
+	{
+		"name": "Netflix Subscription",
+		"amount": 200000,
+		"date": "2022-04-22",
+		"UserId": 2,
+		"CategoryId": 13,
+		"WalletId": 2
+	},
+	{
+		"name": "Bitcoin Profit",
+		"amount": 200000,
+		"date": "2022-03-26",
+		"UserId": 1,
+		"CategoryId": 3,
+		"WalletId": 1
+	},
+	{
+		"name": "Gas Money",
+		"amount": 500000,
+		"date": "2022-08-23",
+		"UserId": 1,
+		"CategoryId": 12,
+		"WalletId": 1
+	},
+	{
+		"name": "Gift from friend",
+		"amount": 250000,
+		"date": "2022-04-23",
+		"UserId": 2,
+		"CategoryId": 2,
+		"WalletId": 2
+	},
+	{
+		"name": "Seling PC GPU",
+		"amount": 2000000,
+		"date": "2022-06-19",
+		"UserId": 3,
+		"CategoryId": 4,
+		"WalletId": 2
+	},
+	{
+		"name": "Buying Cold Medicine",
+		"amount": 50000,
+		"date": "2022-01-23",
+		"UserId": 1,
+		"CategoryId": 11,
+		"WalletId": 1
+	},
+	{
+		"name": "Gift from mom",
+		"amount": 400000,
+		"date": "2022-06-26",
+		"UserId": 1,
+		"CategoryId": 2,
+		"WalletId": 1
+	},
+	{
+		"name": "Phone Data",
+		"amount": 100000,
+		"date": "2022-05-11",
+		"UserId": 1,
+		"CategoryId": 13,
+		"WalletId": 1
+	},
+	{
+		"name": "Salary",
+		"amount": 7000000,
+		"date": "2022-03-29",
+		"UserId": 3,
+		"CategoryId": 1,
+		"WalletId": 2
+	},
+	{
+		"name": "GO-Car Fee",
+		"amount": 80000,
+		"date": "2022-04-01",
+		"UserId": 2,
+		"CategoryId": 12,
+		"WalletId": 2
+	},
+	{
+		"name": "Buying Make Up",
+		"amount": 250000,
+		"date": "2022-07-07",
+		"UserId": 2,
+		"CategoryId": 15,
+		"WalletId": 2
+	}
+]
