@@ -5,6 +5,7 @@ const { authorizationTransactionRole, readOrCreateTransaction } = require("../mi
 
 transactions.get("/", readOrCreateTransaction, TransactionsController.getTransaction);
 transactions.post("/", readOrCreateTransaction, TransactionsController.createTransaction);
+transactions.get("/:transactionId", TransactionsController.getDetailTransaction);
 transactions.delete("/:transactionId", authorizationTransactionRole, TransactionsController.deleteTransaction);
 transactions.put("/:transactionId", authorizationTransactionRole, TransactionsController.updateTransaction);
 

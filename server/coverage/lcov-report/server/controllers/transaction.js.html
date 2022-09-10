@@ -528,7 +528,7 @@ class TransactionsController {
 <span class="cstat-no" title="statement not covered" >			if (findCategory.type === "Income") {</span>
 <span class="cstat-no" title="statement not covered" >				await Wallet.update(</span>
 					{
-						totalAmount: findWallet.totalAmount - findTransactions.amount,
+						balance: findWallet.balance - findTransactions.amount,
 					},
 					{
 						where: {
@@ -540,7 +540,7 @@ class TransactionsController {
 			} else <span class="cstat-no" title="statement not covered" >if (findCategory.type === "Expense") {</span>
 <span class="cstat-no" title="statement not covered" >				await Wallet.update(</span>
 					{
-						totalAmount: findWallet.totalAmount + findTransactions.amount,
+						balance: findWallet.balance + findTransactions.amount,
 					},
 					{
 						where: {
@@ -575,7 +575,7 @@ class TransactionsController {
 <span class="cstat-no" title="statement not covered" >			if (updatedCategory.type === "Income") {</span>
 <span class="cstat-no" title="statement not covered" >				await Wallet.update(</span>
 					{
-						totalAmount: updatedWallet.totalAmount + Number(amount),
+						balance: updatedWallet.balance + Number(amount),
 					},
 					{
 						where: {
@@ -587,7 +587,7 @@ class TransactionsController {
 			} else <span class="cstat-no" title="statement not covered" >if (updatedCategory.type === "Expense") {</span>
 <span class="cstat-no" title="statement not covered" >				await Wallet.update(</span>
 					{
-						totalAmount: updatedWallet.totalAmount - Number(amount),
+						balance: updatedWallet.balance - Number(amount),
 					},
 					{
 						where: {
@@ -656,7 +656,7 @@ class TransactionsController {
 <span class="cstat-no" title="statement not covered" >			if (findCategory.type === "Income") {</span>
 <span class="cstat-no" title="statement not covered" >				await Wallet.update(</span>
 					{
-						totalAmount: findWallet.totalAmount + Number(amount),
+						balance: findWallet.balance + Number(amount),
 					},
 					{
 						where: {
@@ -668,7 +668,7 @@ class TransactionsController {
 			} else <span class="cstat-no" title="statement not covered" >if (findCategory.type === "Expense") {</span>
 <span class="cstat-no" title="statement not covered" >				await Wallet.update(</span>
 					{
-						totalAmount: findWallet.totalAmount - Number(amount),
+						balance: findWallet.balance - Number(amount),
 					},
 					{
 						where: {

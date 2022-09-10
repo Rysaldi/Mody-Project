@@ -38,13 +38,13 @@ let category = [
 let wallet = [
   {
     name: "son's wallet",
-    totalAmount: 0,
+    balance: 0,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
   {
     name: "Store's wallet",
-    totalAmount: 0,
+    balance: 0,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -208,7 +208,7 @@ describe("GET /wallets", () => {
       expect(response.body[0]).toHaveProperty("id", expect.any(Number));
       expect(response.body[0]).toHaveProperty("name", expect.any(String));
       expect(response.body[0]).toHaveProperty(
-        "totalAmount",
+        "balance",
         expect.any(Number)
       );
     });
@@ -224,7 +224,7 @@ describe("GET /wallets/:walletId", () => {
       expect(response.body).toBeInstanceOf(Object);
       expect(response.body).toHaveProperty("id", expect.any(Number));
       expect(response.body).toHaveProperty("name", expect.any(String));
-      expect(response.body).toHaveProperty("totalAmount", expect.any(Number));
+      expect(response.body).toHaveProperty("balance", expect.any(Number));
       expect(response.body.UserWallets).toBeInstanceOf(Object);
       expect(response.body.UserWallets[0]).toHaveProperty(
         "UserId",

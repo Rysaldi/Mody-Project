@@ -160,7 +160,7 @@ module.exports = (sequelize, DataTypes) =&gt; {
 					},
 				},
 			},
-			totalAmount: {
+			balance: {
 				type: DataTypes.INTEGER,
 			},
 		},
@@ -170,7 +170,7 @@ module.exports = (sequelize, DataTypes) =&gt; {
 		}
 	);
 	Wallet.beforeCreate(<span class="fstat-no" title="function not covered" >(w</span>allet, options) =&gt; {
-<span class="cstat-no" title="statement not covered" >		wallet.totalAmount = 0;</span>
+<span class="cstat-no" title="statement not covered" >		wallet.balance = 0;</span>
 	});
 	return Wallet;
 };

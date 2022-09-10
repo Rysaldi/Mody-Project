@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      totalAmount: {
+      balance: {
         type: Sequelize.INTEGER
       },
       createdAt: {

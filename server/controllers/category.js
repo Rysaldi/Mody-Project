@@ -3,8 +3,12 @@ const { Category } = require("../models");
 class Controller {
 	static async getCategories(req, res, next) {
 		try {
-			const response = await Category.findAll();
-			res.status(200).json({ response });
+			const response = await Category.findAll({
+				attributes: {
+					exclude: ["createdAt", "updatedAt"],
+				},
+			});
+			res.status(200).json(response);
 		} catch (error) {
 			next(error);
 		}
@@ -15,7 +19,7 @@ class Controller {
 			const { name, type } = req.body;
 			const response = await Category.create({ name, type });
 			res.status(201).json({
-				message: `Success create category with name ${response.name} and type ${response.type}`,
+				message: `Success create category with id ${response.id}, name ${response.name}, and type ${response.type}`,
 			});
 		} catch (error) {
 			next(error);
@@ -33,7 +37,7 @@ class Controller {
 				throw { name: "NotFound" };
 			}
 			res.status(200).json({
-				message: `Success update category with name ${response.name} and type ${response.type}`,
+				message: `Success update category with id ${id}`,
 			});
 		} catch (error) {
 			next(error);
@@ -49,7 +53,7 @@ class Controller {
 				throw { name: "NotFound" };
 			}
 			res.status(200).json({
-				message: `Success delete category with  ${response.name} and type ${response.type}`,
+				message: `Success delete category with id ${categoryId}`,
 			});
 		} catch (error) {
 			next(error);
