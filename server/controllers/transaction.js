@@ -151,7 +151,6 @@ class TransactionsController {
 				message: "Success delete Transaction with Id " + transactionId,
 			});
 		} catch (error) {
-			console.log(error);
 			await t.rollback();
 			next(error);
 		}

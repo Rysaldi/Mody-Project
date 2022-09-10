@@ -292,7 +292,100 @@ describe("GET /wallets/:walletId", () => {
 });
 
 describe("DELETE /wallets/:walletId", ()=>{
-	
+  describe("Wallet deletion successful", () => {
+    it("Should be return an status 200 and message", async () => {
+      try {
+        const response = await request(app).delete("/wallets/1");
+        expect(response.status).toBe(200);
+        expect(response.body).toBeInstanceOf(Object);
+        expect(response.body).toHaveProperty("message", expect.any(String));
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  });
+
+  describe("Wallet deletion failed because wallet not found", () => {
+    it("Should be return an status 404 and message", async () => {
+      try {
+        const response = await request(app).delete("/wallets/100");
+        expect(response.status).toBe(404);
+        expect(response.body).toBeInstanceOf(Object);
+        expect(response.body).toHaveProperty("message", expect.any(String));
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  });
+
+  describe("Wallet deletion failed because wallet Id is not a number", () => {
+    it("Should be return an status 404 and message", async () => {
+      try {
+        const response = await request(app).delete("/wallets/stringhere");
+        expect(response.status).toBe(404);
+        expect(response.body).toBeInstanceOf(Object);
+        expect(response.body).toHaveProperty("message", expect.any(String));
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  });
 })
 
+describe("PUT /wallets/:walletId", () => {
+  describe("Success update Wallet", () => {
+    it("Should return a status 200 and message", async() => {
+      try {
+        const walletInputUpdate = {
+          name: "test1",
+          totalAmount:0
+        };
+        return request(app)
+          .put("/wallets/1")
+          .send(walletInputUpdate)
+          .then((response) => {
+            expect(response.status).toBe(200);
+            expect(response.body).toBeInstanceOf(Object);
+            expect(response.body).toHaveProperty("message", expect.any(String));
+          })
+      } catch (error) {
+        console.log(error);
+      }
+    })
+  })
+  describe("Failed update wallet because wallet name is empty", () => {
+    it("Should return a status 400 and message", async() => {
+      try {
+        const walletInputUpdate = {
+          name: "",
+          totalAmount:0
+        };
+        return request(app)
+          .put("/wallets/1")
+          .send(walletInputUpdate)
+          .then((response) => {
+            expect(response.status).toBe(400);
+            expect(response.body).toBeInstanceOf(Object);
+          })
+      } catch (error) {
+        console.log(error);
+      }
+    })
+  })
+  describe("Failed update wallet because wallet name is null", () => {
+    it("Should return a status 400 and message", async() => {
+      try {
+        return request(app)
+          .put("/wallets/1")
+          .send()
+          .then((response) => {
+            expect(response.status).toBe(500);
+            expect(response.body).toBeInstanceOf(Object);
+          })
+      } catch (error) {
+        console.log(error);
+      }
+    })
+  })
 
+})
