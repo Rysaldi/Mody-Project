@@ -1,4 +1,5 @@
-import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -9,12 +10,23 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
+import { userRegister } from "../store/actionCreator/users/users";
+import { useDispatch } from "react-redux";
 export default function RegisterUser() {
-  const [formRegister, setFormRegister] = React.useState({
-    email: "",
-    username: "",
-    password: "",
-  });
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onSubmit = () => {
+    dispatch(userRegister({ email, username, password }))
+      .then(() => {
+        navigation.navigate("SignIn");
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar translucent backgroundColor="transparent" />
@@ -32,9 +44,10 @@ export default function RegisterUser() {
 
             <TextInput
               style={styles.input}
-              onChangeText={setFormRegister}
-              value={formRegister.email}
+              onChangeText={setEmail}
+              value={email}
               placeholder="Email"
+              name="email"
             />
           </View>
           <View style={styles.formInputFullName}>
@@ -44,8 +57,8 @@ export default function RegisterUser() {
             />
             <TextInput
               style={styles.input}
-              onChangeText={setFormRegister}
-              value={formRegister.username}
+              onChangeText={setUsername}
+              value={username}
               placeholder="Username"
             />
           </View>
@@ -56,14 +69,14 @@ export default function RegisterUser() {
             />
             <TextInput
               style={styles.input}
-              onChangeText={setFormRegister}
-              value={formRegister.password}
+              onChangeText={setPassword}
+              value={password}
               placeholder="Password"
               secureTextEntry={true}
             />
           </View>
 
-          <Pressable style={styles.buttonTemp}>
+          <Pressable style={styles.buttonTemp} onPress={onSubmit}>
             <Text style={styles.buttonText}>Submit</Text>
           </Pressable>
           <View style={styles.registerAccount}>
@@ -71,7 +84,12 @@ export default function RegisterUser() {
               Already have an account? click{" "}
             </Text>
             <Pressable>
-              <Text style={styles.toLogin}>here</Text>
+              <Text
+                style={styles.toLogin}
+                onPress={() => navigation.navigate("SignIn")}
+              >
+                here
+              </Text>
             </Pressable>
           </View>
         </View>
@@ -144,6 +162,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
 
     paddingRight: 10,
+    paddingLeft: 5,
     borderBottomWidth: 2,
     borderColor: "#d9d9d9",
   },

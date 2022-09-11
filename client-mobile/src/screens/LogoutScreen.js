@@ -1,5 +1,7 @@
+import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
 export default function LogoutScreen() {
+  const navigation = useNavigation();
   return (
     <>
       <View style={styles.container}>
@@ -16,7 +18,12 @@ export default function LogoutScreen() {
           <Text style={styles.textEmail}>rohmathidayattullah@gmail.com</Text>
           <View style={{ display: "flex", alignItems: "center" }}>
             <View style={styles.button}>
-              <Text style={styles.textBotton}>Edit Profile</Text>
+              <Text
+                style={styles.textBotton}
+                onPress={() => navigation.navigate("ProfileApp")}
+              >
+                Edit Profile
+              </Text>
               <Image
                 style={{ width: 12, height: 12 }}
                 source={require("../../assets/icons/arrowRightWhite.png")}

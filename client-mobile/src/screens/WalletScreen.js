@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   Text,
@@ -12,6 +13,7 @@ export default function WalletScreen() {
   const [addWalletForm, setAddWalletForm] = React.useState({
     name: "",
   });
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.formAdd}>
