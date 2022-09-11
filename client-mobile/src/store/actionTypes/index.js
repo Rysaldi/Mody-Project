@@ -1,0 +1,1 @@
+export const CATEGORY_FETCH_SUCCESS = 'contoh'
