@@ -23,7 +23,7 @@ BRF:2
 BRH:1
 end_of_record
 TN:
-SF:controllers/category.js
+SF:controllers\category.js
 FN:4,(anonymous_0)
 FN:17,(anonymous_1)
 FN:29,(anonymous_2)
@@ -70,7 +70,7 @@ BRF:4
 BRH:4
 end_of_record
 TN:
-SF:controllers/profile.js
+SF:controllers\profile.js
 FN:4,(anonymous_0)
 FN:19,(anonymous_1)
 FNF:2
@@ -99,7 +99,7 @@ BRF:4
 BRH:2
 end_of_record
 TN:
-SF:controllers/transaction.js
+SF:controllers\transaction.js
 FN:5,(anonymous_0)
 FN:101,(anonymous_1)
 FN:151,(anonymous_2)
@@ -204,7 +204,7 @@ BRF:18
 BRH:13
 end_of_record
 TN:
-SF:controllers/user.js
+SF:controllers\user.js
 FN:6,(anonymous_0)
 FN:29,(anonymous_1)
 FN:43,(anonymous_2)
@@ -269,7 +269,7 @@ BRF:10
 BRH:9
 end_of_record
 TN:
-SF:controllers/userWallet.js
+SF:controllers\userWallet.js
 FN:4,(anonymous_0)
 FN:22,(anonymous_1)
 FN:38,(anonymous_2)
@@ -335,7 +335,7 @@ BRF:12
 BRH:11
 end_of_record
 TN:
-SF:controllers/wallet.js
+SF:controllers\wallet.js
 FN:4,(anonymous_0)
 FN:34,(anonymous_1)
 FN:78,(anonymous_2)
@@ -403,7 +403,7 @@ BRF:10
 BRH:8
 end_of_record
 TN:
-SF:helpers/bcrypt.js
+SF:helpers\bcrypt.js
 FN:3,(anonymous_0)
 FN:7,(anonymous_1)
 FNF:2
@@ -422,7 +422,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:helpers/jwt.js
+SF:helpers\jwt.js
 FN:5,(anonymous_0)
 FN:9,(anonymous_1)
 FNF:2
@@ -442,7 +442,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:middlewares/authentication.js
+SF:middlewares\authentication.js
 FN:3,(anonymous_0)
 FNF:1
 FNH:1
@@ -473,7 +473,7 @@ BRF:4
 BRH:3
 end_of_record
 TN:
-SF:middlewares/authorization.js
+SF:middlewares\authorization.js
 FN:2,authorizationTransactionRole
 FN:33,readOrCreateTransaction
 FN:55,deleteAuthorization
@@ -549,7 +549,7 @@ BRF:22
 BRH:18
 end_of_record
 TN:
-SF:middlewares/errorHandler.js
+SF:middlewares\errorHandler.js
 FN:1,errorHandler
 FN:7,(anonymous_1)
 FNF:2
@@ -623,7 +623,7 @@ BRF:30
 BRH:27
 end_of_record
 TN:
-SF:models/category.js
+SF:models\category.js
 FN:3,(anonymous_0)
 FN:5,(anonymous_1)
 FNF:2
@@ -641,7 +641,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:models/index.js
+SF:models\index.js
 FN:20,(anonymous_0)
 FN:23,(anonymous_1)
 FN:28,(anonymous_2)
@@ -685,7 +685,7 @@ BRF:9
 BRH:6
 end_of_record
 TN:
-SF:models/profile.js
+SF:models\profile.js
 FN:3,(anonymous_0)
 FN:5,(anonymous_1)
 FNF:2
@@ -703,7 +703,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:models/transaction.js
+SF:models\transaction.js
 FN:3,(anonymous_0)
 FN:10,(anonymous_1)
 FNF:2
@@ -723,7 +723,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:models/user.js
+SF:models\user.js
 FN:4,(anonymous_0)
 FN:6,(anonymous_1)
 FN:65,(anonymous_2)
@@ -750,7 +750,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:models/userwallet.js
+SF:models\userwallet.js
 FN:3,(anonymous_0)
 FN:5,(anonymous_1)
 FNF:2
@@ -769,7 +769,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:models/wallet.js
+SF:models\wallet.js
 FN:3,(anonymous_0)
 FN:5,(anonymous_1)
 FN:33,(anonymous_2)
@@ -792,7 +792,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:routes/categories.js
+SF:routes\categories.js
 FNF:0
 FNH:0
 DA:1,6
@@ -808,7 +808,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:routes/index.js
+SF:routes\index.js
 FNF:0
 FNH:0
 DA:1,6
@@ -834,7 +834,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:routes/profiles.js
+SF:routes\profiles.js
 FNF:0
 FNH:0
 DA:1,6
@@ -848,7 +848,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:routes/transactions.js
+SF:routes\transactions.js
 FNF:0
 FNH:0
 DA:1,6
@@ -866,7 +866,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:routes/userWallets.js
+SF:routes\userWallets.js
 FNF:0
 FNH:0
 DA:1,6
@@ -883,7 +883,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:routes/users.js
+SF:routes\users.js
 FNF:0
 FNH:0
 DA:1,6
@@ -902,7 +902,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:routes/wallets.js
+SF:routes\wallets.js
 FNF:0
 FNH:0
 DA:1,6

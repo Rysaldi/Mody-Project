@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1662893831965" clover="3.2.0">
-  <project timestamp="1662893831965" name="All files">
+<coverage generated="1662894241183" clover="3.2.0">
+  <project timestamp="1662894241183" name="All files">
     <metrics statements="459" coveredstatements="433" conditionals="125" coveredconditionals="102" methods="52" coveredmethods="52" elements="636" coveredelements="587" complexity="0" loc="459" ncloc="459" packages="6" files="26" classes="26"/>
     <package name="server">
       <metrics statements="13" coveredstatements="13" conditionals="2" coveredconditionals="1" methods="0" coveredmethods="0"/>
-      <file name="app.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/app.js">
+      <file name="app.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\app.js">
         <metrics statements="13" coveredstatements="13" conditionals="2" coveredconditionals="1" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="cond" truecount="1" falsecount="1"/>
         <line num="2" count="6" type="stmt"/>
@@ -23,7 +23,7 @@
     </package>
     <package name="server.controllers">
       <metrics statements="220" coveredstatements="203" conditionals="58" coveredconditionals="47" methods="24" coveredmethods="24"/>
-      <file name="category.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/controllers/category.js">
+      <file name="category.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\controllers\category.js">
         <metrics statements="26" coveredstatements="25" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="4"/>
         <line num="1" count="6" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
@@ -52,7 +52,7 @@
         <line num="59" count="1" type="stmt"/>
         <line num="64" count="6" type="stmt"/>
       </file>
-      <file name="profile.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/controllers/profile.js">
+      <file name="profile.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\controllers\profile.js">
         <metrics statements="12" coveredstatements="10" conditionals="4" coveredconditionals="2" methods="2" coveredmethods="2"/>
         <line num="1" count="6" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
@@ -67,7 +67,7 @@
         <line num="38" count="0" type="stmt"/>
         <line num="43" count="6" type="stmt"/>
       </file>
-      <file name="transaction.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/controllers/transaction.js">
+      <file name="transaction.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\controllers\transaction.js">
         <metrics statements="68" coveredstatements="63" conditionals="18" coveredconditionals="13" methods="5" coveredmethods="5"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -138,7 +138,7 @@
         <line num="265" count="0" type="stmt"/>
         <line num="270" count="6" type="stmt"/>
       </file>
-      <file name="user.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/controllers/user.js">
+      <file name="user.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\controllers\user.js">
         <metrics statements="38" coveredstatements="34" conditionals="10" coveredconditionals="9" methods="4" coveredmethods="4"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -179,7 +179,7 @@
         <line num="95" count="0" type="stmt"/>
         <line num="100" count="6" type="stmt"/>
       </file>
-      <file name="userWallet.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/controllers/userWallet.js">
+      <file name="userWallet.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\controllers\userWallet.js">
         <metrics statements="37" coveredstatements="35" conditionals="12" coveredconditionals="11" methods="4" coveredmethods="4"/>
         <line num="1" count="6" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
@@ -219,7 +219,7 @@
         <line num="97" count="3" type="stmt"/>
         <line num="102" count="6" type="stmt"/>
       </file>
-      <file name="wallet.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/controllers/wallet.js">
+      <file name="wallet.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\controllers\wallet.js">
         <metrics statements="39" coveredstatements="36" conditionals="10" coveredconditionals="8" methods="5" coveredmethods="5"/>
         <line num="1" count="6" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
@@ -264,7 +264,7 @@
     </package>
     <package name="server.helpers">
       <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
-      <file name="bcrypt.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/helpers/bcrypt.js">
+      <file name="bcrypt.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\helpers\bcrypt.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="1" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -273,7 +273,7 @@
         <line num="8" count="10" type="stmt"/>
         <line num="11" count="6" type="stmt"/>
       </file>
-      <file name="jwt.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/helpers/jwt.js">
+      <file name="jwt.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\helpers\jwt.js">
         <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="1" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -286,7 +286,7 @@
     </package>
     <package name="server.middlewares">
       <metrics statements="86" coveredstatements="78" conditionals="56" coveredconditionals="48" methods="6" coveredmethods="6"/>
-      <file name="authentication.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/middlewares/authentication.js">
+      <file name="authentication.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\middlewares\authentication.js">
         <metrics statements="16" coveredstatements="15" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -305,7 +305,7 @@
         <line num="23" count="9" type="stmt"/>
         <line num="27" count="6" type="stmt"/>
       </file>
-      <file name="authorization.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/middlewares/authorization.js">
+      <file name="authorization.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\middlewares\authorization.js">
         <metrics statements="39" coveredstatements="35" conditionals="22" coveredconditionals="18" methods="3" coveredmethods="3"/>
         <line num="1" count="6" type="stmt"/>
         <line num="3" count="12" type="stmt"/>
@@ -347,7 +347,7 @@
         <line num="80" count="3" type="stmt"/>
         <line num="84" count="6" type="stmt"/>
       </file>
-      <file name="errorHandler.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/middlewares/errorHandler.js">
+      <file name="errorHandler.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\middlewares\errorHandler.js">
         <metrics statements="31" coveredstatements="28" conditionals="30" coveredconditionals="27" methods="2" coveredmethods="2"/>
         <line num="2" count="56" type="stmt"/>
         <line num="3" count="56" type="cond" truecount="2" falsecount="0"/>
@@ -384,7 +384,7 @@
     </package>
     <package name="server.models">
       <metrics statements="61" coveredstatements="60" conditionals="9" coveredconditionals="6" methods="18" coveredmethods="18"/>
-      <file name="category.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/models/category.js">
+      <file name="category.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\models\category.js">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -392,7 +392,7 @@
         <line num="9" count="6" type="stmt"/>
         <line num="41" count="6" type="stmt"/>
       </file>
-      <file name="index.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/models/index.js">
+      <file name="index.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\models\index.js">
         <metrics statements="20" coveredstatements="19" conditionals="9" coveredconditionals="6" methods="3" coveredmethods="3"/>
         <line num="3" count="6" type="stmt"/>
         <line num="4" count="6" type="stmt"/>
@@ -415,7 +415,7 @@
         <line num="35" count="6" type="stmt"/>
         <line num="37" count="6" type="stmt"/>
       </file>
-      <file name="profile.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/models/profile.js">
+      <file name="profile.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\models\profile.js">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -423,7 +423,7 @@
         <line num="9" count="6" type="stmt"/>
         <line num="33" count="6" type="stmt"/>
       </file>
-      <file name="transaction.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/models/transaction.js">
+      <file name="transaction.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\models\transaction.js">
         <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -433,7 +433,7 @@
         <line num="16" count="6" type="stmt"/>
         <line num="106" count="6" type="stmt"/>
       </file>
-      <file name="user.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/models/user.js">
+      <file name="user.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\models\user.js">
         <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -446,7 +446,7 @@
         <line num="69" count="1" type="stmt"/>
         <line num="74" count="6" type="stmt"/>
       </file>
-      <file name="userwallet.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/models/userwallet.js">
+      <file name="userwallet.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\models\userwallet.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -455,7 +455,7 @@
         <line num="10" count="6" type="stmt"/>
         <line num="54" count="6" type="stmt"/>
       </file>
-      <file name="wallet.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/models/wallet.js">
+      <file name="wallet.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\models\wallet.js">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
         <line num="2" count="6" type="stmt"/>
         <line num="3" count="6" type="stmt"/>
@@ -469,7 +469,7 @@
     </package>
     <package name="server.routes">
       <metrics statements="66" coveredstatements="66" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="categories.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/routes/categories.js">
+      <file name="categories.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\routes\categories.js">
         <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -479,7 +479,7 @@
         <line num="7" count="6" type="stmt"/>
         <line num="9" count="6" type="stmt"/>
       </file>
-      <file name="index.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/routes/index.js">
+      <file name="index.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\routes\index.js">
         <metrics statements="17" coveredstatements="17" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -499,7 +499,7 @@
         <line num="18" count="6" type="stmt"/>
         <line num="20" count="6" type="stmt"/>
       </file>
-      <file name="profiles.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/routes/profiles.js">
+      <file name="profiles.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\routes\profiles.js">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -507,7 +507,7 @@
         <line num="5" count="6" type="stmt"/>
         <line num="7" count="6" type="stmt"/>
       </file>
-      <file name="transactions.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/routes/transactions.js">
+      <file name="transactions.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\routes\transactions.js">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -519,7 +519,7 @@
         <line num="10" count="6" type="stmt"/>
         <line num="13" count="6" type="stmt"/>
       </file>
-      <file name="userWallets.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/routes/userWallets.js">
+      <file name="userWallets.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\routes\userWallets.js">
         <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -530,7 +530,7 @@
         <line num="8" count="6" type="stmt"/>
         <line num="10" count="6" type="stmt"/>
       </file>
-      <file name="users.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/routes/users.js">
+      <file name="users.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\routes\users.js">
         <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>
@@ -543,7 +543,7 @@
         <line num="10" count="6" type="stmt"/>
         <line num="12" count="6" type="stmt"/>
       </file>
-      <file name="wallets.js" path="/Users/ryu/hacktiv8/FINAL PROJECT HACKTIV8/Mody-Project/server/routes/wallets.js">
+      <file name="wallets.js" path="D:\hactiv8\Phase 3\Project\Mody-Project\server\routes\wallets.js">
         <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="6" type="stmt"/>

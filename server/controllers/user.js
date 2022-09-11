@@ -95,6 +95,45 @@ class userController {
 			next(error);
 		}
 	}
+
+	static async googleSignIn(req, res, next) {
+		try {
+			const { token_google } = req.headers;
+			const client = new OAuth2Client(process.env.google_client_id_android);
+			const ticket = await client.verifyIdToken({
+				idToken: token_google,
+				audience: process.env.google_client_id_android,
+			});
+			const payload = ticket.getPayload();
+
+			const [user, created] = await User.findOrCreate({
+				where: {
+					email: payload.email,
+				},
+				defaults: {
+					username: payload.name,
+					email: payload.email,
+					password: "passwordIsUnnecessary",
+				},
+				hooks: false,
+			});
+
+			const access_token = createToken({
+				id: user.id,
+			});
+
+			res
+				.status(200)
+				.json({
+					access_token,
+					id: user.id,
+					email: user.email,
+					username: user.username,
+				});
+		} catch (error) {
+			next(error);
+		}
+	}
 }
 
 module.exports = userController;

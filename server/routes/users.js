@@ -5,6 +5,7 @@ const { authentication } = require("../middlewares/authentication");
 
 users.post("/register", userController.register);
 users.post("/login", userController.login);
+users.post("/loginGoogle", userController.googleSignIn);
 users.use(authentication);
 users.get("/", userController.findAllUser);
 users.get("/:userId", userController.findById);
