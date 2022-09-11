@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
+
 import { StyleSheet, Text, View } from "react-native";
 import RegisterUser from "./src/screens/RegisterUser";
 import WalletScreen from "./src/screens/WalletScreen";
@@ -40,5 +40,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+
   },
+  input: { 
+    borderBottomWidth:1, 
+    padding: 5, 
+    marginBottom:15, 
+    width:Dimensions.get('window').width * 0.63 
+  }
 });

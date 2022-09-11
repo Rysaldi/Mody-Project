@@ -1,5 +1,6 @@
 const { User } = require("../models");
 const { verifyToken } = require("../helpers/jwt");
+
 const authentication = async (request, response, next) => {
   try {
     const { access_token } = request.headers;
@@ -22,6 +23,7 @@ const authentication = async (request, response, next) => {
   } catch (error) {
     next(error);
   }
+
 };
 
 module.exports = { authentication };

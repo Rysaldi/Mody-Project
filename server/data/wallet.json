@@ -1,0 +1,10 @@
+[
+	{
+		"name": "wallet admin",
+    "balance": 0
+	},
+	{
+		"name": "wallet user",
+    "balance": 0
+	}
+]
