@@ -8,8 +8,10 @@ import {
 } from "react-native";
 // import DateTimePicker from "@react-native-community/datetimepicker";
 
+
+
 import React, { useState } from "react";
-export default function TransactionScreen() {
+export default function TransactionScreen({route}) {
   const [formAddTransaction, setFormAddTransaction] = React.useState({
     name: "",
     amount: "",
@@ -33,6 +35,9 @@ export default function TransactionScreen() {
       return;
     }
   };
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.formAddTransaction}>

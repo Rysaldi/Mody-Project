@@ -12,6 +12,7 @@ import WalletScreen from "./src/screens/WalletScreen";
 import TransactionScreen from "./src/screens/TransactionScreen";
 import ReportScreen from "./src/screens/ReportScreen";
 import HistoryScreen from "./src/screens/HistoryScreen";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import { Provider, useSelector } from "react-redux";
@@ -64,6 +65,7 @@ export default function App() {
   );
   return (
     <Provider store={store}>
+    
       <NavigationContainer>
         <Tab.Navigator>
           <Tab.Screen
@@ -88,6 +90,7 @@ export default function App() {
           />
         </Tab.Navigator>
 
+
         {/* <DashboardScreen /> */}
         {/* <ProfileScreen/> */}
         {/* <LoginScreen/> */}
@@ -101,10 +104,12 @@ export default function App() {
           component={RegisterUser}
           options={{ headerShown: false }}
         /> */}
+
         {/* <Stack.Screen name="Report" component={ReportScreen} /> */}
         {/* <Stack.Screen name="History" component={HistoryScreen} /> */}
         {/* </Stack.Navigator> */}
       </NavigationContainer>
+
     </Provider>
   );
 }

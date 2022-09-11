@@ -8,12 +8,53 @@ import {
   TextInput,
   Pressable,
   Image,
+  FlatList
 } from "react-native";
-export default function WalletScreen() {
+
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWallets } from "../store/actionCreator";
+
+export default function WalletScreen({navigation}) {
   const [addWalletForm, setAddWalletForm] = React.useState({
     name: "",
   });
-  const navigation = useNavigation();
+
+
+  const dispatch = useDispatch();
+  const { wallets } = useSelector((state) => {
+    return state.walletReducer;
+  });
+  React.useEffect(() => {
+    dispatch(fetchWallets());
+  }, []);
+
+  // console.log(wallets);
+
+  const renderCategoryList = ({ item }) => {
+    return (
+      <>
+        <View style={styles.walletCard}>
+          <Image
+            source={require("../../assets/icons/wallet.png")}
+            style={styles.walletIcon}
+          />
+          <Text style={styles.walletName}>{item.name}</Text>
+          <Pressable style={styles.buttonToTransaction} 
+          onPress={() => navigation.navigate("TransactionApp", { id: item.id })}>
+            <Text style={styles.buttonText}>Transaction</Text>
+          </Pressable>
+          <Pressable style={styles.buttonToReport}
+          onPress={() => navigation.navigate("ReportApp", { id: item.id })}>
+            <Text style={styles.buttonText}>See Report</Text>
+          </Pressable>
+        </View>
+      </>
+    );
+  };
+
+  // navigation ini perlu??? 
+  // const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View style={styles.formAdd}>
@@ -34,58 +75,11 @@ export default function WalletScreen() {
         </View>
       </View>
       <View style={styles.walletList}>
-        <View style={styles.walletCard}>
-          <Image
-            source={require("../../assets/icons/wallet.png")}
-            style={styles.walletIcon}
-          />
-          <Text style={styles.walletName}>Wallet 1</Text>
-          <Pressable style={styles.buttonToTransaction}>
-            <Text style={styles.buttonText}>Transaction</Text>
-          </Pressable>
-          <Pressable style={styles.buttonToReport}>
-            <Text style={styles.buttonText}>See Report</Text>
-          </Pressable>
-        </View>
-        <View style={styles.walletCard}>
-          <Image
-            source={require("../../assets/icons/wallet.png")}
-            style={styles.walletIcon}
-          />
-          <Text style={styles.walletName}>Wallet 1</Text>
-          <Pressable style={styles.buttonToTransaction}>
-            <Text style={styles.buttonText}>Transaction</Text>
-          </Pressable>
-          <Pressable style={styles.buttonToReport}>
-            <Text style={styles.buttonText}>See Report</Text>
-          </Pressable>
-        </View>
-        <View style={styles.walletCard}>
-          <Image
-            source={require("../../assets/icons/wallet.png")}
-            style={styles.walletIcon}
-          />
-          <Text style={styles.walletName}>Wallet 1</Text>
-          <Pressable style={styles.buttonToTransaction}>
-            <Text style={styles.buttonText}>Transaction</Text>
-          </Pressable>
-          <Pressable style={styles.buttonToReport}>
-            <Text style={styles.buttonText}>See Report</Text>
-          </Pressable>
-        </View>
-        <View style={styles.walletCard}>
-          <Image
-            source={require("../../assets/icons/wallet.png")}
-            style={styles.walletIcon}
-          />
-          <Text style={styles.walletName}>Wallet 1</Text>
-          <Pressable style={styles.buttonToTransaction}>
-            <Text style={styles.buttonText}>Transaction</Text>
-          </Pressable>
-          <Pressable style={styles.buttonToReport}>
-            <Text style={styles.buttonText}>See Report</Text>
-          </Pressable>
-        </View>
+        <FlatList
+              data={wallets}
+              renderItem={renderCategoryList}
+              keyExtractor={(el) => el.id}
+            />
       </View>
     </View>
   );
@@ -169,7 +163,8 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height * 0.055,
   },
   walletName: {
-    fontSize: 16,
+    width: Dimensions.get("window").width * 0.15,
+    fontSize: 12,
     color: "#000",
     marginLeft: 10,
   },
