@@ -9,12 +9,14 @@ import walletReducer from './reducers/wallet'
 
 
 const rootReducer = combineReducers({
-    categoryReducer,
-    profileReducer,
-    transactionReducer,
-    userReducer,
-    userWalletReducer,
+    // categoryReducer,
+    // profileReducer,
+    // transactionReducer,
+    // userReducer,
+    // userWalletReducer,
     walletReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
+
+export default store

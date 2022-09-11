@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 import { StatusBar } from "expo-status-bar";
 import { View, StyleSheet, Dimensions } from "react-native";
 import DashboardScreen from "./src/screens/DashboardScreen";
@@ -14,6 +13,9 @@ import WalletScreen from "./src/screens/WalletScreen";
 import TransactionScreen from "./src/screens/TransactionScreen";
 import ReportScreen from "./src/screens/ReportScreen";
 import HistoryScreen from "./src/screens/HistoryScreen";
+
+import { Provider } from "react-redux";
+import store from "./src/store/store";
 export default function App() {
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
@@ -56,6 +58,9 @@ export default function App() {
     </Stack.Navigator>
   );
   return (
+    <Provider store={store}>
+
+
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen
@@ -74,6 +79,7 @@ export default function App() {
           options={{ headerShown: false }}
         />
       </Tab.Navigator>
+      
 
       {/* <DashboardScreen /> */}
       {/* <ProfileScreen/> */}
@@ -92,6 +98,7 @@ export default function App() {
       {/* <Stack.Screen name="History" component={HistoryScreen} /> */}
       {/* </Stack.Navigator> */}
     </NavigationContainer>
+    </Provider>
   );
 }
 
