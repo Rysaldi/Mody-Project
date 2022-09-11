@@ -3,7 +3,22 @@ const { Wallet, UserWallet, Transaction, User, Category } = require("../models")
 class Controller {
 	static async getAllWallet(req, res, next) {
 		try {
+			const { id } = req.user;
+
 			const wallets = await Wallet.findAll({
+				include: {
+					model: UserWallet,
+					attributes: {
+						exclude: ["createdAt", "updatedAt"],
+					},
+					where: {
+						UserId: id,
+					},
+					include: {
+						model: User,
+						attributes: ["id", "username", "email"],
+					},
+				},
 				attributes: {
 					exclude: ["createdAt", "updatedAt"],
 				},
@@ -32,6 +47,9 @@ class Controller {
 							model: User,
 							attributes: ["username", "email"],
 						},
+						attributes: {
+							exclude: ["createdAt", "updatedAt"],
+						},
 					},
 					{
 						model: Transaction,
@@ -42,6 +60,9 @@ class Controller {
 						},
 					},
 				],
+				attributes: {
+					exclude: ["createdAt", "updatedAt"],
+				},
 			});
 
 			if (!wallet) {
@@ -56,17 +77,17 @@ class Controller {
 
 	static async addNewWallet(req, res, next) {
 		try {
-			const UserId = 1;
 			const { name } = req.body;
+			const { id } = req.user;
 
 			const newWallet = await Wallet.create({
 				name,
 			});
 
-			const asd = await UserWallet.create({
-				UserId,
+			await UserWallet.create({
+				UserId: id,
 				WalletId: newWallet.id,
-				role: "editor",
+				role: "Owner",
 			});
 
 			res.status(201).json(newWallet);
@@ -78,34 +99,31 @@ class Controller {
 	static async deleteWallet(req, res, next) {
 		try {
 			const { walletId } = req.params;
-			if (isNaN(+walletId)) throw { name: "Invalid id" };
 
-			const deletedWallet = await Wallet.destroy({
+			await Wallet.destroy({
 				where: {
 					id: walletId,
 				},
 			});
-			if (deletedWallet) {
-				res.status(200).json({ message: `Wallet with id ${walletId} successfully deleted` });
-			} else {
-				throw { name: "NotFound" };
-			}
+
+			res.status(200).json({ message: `Wallet with id ${walletId} successfully deleted` });
 		} catch (error) {
-			if (error.name === "Invalid id")
-			res.status(404).json({ message: "Wallet ID is not a number" });
 			next(error);
 		}
 	}
 
-	static async updateWallet(req, res,next) {
-		
+	static async updateWallet(req, res, next) {
 		try {
 			const { walletId } = req.params;
-			const { name, totalAmount } = req.body;
-			if (isNaN(+walletId)) throw { name: "Invalid id" };
+			const { name } = req.body;
+			if (isNaN(+walletId)) throw { name: "Invalid Id" };
+
+			if (!name) {
+				throw { name: "Invalid input" };
+			}
 
 			const updatedWallet = await Wallet.update(
-				{ name, totalAmount: Number(totalAmount) },
+				{ name },
 				{
 					where: {
 						id: walletId,
@@ -118,8 +136,6 @@ class Controller {
 				throw { name: "NotFound" };
 			}
 		} catch (error) {
-			if (error.name === "Invalid id")
-				res.status(404).json({ message: "Wallet ID is not a number" });
 			next(error);
 		}
 	}

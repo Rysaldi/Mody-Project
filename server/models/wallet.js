@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
 					},
 				},
 			},
-			totalAmount: {
+			balance: {
 				type: DataTypes.INTEGER,
 			},
 		},
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	);
 	Wallet.beforeCreate((wallet, options) => {
-		wallet.totalAmount = 0;
+		wallet.balance = 0;
 	});
 	return Wallet;
 };

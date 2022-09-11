@@ -1,0 +1,22 @@
+[
+	{
+		"UserId": 1,
+		"WalletId": 1,
+		"role": "Owner"
+	},
+	{
+		"UserId": 1,
+		"WalletId": 2,
+		"role": "Member"
+	},
+	{
+		"UserId": 2,
+		"WalletId": 2,
+		"role": "Owner"
+	},
+	{
+		"UserId": 3,
+		"WalletId": 2,
+		"role": "Manager"
+	}
+]
