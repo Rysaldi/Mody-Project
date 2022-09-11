@@ -3,6 +3,7 @@ const { Transaction, sequelize, Category, User, Wallet } = require("../models");
 
 class TransactionsController {
 	static async updateTransaction(req, res, next) {
+		console.log("MASUKKKKKKKKKKKKKKKKKKK");
 		const t = await sequelize.transaction();
 		try {
 			const { transactionId } = req.params;

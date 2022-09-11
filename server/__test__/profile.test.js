@@ -1,4 +1,6 @@
+const request = require("supertest");
 const app = require("../app");
+const { hashPassword } = require("../helpers/bcrypt");
 const { sequelize } = require("../models");
 const { queryInterface } = sequelize;
 
@@ -20,6 +22,11 @@ beforeAll(async () => {
 			profile.createdAt = profile.updatedAt = new Date();
 		});
 		await queryInterface.bulkInsert("Profiles", profiles);
+
+		const login = await request(app)
+			.post("/users/login")
+			.send({ email: "admin@mail.com", password: "admin" });
+		access_token = login.body.access_token;
 	} catch (error) {
 		console.log(error);
 	}
@@ -44,12 +51,7 @@ afterAll(async () => {
 
 describe("Profiles Routes Test", () => {
 	describe("GET /profiles - get profile of user currently logged in", () => {
-		test("200 Success read profile - should return an object of profile user logged in", async (done) => {
-			const login = await request(app)
-				.post("/users/login")
-				.send({ email: "admin@mail.com", password: "admin" });
-			access_token = login.body.access_token;
-
+		test("200 Success read profile - should return an object of profile user logged in", async () => {
 			const response = await request(app).get("/profiles").set("access_token", access_token);
 			expect(response.status).toBe(200);
 			expect(response.body).toBeInstanceOf(Object);
@@ -63,7 +65,7 @@ describe("Profiles Routes Test", () => {
 	});
 
 	describe("GET /profiles - failed because access token is not provided", () => {
-		test("401 unauthorized - should return object of error message", async (done) => {
+		test("401 unauthorized - should return object of error message", async () => {
 			const response = await request(app).get("/profiles");
 			expect(response.status).toBe(401);
 			expect(response.body).toBeInstanceOf(Object);
@@ -72,8 +74,11 @@ describe("Profiles Routes Test", () => {
 	});
 
 	describe("PUT /profiles - success edit profile", () => {
-		test("200 ok - should return message success edit", async (done) => {
-			const response = await request(app).get("/profiles").set("access_token", access_token);
+		test("200 ok - should return message success edit", async () => {
+			const response = await request(app)
+				.put("/profiles/update")
+				.send({ firstname: "bebas", lastName: "bebass", phone: "123" })
+				.set("access_token", access_token);
 			expect(response.status).toBe(200);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
@@ -81,8 +86,8 @@ describe("Profiles Routes Test", () => {
 	});
 
 	describe("PUT /profiles - failed edit profile", () => {
-		test("401 ok - should return object of error message", async (done) => {
-			const response = await request(app).get("/profiles");
+		test("401 failed edit - should return object of error message", async () => {
+			const response = await request(app).put("/profiles");
 			expect(response.status).toBe(401);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));

@@ -6,133 +6,124 @@ const { hashPassword } = require("../helpers/bcrypt");
 
 let access_token;
 
-const userData = require("../data/user.json");
-userData.forEach((el) => {
-	el.password = hashPassword(el.password);
-	el.createdAt = new Date();
-	el.updatedAt = new Date();
-});
-
-const walletData = [
-	{
-		name: "walletTest",
-		balance: 1000000,
-		createdAt: new Date(),
-		updatedAt: new Date(),
-	},
-	{
-		name: "walletTest2",
-		balance: 1000000,
-		createdAt: new Date(),
-		updatedAt: new Date(),
-	},
-];
-
-const categoryData = [
-	{
-		name: "test",
-		type: "Income",
-		createdAt: new Date(),
-		updatedAt: new Date(),
-	},
-	{
-		name: "test",
-		type: "Expense",
-		createdAt: new Date(),
-		updatedAt: new Date(),
-	},
-];
-
-const transactionsData = [
-	{
-		name: "test",
-		amount: 10000,
-		date: new Date(),
-		UserId: 1,
-		CategoryId: 1,
-		WalletId: 1,
-		createdAt: new Date(),
-		updatedAt: new Date(),
-	},
-	{
-		name: "test2",
-		amount: 10000,
-		date: new Date(),
-		UserId: 1,
-		CategoryId: 1,
-		WalletId: 1,
-		createdAt: new Date(),
-		updatedAt: new Date(),
-	},
-];
-
-const userWalletData = [
-	{
-		UserId: 1,
-		WalletId: 1,
-		role: "Owner",
-		createdAt: new Date(),
-		updatedAt: new Date(),
-	}
-];
-
 beforeAll(async () => {
 	try {
-		const user = await queryInterface.bulkInsert("Users", userData);
-		const wallet = await queryInterface.bulkInsert("Wallets", walletData);
-		const userWallet = await queryInterface.bulkInsert("UserWallets", userWalletData);
-		const category = await queryInterface.bulkInsert("Categories", categoryData);
-		const transactions = await queryInterface.bulkInsert("Transactions", transactionsData);
+		const users = require("../data/user.json");
+		users.forEach((user) => {
+			delete user.id;
+			user.createdAt = user.updatedAt = new Date();
+			user.password = hashPassword(user.password);
+		});
+		await queryInterface.bulkInsert("Users", users);
+
+		const categories = require("../data/categories.json");
+		categories.forEach((category) => {
+			delete category.id;
+			category.createdAt = category.updatedAt = new Date();
+		});
+		await queryInterface.bulkInsert("Categories", categories);
+
+		const wallets = require("../data/wallet.json");
+		wallets.forEach((wallet) => {
+			delete wallet.id;
+			wallet.createdAt = wallet.updatedAt = new Date();
+		});
+		await queryInterface.bulkInsert("Wallets", wallets);
+
+		const transactions = require("../data/transaction.json");
+		transactions.forEach((transaction) => {
+			delete transaction.id;
+			transaction.createdAt = transaction.updatedAt = new Date();
+		});
+		await queryInterface.bulkInsert("Transactions", transactions);
+
+		const userWallets = require("../data/userWallet.json");
+		userWallets.forEach((userWallet) => {
+			delete userWallet.id;
+			userWallet.createdAt = userWallet.updatedAt = new Date();
+		});
+		await queryInterface.bulkInsert("UserWallets", userWallets);
 	} catch (error) {
 		console.log(error);
 	}
 });
 
-afterAll(async () => {
-	try {
-		const user = await queryInterface.bulkDelete(
-			"Users",
-			{},
-			{ truncate: true, restartIdentity: true, cascade: true }
-		);
-		const wallet = await queryInterface.bulkDelete(
-			"Wallets",
-			{},
-			{ truncate: true, restartIdentity: true, cascade: true }
-		);
-		const userWallet = await queryInterface.bulkDelete(
-			"UserWallets",
-			{},
-			{ truncate: true, restartIdentity: true, cascade: true }
-		);
-		const category = await queryInterface.bulkDelete(
-			"Categories",
-			{},
-			{ truncate: true, restartIdentity: true, cascade: true }
-		);
-		const transactions = await queryInterface.bulkDelete(
-			"Transactions",
-			{},
-			{ truncate: true, restartIdentity: true, cascade: true }
-		);
-	} catch (error) {
-		console.log(error);
-	}
+afterAll(() => {
+	return queryInterface
+		.bulkDelete("Transactions", {}, { truncate: true, restartIdentity: true, cascade: true })
+		.then(() => {
+			return queryInterface.bulkDelete(
+				"UserWallets",
+				{},
+				{
+					truncate: true,
+					restartIdentity: true,
+					cascade: true,
+				}
+			);
+		})
+		.then(() => {
+			return queryInterface.bulkDelete(
+				"Wallets",
+				{},
+				{
+					truncate: true,
+					restartIdentity: true,
+					cascade: true,
+				}
+			);
+		})
+		.then(() => {
+			return queryInterface.bulkDelete(
+				"Users",
+				{},
+				{
+					truncate: true,
+					restartIdentity: true,
+					cascade: true,
+				}
+			);
+		})
+		.then(() => {
+			return queryInterface.bulkDelete(
+				"Categories",
+				{},
+				{
+					truncate: true,
+					restartIdentity: true,
+					cascade: true,
+				}
+			);
+		})
+		.then(() => {
+			return queryInterface.bulkDelete(
+				"Transactions",
+				{},
+				{
+					truncate: true,
+					restartIdentity: true,
+					cascade: true,
+				}
+			);
+		});
 });
 
 describe("PUT /transactions/:id", () => {
 	describe("PUT /transactions/:id - Succes test", () => {
 		it("should be return an object message success", async () => {
-			const id = 1;
+			const id = 6;
 			const data = {
 				name: "updateTest",
 				amount: 2000,
 				date: new Date(),
 				CategoryId: 1,
-				UserId: 1,
 				WalletId: 1,
+				description: "",
+				photo: "",
 			};
-			const login = await request(app).post("/users/login").send({ email: "admin@mail.com", password: "admin" });
+			const login = await request(app)
+				.post("/users/login")
+				.send({ email: "admin@mail.com", password: "admin" });
 			access_token = login.body.access_token;
 			const response = await request(app)
 				.put("/transactions/" + id)
@@ -152,8 +143,6 @@ describe("PUT /transactions/:id", () => {
 				amount: 2000,
 				date: new Date(),
 				CategoryId: 1,
-				UserId: 1,
-				WalletId: 1,
 			};
 			const response = await request(app)
 				.put("/transactions/" + id)
@@ -165,9 +154,67 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body.message).toBe("Transaction cannot be found");
 		});
 	});
-	describe("PUT /transactions/:id - not provide input name", () => {
+	describe("PUT /transactions/:id - invalid access token", () => {
+		it("should be return an object message", async () => {
+			const id = 6;
+			const data = {
+				name: "updateTest",
+				amount: 2000,
+				date: new Date(),
+				CategoryId: 1,
+			};
+			const response = await request(app)
+				.put("/transactions/" + id)
+				.set("access_token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYyNzgzNjE4fQ.bxkcmVaqDa430W_Hqo4w1zMNF2E5vUy_wUvQImfEmiZ")
+				.send(data);
+			expect(response.status).toBe(401);
+			expect(response.body).toBeInstanceOf(Object);
+			expect(response.body).toHaveProperty("message");
+			expect(response.body.message).toBe("Invalid token");
+		});
+	});
+	describe("PUT /transactions/:id - User Wallet not found", () => {
 		it("should be return an object message", async () => {
 			const id = 1;
+			const data = {
+				name: "updateTest",
+				amount: 2000,
+				date: new Date(),
+				CategoryId: 1,
+			};
+			const response = await request(app)
+				.put("/transactions/" + id)
+				.set("access_token", access_token)
+				.send(data);
+			expect(response.status).toBe(403);
+			expect(response.body).toBeInstanceOf(Object);
+			expect(response.body).toHaveProperty("message");
+			expect(response.body.message).toBe("Forbidden");
+		});
+	});
+	describe("PUT /transactions/:id - unauthorized", () => {
+		it("should be return an object message", async () => {
+			const id = 1;
+			const data = {
+				name: "updateTest",
+				amount: 2000,
+				date: new Date(),
+				CategoryId: 1,
+				WalletId: 1,
+			};
+			const response = await request(app)
+				.put("/transactions/" + id)
+				.set("access_token", access_token)
+				.send(data);
+			expect(response.status).toBe(403);
+			expect(response.body).toBeInstanceOf(Object);
+			expect(response.body).toHaveProperty("message");
+			expect(response.body.message).toBe("Forbidden");
+		});
+	});
+	describe("PUT /transactions/:id - not provide input name", () => {
+		it("should be return an object message", async () => {
+			const id = 6;
 			const data = {
 				name: "",
 				amount: 2000,
@@ -189,7 +236,7 @@ describe("PUT /transactions/:id", () => {
 	});
 	describe("PUT /transactions/:id - not provide input amount", () => {
 		it("should be return an object message", async () => {
-			const id = 1;
+			const id = 6;
 			const data = {
 				name: "updateTest",
 				amount: null,
@@ -211,7 +258,7 @@ describe("PUT /transactions/:id", () => {
 	});
 	describe("PUT /transactions/:id - not provide input date", () => {
 		it("should be return an object message", async () => {
-			const id = 1;
+			const id = 6;
 			const data = {
 				name: "updateTest",
 				amount: 10000,
@@ -236,8 +283,10 @@ describe("PUT /transactions/:id", () => {
 describe("Delete /transactions/:id", () => {
 	describe("Delete /transactions/:id - Succes test", () => {
 		it("should return a success message", async () => {
-			const id = 1;
-			const response = await request(app).delete("/transactions/" + id).set("access_token", access_token);
+			const id = 6;
+			const response = await request(app)
+				.delete("/transactions/" + id)
+				.set("access_token", access_token);
 			expect(response.status).toBe(200);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
@@ -247,7 +296,9 @@ describe("Delete /transactions/:id", () => {
 	describe("Delete /transactions/:id - Transactions not found", () => {
 		it("should return error message", async () => {
 			const id = 100;
-			const response = await request(app).delete("/transactions/" + id).set("access_token", access_token);
+			const response = await request(app)
+				.delete("/transactions/" + id)
+				.set("access_token", access_token);
 			expect(response.status).toBe(404);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
@@ -256,48 +307,50 @@ describe("Delete /transactions/:id", () => {
 	});
 });
 
-describe('GET /transactions success', () => {
-	it('Should be return an object', async () => {
+describe("GET /transactions success", () => {
+	it("Should be return an object", async () => {
 		return request(app)
-			.get('/transactions')
+			.get("/transactions")
 			.set("access_token", access_token)
 			.send({ WalletId: 1 })
-			.then(response => {
+			.then((response) => {
 				expect(response.status).toBe(200);
 				expect(response.body).toBeInstanceOf(Object);
 			});
 	});
 });
 
-describe('POST /transactions success', () => {
-	it('Should be return an object', async () => {
-		const login = await request(app).post("/users/login").send({ email: "admin@mail.com", password: "admin" });
+describe("POST /transactions success", () => {
+	it("Should be return an object", async () => {
+		const login = await request(app)
+			.post("/users/login")
+			.send({ email: "admin@mail.com", password: "admin" });
 		access_token = login.body.access_token;
 		return request(app)
-			.post('/transactions')
+			.post("/transactions")
 			.set("access_token", access_token)
 			.send({ name: "test", amount: 1000000, date: new Date(), CategoryId: 1, WalletId: 1 })
-			.then(response => {
+			.then((response) => {
 				expect(response.status).toBe(201);
 				expect(response.body).toBeInstanceOf(Object);
-				expect(response.body).toHaveProperty('message');
-				expect(response.body).toHaveProperty('Transaction');
-				expect(response.body).toHaveProperty('Transaction', expect.any(Object));
+				expect(response.body).toHaveProperty("message");
+				expect(response.body).toHaveProperty("Transaction");
+				expect(response.body).toHaveProperty("Transaction", expect.any(Object));
 			});
 	});
 });
 
-describe('POST /transactions error input field not exist or empty string', () => {
+describe("POST /transactions error input field not exist or empty string", () => {
 	it("Should be return an object", async () => {
 		return request(app)
-			.post('/transactions')
+			.post("/transactions")
 			.set("access_token", access_token)
 			.send({ WalletId: 1 })
 			.then((response) => {
 				expect(response.status).toBe(400);
 				expect(response.body).toBeInstanceOf(Object);
-				expect(response.body).toHaveProperty('message');
-				expect(response.body).toHaveProperty('message', expect.any(Object));
+				expect(response.body).toHaveProperty("message");
+				expect(response.body).toHaveProperty("message", expect.any(Object));
 			});
 	});
 });

@@ -99,18 +99,14 @@ class Controller {
 	static async deleteWallet(req, res, next) {
 		try {
 			const { walletId } = req.params;
-			if (isNaN(+walletId)) throw { name: "Invalid Id" };
 
-			const deletedWallet = await Wallet.destroy({
+			await Wallet.destroy({
 				where: {
 					id: walletId,
 				},
 			});
-			if (deletedWallet) {
-				res.status(200).json({ message: `Wallet with id ${walletId} successfully deleted` });
-			} else {
-				throw { name: "NotFound" };
-			}
+
+			res.status(200).json({ message: `Wallet with id ${walletId} successfully deleted` });
 		} catch (error) {
 			next(error);
 		}
@@ -121,6 +117,10 @@ class Controller {
 			const { walletId } = req.params;
 			const { name } = req.body;
 			if (isNaN(+walletId)) throw { name: "Invalid Id" };
+
+			if (!name) {
+				throw { name: "Invalid input" };
+			}
 
 			const updatedWallet = await Wallet.update(
 				{ name },
