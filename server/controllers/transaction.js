@@ -3,7 +3,6 @@ const { Transaction, sequelize, Category, User, Wallet } = require("../models");
 
 class TransactionsController {
 	static async updateTransaction(req, res, next) {
-		console.log("MASUKKKKKKKKKKKKKKKKKKK");
 		const t = await sequelize.transaction();
 		try {
 			const { transactionId } = req.params;
@@ -12,9 +11,6 @@ class TransactionsController {
 
 			const findTransactions = await Transaction.findByPk(transactionId, { transaction: t });
 
-			if (!findTransactions) {
-				throw { name: "TransactionsNotFound" };
-			}
 			const findCategory = await Category.findByPk(findTransactions.CategoryId, { transaction: t });
 			const findWallet = await Wallet.findByPk(findTransactions.WalletId, { transaction: t });
 
@@ -110,10 +106,6 @@ class TransactionsController {
 			const findWallet = await Wallet.findByPk(findTransactions.WalletId, { transaction: t });
 			const findCategory = await Category.findByPk(findTransactions.CategoryId, { transaction: t });
 
-			if (!findTransactions) {
-				throw { name: "TransactionsNotFound" };
-			}
-
 			if (findCategory.type === "Income") {
 				await Wallet.update(
 					{
@@ -139,7 +131,6 @@ class TransactionsController {
 					}
 				);
 			}
-
 			await Transaction.destroy({
 				where: {
 					id: transactionId,
@@ -243,9 +234,6 @@ class TransactionsController {
 				};
 			}
 			const findTransactions = await Transaction.findAll(param);
-			if (findTransactions.length === 0) {
-				throw { name: "TransactionsNotFound" };
-			}
 			res.status(200).json(findTransactions);
 		} catch (error) {
 			next(error);
@@ -255,10 +243,6 @@ class TransactionsController {
 	static async getDetailTransaction(req, res, next) {
 		try {
 			const { transactionId } = req.params;
-
-			if (isNaN(+transactionId)) {
-				throw { name: "Invalid Id" };
-			}
 
 			const transaction = await Transaction.findByPk(transactionId, {
 				include: [
@@ -276,9 +260,6 @@ class TransactionsController {
 					},
 				],
 			});
-			if (!transaction) {
-				throw { name: "NotFound" };
-			}
 			res.status(200).json(transaction);
 		} catch (error) {
 			next(error);

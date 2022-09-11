@@ -268,26 +268,13 @@ describe("DELETE /wallets/:walletId", () => {
 		});
 	});
 
-	describe("Wallet deletion failed because role is not assigned", () => {
-		it("Should be return an status 403 and message", async () => {
-			try {
-				const response = await request(app).delete("/wallets/1").set("access_token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjYyODgxMTEzfQ.JsOYFbo-w2KqiAwcOtuKKmPOpwoBW0_0pbpr9xdlII0");
-				expect(response.status).toBe(403);
-				expect(response.body).toBeInstanceOf(Object);
-				expect(response.body).toHaveProperty("message", expect.any(String));
-			} catch (error) {
-				console.log(error);
-			}
-		});
-	});
-
 	describe("Wallet deletion failed because wallet Id is not a number", () => {
-		it("Should be return an status 404 and message", async () => {
+		it("Should be return an status 400 and message", async () => {
 			try {
 				const response = await request(app)
 					.delete("/wallets/stringhere")
 					.set("access_token", access_token);
-				expect(response.status).toBe(404);
+				expect(response.status).toBe(400);
 				expect(response.body).toBeInstanceOf(Object);
 				expect(response.body).toHaveProperty("message", expect.any(String));
 			} catch (error) {

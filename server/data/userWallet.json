@@ -18,10 +18,5 @@
 		"UserId": 3,
 		"WalletId": 2,
 		"role": "Manager"
-	},
-	{
-		"UserId": 3,
-		"WalletId": 2,
-		"role": "Member"
 	}
 ]
