@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">94.2% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>63/63</span>
+                <span class='fraction'>65/69</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">94.2% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>63/63</span>
+                <span class='fraction'>65/69</span>
             </div>
         
             
@@ -333,8 +333,8 @@
 <a name='L268'></a><a href='#L268'>268</a>
 <a name='L269'></a><a href='#L269'>269</a>
 <a name='L270'></a><a href='#L270'>270</a>
-<a name='L271'></a><a href='#L271'>271</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L271'></a><a href='#L271'>271</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -478,8 +478,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -545,7 +545,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -571,12 +571,12 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -597,12 +597,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { Op } = require("sequelize");
 const { Transaction, sequelize, Category, User, Wallet } = require("../models");
 &nbsp;
@@ -748,8 +748,8 @@ class TransactionsController {
 				message: "Success delete Transaction with Id " + transactionId,
 			});
 		} catch (error) {
-			// await t.rollback();
-			// next(error);
+<span class="cstat-no" title="statement not covered" >			await t.rollback();</span>
+<span class="cstat-no" title="statement not covered" >			next(error);</span>
 		}
 	}
 &nbsp;
@@ -815,7 +815,7 @@ class TransactionsController {
 	}
 &nbsp;
 	static async getTransaction(req, res, next) {
-		// try {
+		try {
 		const { WalletId } = req.body;
 		const { search } = req.query;
 		const param = {
@@ -840,13 +840,13 @@ class TransactionsController {
 		}
 		const findTransactions = await Transaction.findAll(param);
 		res.status(200).json(findTransactions);
-		// } catch (error) {
-		// 	next(error);
-		// }
+		} catch (error) {
+<span class="cstat-no" title="statement not covered" >			next(error);</span>
+		}
 	}
 &nbsp;
 	static async getDetailTransaction(req, res, next) {
-		// try {
+		try {
 		const { transactionId } = req.params;
 &nbsp;
 		const transaction = await Transaction.findByPk(transactionId, {
@@ -866,9 +866,9 @@ class TransactionsController {
 			],
 		});
 		res.status(200).json(transaction);
-		// } catch (error) {
-		// 	next(error);
-		// }
+		} catch (error) {
+<span class="cstat-no" title="statement not covered" >			next(error);</span>
+		}
 	}
 }
 &nbsp;
@@ -880,7 +880,7 @@ module.exports = TransactionsController;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-09-11T14:57:36.576Z
+                at 2022-09-11T20:06:38.113Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
