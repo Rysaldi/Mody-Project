@@ -7,28 +7,20 @@ import DashboardScreen from "./src/screens/DashboardScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import LogoutScreen from "./src/screens/LogoutScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
-
 import RegisterUser from "./src/screens/RegisterUser";
 import WalletScreen from "./src/screens/WalletScreen";
 import TransactionScreen from "./src/screens/TransactionScreen";
 import ReportScreen from "./src/screens/ReportScreen";
 import HistoryScreen from "./src/screens/HistoryScreen";
 
-import { Provider } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from "react";
+import { Provider, useSelector } from "react-redux";
 import store from "./src/store/store";
+
 export default function App() {
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
-
-  // const stackDashboard = (
-  //   <Stack.Navigator>
-  //     <Stack.Screen
-  //       name="Home"
-  //       component={DashboardScreen}
-  //       options={{ headerShown: false }}
-  //     />
-  //   </Stack.Navigator>
-  // );
 
   const StackWallet = () => (
     <Stack.Navigator>
@@ -57,47 +49,67 @@ export default function App() {
       />
     </Stack.Navigator>
   );
+  const StackLoginRegister = () => (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="SignIn"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={RegisterUser}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
   return (
     <Provider store={store}>
+    
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen
+            name="Home"
+            component={DashboardScreen}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="Wallet"
+            component={StackWallet}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="Settings"
+            component={StackSettings}
+            options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="LoginRegister"
+            component={StackLoginRegister}
+            options={{ headerShown: false, tabBarStyle: { display: "none" } }}
+          />
+        </Tab.Navigator>
 
 
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Home"
-          component={DashboardScreen}
-          options={{ headerShown: false }}
-        />
-        <Tab.Screen
-          name="Wallet"
-          component={StackWallet}
-          options={{ headerShown: false }}
-        />
-        <Tab.Screen
-          name="Settings"
-          component={StackSettings}
-          options={{ headerShown: false }}
-        />
-      </Tab.Navigator>
-      
+        {/* <DashboardScreen /> */}
+        {/* <ProfileScreen/> */}
+        {/* <LoginScreen/> */}
+        {/* <LogoutScreen /> */}
+        {/* <StatusBar style="auto" /> */}
 
-      {/* <DashboardScreen /> */}
-      {/* <ProfileScreen/> */}
-      {/* <LoginScreen/> */}
-      {/* <LogoutScreen /> */}
-      {/* <StatusBar style="auto" /> */}
-
-      {/* <Stack.Navigator> */}
-      {/* <Stack.Screen name="Transaction" component={TransactionScreen} />
+        {/* <Stack.Navigator> */}
+        {/* <Stack.Screen name="Transaction" component={TransactionScreen} />
         <Stack.Screen
           name="RegisterScreen"
           component={RegisterUser}
           options={{ headerShown: false }}
         /> */}
-      {/* <Stack.Screen name="Report" component={ReportScreen} /> */}
-      {/* <Stack.Screen name="History" component={HistoryScreen} /> */}
-      {/* </Stack.Navigator> */}
-    </NavigationContainer>
+
+        {/* <Stack.Screen name="Report" component={ReportScreen} /> */}
+        {/* <Stack.Screen name="History" component={HistoryScreen} /> */}
+        {/* </Stack.Navigator> */}
+      </NavigationContainer>
+
     </Provider>
   );
 }

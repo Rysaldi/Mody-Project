@@ -1,3 +1,4 @@
+
 // export const FETCH_SESUATU_SUKSES = 'contoh'
 
 export const SUCCESS_FETCH_WALLETS = 'wallets/successFetchAll'
@@ -21,4 +22,6 @@ export const ERROR_EDIT_WALLET = 'wallets/errorEdit'
 export const LOADING_EDIT_WALLET = 'wallets/loadingEdit'
 
 
+export const USER_LOGIN = "user/userLogin";
+export const USER_LOGOUT = "user/userLogout";
 

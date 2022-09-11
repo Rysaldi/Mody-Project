@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   Text,
@@ -17,6 +18,7 @@ export default function WalletScreen({navigation}) {
   const [addWalletForm, setAddWalletForm] = React.useState({
     name: "",
   });
+
 
   const dispatch = useDispatch();
   const { wallets } = useSelector((state) => {
@@ -49,6 +51,9 @@ export default function WalletScreen({navigation}) {
       </>
     );
   };
+
+  // navigation ini perlu??? 
+  // const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
