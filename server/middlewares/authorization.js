@@ -2,8 +2,12 @@ const { UserWallet, Wallet, Transaction } = require("../models");
 async function authorizationTransactionRole(req, res, next) {
 	try {
 		const { transactionId } = req.params;
-		const findTransaction = await Transaction.findByPk(transactionId);
 
+		if (isNaN(+transactionId)) {
+			throw { name: "Invalid Id" };
+		}
+
+		const findTransaction = await Transaction.findByPk(transactionId);
 		if (!findTransaction) {
 			throw { name: "TransactionsNotFound" };
 		}
@@ -40,7 +44,7 @@ async function readOrCreateTransaction(req, res, next) {
 			},
 		});
 		if (!findUserWallet) {
-			throw { name: "THROW BANGSATTTTTTTTTT" };
+			throw { name: "Forbidden" };
 		}
 		next();
 	} catch (error) {
@@ -71,7 +75,7 @@ async function deleteAuthorization(req, res, next) {
 		} else if (findUserWallet.role !== "Owner") {
 			throw { name: "Forbidden" };
 		}
-		next()
+		next();
 	} catch (error) {
 		next(error);
 	}

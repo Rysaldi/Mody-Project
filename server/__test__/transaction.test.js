@@ -30,19 +30,19 @@ beforeAll(async () => {
 		});
 		await queryInterface.bulkInsert("Wallets", wallets);
 
-		const transactions = require("../data/transaction.json");
-		transactions.forEach((transaction) => {
-			delete transaction.id;
-			transaction.createdAt = transaction.updatedAt = new Date();
-		});
-		await queryInterface.bulkInsert("Transactions", transactions);
-
 		const userWallets = require("../data/userWallet.json");
 		userWallets.forEach((userWallet) => {
 			delete userWallet.id;
 			userWallet.createdAt = userWallet.updatedAt = new Date();
 		});
 		await queryInterface.bulkInsert("UserWallets", userWallets);
+
+		const transactions = require("../data/transaction.json");
+		transactions.forEach((transaction) => {
+			delete transaction.id;
+			transaction.createdAt = transaction.updatedAt = new Date();
+		});
+		await queryInterface.bulkInsert("Transactions", transactions);
 	} catch (error) {
 		console.log(error);
 	}
@@ -117,6 +117,32 @@ describe("PUT /transactions/:id", () => {
 				amount: 2000,
 				date: new Date(),
 				CategoryId: 1,
+				WalletId: 1,
+				description: "",
+				photo: "",
+			};
+			const login = await request(app)
+				.post("/users/login")
+				.send({ email: "admin@mail.com", password: "admin" });
+			access_token = login.body.access_token;
+			const response = await request(app)
+				.put("/transactions/" + id)
+				.set("access_token", access_token)
+				.send(data);
+			expect(response.status).toBe(200);
+			expect(response.body).toBeInstanceOf(Object);
+			expect(response.body).toHaveProperty("message");
+			expect(response.body.message).toBe("Succes Edit Transaction with Id " + id);
+		});
+	});
+	describe("PUT /transactions/:id - Succes test", () => {
+		it("should be return an object message success", async () => {
+			const id = 6;
+			const data = {
+				name: "updateTest",
+				amount: 2000,
+				date: new Date(),
+				CategoryId: 7,
 				WalletId: 1,
 				description: "",
 				photo: "",
@@ -280,32 +306,9 @@ describe("PUT /transactions/:id", () => {
 	});
 });
 
-describe("Delete /transactions/:id", () => {
-	describe("Delete /transactions/:id - Succes test", () => {
-		it("should return a success message", async () => {
-			const id = 6;
-			const response = await request(app)
-				.delete("/transactions/" + id)
-				.set("access_token", access_token);
-			expect(response.status).toBe(200);
-			expect(response.body).toBeInstanceOf(Object);
-			expect(response.body).toHaveProperty("message");
-			expect(response.body.message).toBe("Success delete Transaction with Id " + id);
-		});
-	});
-	describe("Delete /transactions/:id - Transactions not found", () => {
-		it("should return error message", async () => {
-			const id = 100;
-			const response = await request(app)
-				.delete("/transactions/" + id)
-				.set("access_token", access_token);
-			expect(response.status).toBe(404);
-			expect(response.body).toBeInstanceOf(Object);
-			expect(response.body).toHaveProperty("message");
-			expect(response.body.message).toBe("Transaction cannot be found");
-		});
-	});
-});
+
+
+
 
 describe("GET /transactions success", () => {
 	it("Should be return an object", async () => {
@@ -315,6 +318,47 @@ describe("GET /transactions success", () => {
 			.send({ WalletId: 1 })
 			.then((response) => {
 				expect(response.status).toBe(200);
+				expect(response.body).toBeInstanceOf(Object);
+			});
+	});
+});
+
+describe("GET /transactions Succues but There are no transactions in the wallet", () => {
+	it("Should be return an object", async () => {
+		const createWallet = await request(app).post("/wallets").set("access_token", access_token).send({ name: "Wallet10" });
+		return request(app)
+			.get("/transactions")
+			.set("access_token", access_token)
+			.send({ WalletId: createWallet.body.id })
+			.then((response) => {
+				expect(response.status).toBe(200);
+				expect(response.body).toBeInstanceOf(Object);
+			});
+	});
+});
+
+
+describe("GET /transactions success", () => {
+	it("Should be return an object", async () => {
+		return request(app)
+			.get("/transactions?search=a")
+			.set("access_token", access_token)
+			.send({ WalletId: 1 })
+			.then((response) => {
+				expect(response.status).toBe(200);
+				expect(response.body).toBeInstanceOf(Object);
+			});
+	});
+});
+
+describe("GET /transactions fail because wallet not found", () => {
+	it("Should be return an object", async () => {
+		return request(app)
+			.get("/transactions?search=a")
+			.set("access_token", access_token)
+			.send({ WalletId: 100 })
+			.then((response) => {
+				expect(response.status).toBe(404);
 				expect(response.body).toBeInstanceOf(Object);
 			});
 	});
@@ -354,3 +398,105 @@ describe("POST /transactions error input field not exist or empty string", () =>
 			});
 	});
 });
+
+
+describe("POST /transactions success", () => {
+	it("Should be return an object", async () => {
+		const login = await request(app)
+			.post("/users/login")
+			.send({ email: "admin@mail.com", password: "admin" });
+		access_token = login.body.access_token;
+		return request(app)
+			.post("/transactions")
+			.set("access_token", access_token)
+			.send({ name: "test", amount: 1000000, date: new Date(), CategoryId: 10, WalletId: 1 })
+			.then((response) => {
+				expect(response.status).toBe(201);
+				expect(response.body).toBeInstanceOf(Object);
+				expect(response.body).toHaveProperty("message");
+				expect(response.body).toHaveProperty("Transaction");
+				expect(response.body).toHaveProperty("Transaction", expect.any(Object));
+			});
+	});
+});
+
+describe("GET /transactions/transactionId - Success", () => {
+	it("Should be return an object", async () => {
+		const id = 6;
+		return request(app)
+			.get("/transactions/" + id)
+			.set("access_token", access_token)
+			.send({ WalletId: 1 })
+			.then((response) => {
+				console.log(response.body);
+				expect(response.status).toBe(200);
+				expect(response.body).toBeInstanceOf(Object);
+				expect(response.body).toHaveProperty("id", expect.any(Number));
+				expect(response.body).toHaveProperty("name", expect.any(String));
+				expect(response.body).toHaveProperty("amount", expect.any(Number));
+				expect(response.body).toHaveProperty("date", expect.any(String));
+				expect(response.body).toHaveProperty("UserId", expect.any(Number));
+				expect(response.body).toHaveProperty("CategoryId", expect.any(Number));
+				expect(response.body).toHaveProperty("WalletId", expect.any(Number));
+			});
+	});
+});
+
+
+
+
+describe("Delete /transactions/:id", () => {
+	describe("Delete /transactions/:id - Succes test", () => {
+		it("should return a success message", async () => {
+			const id = 7;
+			const response = await request(app)
+				.delete("/transactions/" + id)
+				.set("access_token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjYyODgzMDU0fQ.Shyj3bcR-YYihmAgHnX1fNOnaizgjfVO1RnPqPynE-g");
+			expect(response.status).toBe(200);
+			expect(response.body).toBeInstanceOf(Object);
+			expect(response.body).toHaveProperty("message");
+			expect(response.body.message).toBe("Success delete Transaction with Id " + id);
+		});
+	});
+
+	describe("Delete /transactions/:id - Succes test", () => {
+		it("should return a success message", async () => {
+			const id = 1;
+			const response = await request(app)
+				.delete("/transactions/" + id)
+				.set("access_token", access_token);
+			expect(response.status).toBe(403);
+			expect(response.body).toBeInstanceOf(Object);
+			expect(response.body).toHaveProperty("message");
+			expect(response.body.message).toBe("Forbidden");
+		});
+	});
+
+	describe("Delete /transactions/:id - Succes test", () => {
+		it("should return a success message", async () => {
+			const id = 6;
+			const response = await request(app)
+				.delete("/transactions/" + id)
+				.set("access_token", access_token);
+			expect(response.status).toBe(200);
+			expect(response.body).toBeInstanceOf(Object);
+			expect(response.body).toHaveProperty("message");
+			expect(response.body.message).toBe("Success delete Transaction with Id " + id);
+		});
+	});
+
+	describe("Delete /transactions/:id - Transactions not found", () => {
+		it("should return error message", async () => {
+			const id = 100;
+			const response = await request(app)
+				.delete("/transactions/" + id)
+				.set("access_token", access_token);
+			expect(response.status).toBe(404);
+			expect(response.body).toBeInstanceOf(Object);
+			expect(response.body).toHaveProperty("message");
+			expect(response.body.message).toBe("Transaction cannot be found");
+		});
+	});
+});
+
+
