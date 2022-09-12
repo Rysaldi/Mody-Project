@@ -8,28 +8,33 @@ import {
   TextInput,
   Pressable,
   Image,
-  FlatList
+  FlatList,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchWallets, addNewWallet, deleteWallet } from "../store/actionCreator/wallets/index";
+import {
+  fetchWallets,
+  addNewWallet,
+  deleteWallet,
+} from "../store/actionCreator/wallets/index";
 
-export default function WalletScreen({navigation,route}) {
+export default function WalletScreen({ navigation, route }) {
   const dispatch = useDispatch();
-  const [walletName, setWalletName] = React.useState('');
+  const [walletName, setWalletName] = React.useState("");
 
-  const submitAddWallet = ()=>{
-    dispatch(addNewWallet({
-      name:walletName
-    }))
-    .then(_=>{
-      setWalletName('')
-    })
-  }
+  const submitAddWallet = () => {
+    dispatch(
+      addNewWallet({
+        name: walletName,
+      })
+    ).then((_) => {
+      setWalletName("");
+    });
+  };
 
-  const submitDeleteWallet = (walletId)=>{
-    dispatch(deleteWallet(walletId))
-  }
+  const submitDeleteWallet = (walletId) => {
+    dispatch(deleteWallet(walletId));
+  };
 
   const { wallets } = useSelector((state) => {
     return state.walletReducer;
@@ -37,7 +42,6 @@ export default function WalletScreen({navigation,route}) {
   React.useEffect(() => {
     dispatch(fetchWallets());
   }, []);
-
 
   const renderCategoryList = ({ item }) => {
     return (
@@ -48,25 +52,34 @@ export default function WalletScreen({navigation,route}) {
             style={styles.walletIcon}
           />
           <Text style={styles.walletName}>{item.name}</Text>
-          <Pressable style={styles.buttonToTransaction} 
-          onPress={() => navigation.navigate("TransactionApp", { id: item.id })}>
+          <Pressable
+            style={styles.buttonToTransaction}
+            onPress={() =>
+              navigation.navigate("TransactionApp", { id: item.id })
+            }
+          >
             <Text style={styles.buttonText}>Transaction</Text>
           </Pressable>
           {/* sementara  */}
-          <Pressable style={styles.buttonToTransaction} 
-          onPress={() => {submitDeleteWallet(item.id)}}>
+          <Pressable
+            style={styles.buttonToTransaction}
+            onPress={() => {
+              submitDeleteWallet(item.id);
+            }}
+          >
             <Text style={styles.buttonText}>delete</Text>
           </Pressable>
           {/* sementara */}
-          <Pressable style={styles.buttonToReport}
-          onPress={() => navigation.navigate("ReportApp", { id: item.id })}>
+          <Pressable
+            style={styles.buttonToReport}
+            onPress={() => navigation.navigate("ReportApp", { id: item.id })}
+          >
             <Text style={styles.buttonText}>See Report</Text>
           </Pressable>
         </View>
       </>
     );
   };
-
 
   return (
     <View style={styles.container}>
@@ -83,16 +96,18 @@ export default function WalletScreen({navigation,route}) {
         </View>
         <View style={styles.buttonToAdd}>
           <Pressable style={styles.buttonAdd}>
-            <Text style={styles.buttonText} onPress={submitAddWallet}>Add Wallet</Text>
+            <Text style={styles.buttonText} onPress={submitAddWallet}>
+              Add Wallet
+            </Text>
           </Pressable>
         </View>
       </View>
       <View style={styles.walletList}>
         <FlatList
-              data={wallets}
-              renderItem={renderCategoryList}
-              keyExtractor={(el) => el.id}
-            />
+          data={wallets}
+          renderItem={renderCategoryList}
+          keyExtractor={(el) => el.id}
+        />
       </View>
     </View>
   );

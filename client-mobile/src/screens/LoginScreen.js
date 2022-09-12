@@ -16,11 +16,22 @@ import { userLogin } from "../store/actionCreator/users/users";
 export default function LoginScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [email, onChangeUser] = React.useState("");
-  const [password, onChangePassword] = React.useState("");
+  const [formAdd, setFormAdd] = React.useState({
+    email: "",
+    password: "",
+  });
+  const onChange = (e) => {
+    const keys = Object.keys(e)[0];
+    const values = Object.values(e)[0];
 
+    setFormAdd({
+      ...formAdd,
+      [keys]: values,
+    });
+  };
   const onSubmit = () => {
-    dispatch(userLogin({ email, password }));
+    console.log(formAdd);
+    dispatch(userLogin(formAdd));
   };
   return (
     <>
@@ -41,8 +52,12 @@ export default function LoginScreen() {
               />
               <TextInput
                 style={styles.input}
-                onChangeText={onChangeUser}
-                value={email}
+                onChangeText={(text) =>
+                  onChange({
+                    email: text,
+                  })
+                }
+                value={formAdd.email}
                 placeholder="Email"
               />
             </View>
@@ -53,8 +68,12 @@ export default function LoginScreen() {
               />
               <TextInput
                 style={styles.input}
-                onChangeText={onChangePassword}
-                value={password}
+                onChangeText={(text) =>
+                  onChange({
+                    password: text,
+                  })
+                }
+                value={formAdd.password}
                 secureTextEntry={true}
                 placeholder="Password"
               />

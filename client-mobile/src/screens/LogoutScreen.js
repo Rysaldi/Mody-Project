@@ -1,7 +1,20 @@
 import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, View, Text, Image, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Dimensions,
+  Pressable,
+} from "react-native";
+import { userLogout } from "../store/actionCreator/users/users";
+import { useDispatch } from "react-redux";
 export default function LogoutScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const onTapLogout = () => {
+    dispatch(userLogout());
+  };
   return (
     <>
       <View style={styles.container}>
@@ -43,33 +56,35 @@ export default function LogoutScreen() {
           >
             Preferences
           </Text>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              marginTop: 20,
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <Pressable onPress={onTapLogout}>
             <View
               style={{
                 display: "flex",
                 flexDirection: "row",
+                marginTop: 20,
+                justifyContent: "space-between",
                 alignItems: "center",
               }}
             >
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Image
+                  style={{ width: 30, height: 30, marginRight: 10 }}
+                  source={require("../../assets/icons/logout.png")}
+                />
+                <Text style={{ fontSize: 16, fontWeight: "bold" }}>Logout</Text>
+              </View>
               <Image
-                style={{ width: 30, height: 30, marginRight: 10 }}
-                source={require("../../assets/icons/logout.png")}
+                style={{ width: 12, height: 12 }}
+                source={require("../../assets/icons/arrowRight.png")}
               />
-              <Text style={{ fontSize: 16, fontWeight: "bold" }}>Logout</Text>
             </View>
-            <Image
-              style={{ width: 12, height: 12 }}
-              source={require("../../assets/icons/arrowRight.png")}
-            />
-          </View>
+          </Pressable>
         </View>
       </View>
     </>
