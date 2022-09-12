@@ -19,8 +19,12 @@ import {
 const initialState = {
   wallets: [],
   detailWallet: {},
+  newWallet: {},
+  deleteWallet: "",
   loadingWallets: true,
   loadingDetail: true,
+  loadingNewWallet: true,
+  loadingDeleteWallet: true,
 };
 
 function walletReducer(state = initialState, action) {
@@ -49,8 +53,37 @@ function walletReducer(state = initialState, action) {
         loadingDetail: action.payload,
       };
 
-      default:return state
+    case SUCCESS_POST_WALLETS:
+      return {
+        ...state,
+        newWallet: action.payload,
+      };
+
+    case LOADING_POST_WALLETS:
+      return {
+        ...state,
+        loadingNewWallet: action.payload,
+      };
+
+    case SUCCESS_DELETE_WALLET:
+      const postDeleteWallet = state.wallets.filter((el) => {
+        return el.id !== action.payload;
+      });
+      return {
+        ...state,
+        wallets: postDeleteWallet,
+        deleteNews: "delete wallet success",
+      };
+
+    case LOADING_DELETE_WALLET:
+      return {
+        ...state,
+        loadingDeleteWallet: action.payload,
+      };
+
+    default:
+      return state;
   }
 }
 
-export default walletReducer
+export default walletReducer;

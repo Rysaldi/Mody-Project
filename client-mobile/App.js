@@ -1,8 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
-import { View, StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import DashboardScreen from "./src/screens/DashboardScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import LogoutScreen from "./src/screens/LogoutScreen";
@@ -12,15 +11,30 @@ import WalletScreen from "./src/screens/WalletScreen";
 import TransactionScreen from "./src/screens/TransactionScreen";
 import ReportScreen from "./src/screens/ReportScreen";
 import HistoryScreen from "./src/screens/HistoryScreen";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React from "react";
-import { Provider, useSelector } from "react-redux";
-import store from "./src/store/store";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { userLoginDispatch } from "./src/store/actionCreator/users/users";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
+
+  const dispatch = useDispatch();
+  const { authenticated } = useSelector((state) => state.userReducer);
+  const getToken = async () => {
+    try {
+      const response = await AsyncStorage.getItem("access_token");
+      return response;
+    } catch (error) {}
+  };
+  useEffect(() => {
+    getToken().then((response) => {
+      if (response) {
+        dispatch(userLoginDispatch(true));
+      } else dispatch(userLoginDispatch(false));
+    });
+  }, []);
 
   const StackWallet = () => (
     <Stack.Navigator>
@@ -49,24 +63,10 @@ export default function App() {
       />
     </Stack.Navigator>
   );
-  const StackLoginRegister = () => (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="SignIn"
-        component={LoginScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="SignUp"
-        component={RegisterUser}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
+
   return (
-    <Provider store={store}>
-    
-      <NavigationContainer>
+    <>
+      {authenticated ? (
         <Tab.Navigator>
           <Tab.Screen
             name="Home"
@@ -83,34 +83,22 @@ export default function App() {
             component={StackSettings}
             options={{ headerShown: false }}
           />
-          <Tab.Screen
-            name="LoginRegister"
-            component={StackLoginRegister}
-            options={{ headerShown: false, tabBarStyle: { display: "none" } }}
-          />
         </Tab.Navigator>
-
-
-        {/* <DashboardScreen /> */}
-        {/* <ProfileScreen/> */}
-        {/* <LoginScreen/> */}
-        {/* <LogoutScreen /> */}
-        {/* <StatusBar style="auto" /> */}
-
-        {/* <Stack.Navigator> */}
-        {/* <Stack.Screen name="Transaction" component={TransactionScreen} />
-        <Stack.Screen
-          name="RegisterScreen"
-          component={RegisterUser}
-          options={{ headerShown: false }}
-        /> */}
-
-        {/* <Stack.Screen name="Report" component={ReportScreen} /> */}
-        {/* <Stack.Screen name="History" component={HistoryScreen} /> */}
-        {/* </Stack.Navigator> */}
-      </NavigationContainer>
-
-    </Provider>
+      ) : (
+        <Stack.Navigator>
+          <Stack.Screen
+            name="SignIn"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUp"
+            component={RegisterUser}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      )}
+    </>
   );
 }
 

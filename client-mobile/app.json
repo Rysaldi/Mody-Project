@@ -1,13 +1,15 @@
 {
   "expo": {
-    "name": "client-mobile",
-    "slug": "client-mobile",
+    "name": "Mody",
+    "slug": "Mody",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "description": "Mody is your go to app for managing your cashflow to reach your financial dream. You can track your expenses, income, spending habits, and many more. With Mody, you can make sure that every single cent of your money is spent responsibly.",
+    "icon": "./assets/moody_pertama.png",
+    "privacy": "public",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/moody_pertama.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

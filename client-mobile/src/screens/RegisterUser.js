@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -16,12 +16,21 @@ import { useDispatch } from "react-redux";
 export default function RegisterUser() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
+  const [registerForm, setRegisterForm] = React.useState({
+    email: "",
+    username: "",
+    password: "",
+  });
+  const onChange = (e) => {
+    const keys = Object.keys(e)[0];
+    const values = Object.values(e)[0];
+    setRegisterForm({
+      ...registerForm,
+      [keys]: values,
+    });
+  };
   const onSubmit = () => {
-    dispatch(userRegister({ email, username, password }))
+    dispatch(userRegister(registerForm))
       .then(() => {
         navigation.navigate("SignIn");
       })
@@ -38,9 +47,47 @@ export default function RegisterUser() {
 
         <StatusBar translucent backgroundColor="transparent" />
 
+
+        //rohmat
         <View style={styles.form}>
           <View style={styles.signUp}>
             <Text style={styles.textHeader}>Sign Up</Text>
+{*
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => onChange({ email: text })}
+              value={registerForm.email}
+              placeholder="Email"
+              name="email"
+            />
+          </View>
+          <View style={styles.formInputFullName}>
+            <Image
+              source={require("../../assets/icons/account.png")}
+              style={styles.accountIcon}
+            />
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => onChange({ username: text })}
+              value={registerForm.username}
+              placeholder="Username"
+            />
+          </View>
+          <View style={styles.formInputPassword}>
+            <Image
+              source={require("../../assets/icons/password1.png")}
+              style={styles.emailIcon}
+            />
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => onChange({ password: text })}
+              value={registerForm.password}
+              placeholder="Password"
+              secureTextEntry={true}
+            /> *}
+
+
+        //default
           </View>
           <View style={styles.formInput}>
             <View style={styles.formInputEmail}>
