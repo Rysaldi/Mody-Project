@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,18 +9,28 @@ import {
   Dimensions,
   TextInput,
   Pressable,
+  ImageBackground
 } from "react-native";
 import { userRegister } from "../store/actionCreator/users/users";
 import { useDispatch } from "react-redux";
 export default function RegisterUser() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
+  const [registerForm, setRegisterForm] = React.useState({
+    email: "",
+    username: "",
+    password: "",
+  });
+  const onChange = (e) => {
+    const keys = Object.keys(e)[0];
+    const values = Object.values(e)[0];
+    setRegisterForm({
+      ...registerForm,
+      [keys]: values,
+    });
+  };
   const onSubmit = () => {
-    dispatch(userRegister({ email, username, password }))
+    dispatch(userRegister(registerForm))
       .then(() => {
         navigation.navigate("SignIn");
       })
@@ -29,23 +39,24 @@ export default function RegisterUser() {
 
   return (
     <View style={styles.container}>
-      <StatusBar translucent backgroundColor="transparent" />
+      <ImageBackground
+        source={require("../../assets/bg.jpg")}
+        resizeMode="cover"
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+      >
 
-      <View style={styles.form}>
-        <View style={styles.signUp}>
-          <Text style={styles.fontInter}>Sign Up</Text>
-        </View>
-        <View style={styles.formInput}>
-          <View style={styles.formInputEmail}>
-            <Image
-              source={require("../../assets/icons/ad.png")}
-              style={styles.emailIcon}
-            />
+        <StatusBar translucent backgroundColor="transparent" />
 
+
+        //rohmat
+        <View style={styles.form}>
+          <View style={styles.signUp}>
+            <Text style={styles.textHeader}>Sign Up</Text>
+{*
             <TextInput
               style={styles.input}
-              onChangeText={setEmail}
-              value={email}
+              onChangeText={(text) => onChange({ email: text })}
+              value={registerForm.email}
               placeholder="Email"
               name="email"
             />
@@ -57,8 +68,8 @@ export default function RegisterUser() {
             />
             <TextInput
               style={styles.input}
-              onChangeText={setUsername}
-              value={username}
+              onChangeText={(text) => onChange({ username: text })}
+              value={registerForm.username}
               placeholder="Username"
             />
           </View>
@@ -69,43 +80,82 @@ export default function RegisterUser() {
             />
             <TextInput
               style={styles.input}
-              onChangeText={setPassword}
-              value={password}
+              onChangeText={(text) => onChange({ password: text })}
+              value={registerForm.password}
               placeholder="Password"
               secureTextEntry={true}
-            />
-          </View>
+            /> *}
 
-          <Pressable style={styles.buttonTemp} onPress={onSubmit}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </Pressable>
-          <View style={styles.registerAccount}>
-            <Text style={styles.textDetail}>
-              Already have an account? click{" "}
-            </Text>
-            <Pressable>
-              <Text
-                style={styles.toLogin}
-                onPress={() => navigation.navigate("SignIn")}
-              >
-                here
-              </Text>
+
+        //default
+          </View>
+          <View style={styles.formInput}>
+            <View style={styles.formInputEmail}>
+              <Image
+                source={require("../../assets/icons/ad.png")}
+                style={styles.emailIcon}
+              />
+
+              <TextInput
+                style={styles.input}
+                onChangeText={setEmail}
+                value={email}
+                placeholder="Email"
+                name="email"
+              />
+            </View>
+            <View style={styles.formInputFullName}>
+              <Image
+                source={require("../../assets/icons/account.png")}
+                style={styles.accountIcon}
+              />
+              <TextInput
+                style={styles.input}
+                onChangeText={setUsername}
+                value={username}
+                placeholder="Username"
+              />
+            </View>
+            <View style={styles.formInputPassword}>
+              <Image
+                source={require("../../assets/icons/password1.png")}
+                style={styles.emailIcon}
+              />
+              <TextInput
+                style={styles.input}
+                onChangeText={setPassword}
+                value={password}
+                placeholder="Password"
+                secureTextEntry={true}
+              />
+            </View>
+
+            <Pressable style={styles.buttonTemp} onPress={onSubmit}>
+              <Text style={styles.buttonText}>Submit</Text>
             </Pressable>
+            <View style={styles.registerAccount}>
+              <Text>
+                Already have an account? click{" "}
+              </Text>
+              <Pressable>
+                <Text
+                  style={styles.toLogin}
+                  onPress={() => navigation.navigate("SignIn")}
+                >
+                  here
+                </Text>
+              </Pressable>
+            </View>
           </View>
         </View>
-      </View>
+      </ImageBackground>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    flex:1
   },
 
   form: {
@@ -113,6 +163,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height * 0.45,
     padding: 25,
     backgroundColor: "#fff",
+    borderRadius: 10,
   },
   signUp: {
     justifyContent: "center",
@@ -121,9 +172,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
-  fontInter: {
+  textHeader: {
     fontWeight: "bold",
-    fontSize: 24,
+    fontSize: 30,
+    textAlign: "left",
+    marginBottom: 10
   },
   formInputEmail: {
     flexDirection: "row",
@@ -148,7 +201,6 @@ const styles = StyleSheet.create({
   formInputPassword: {
     flexDirection: "row",
     alignItems: "center",
-
     height: Dimensions.get("window").height * 0.05,
   },
 
@@ -160,11 +212,11 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height * 0.03,
     width: Dimensions.get("window").width * 0.55,
     marginLeft: 20,
-
     paddingRight: 10,
     paddingLeft: 5,
     borderBottomWidth: 2,
     borderColor: "#d9d9d9",
+    fontSize: 17
   },
 
   buttonTemp: {
@@ -188,13 +240,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.67,
     marginTop: 15,
   },
-  textDetail: {
-    fontWeight: "500",
-    fontSize: 10,
-  },
   toLogin: {
-    fontSize: 10,
-    fontWeight: "500",
     color: "#2F6FFF",
   },
 });

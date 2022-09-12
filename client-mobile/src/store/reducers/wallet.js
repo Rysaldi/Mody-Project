@@ -3,24 +3,21 @@ import {
   SUCCESS_FETCH_DETAIL,
   SUCCESS_POST_WALLETS,
   SUCCESS_DELETE_WALLET,
-  SUCCESS_EDIT_WALLET,
-  ERROR_FETCH_WALLETS,
-  ERROR_FETCH_DETAIL,
-  ERROR_POST_WALLETS,
-  ERROR_DELETE_WALLET,
-  ERROR_EDIT_WALLET,
   LOADING_FETCH_WALLETS,
   LOADING_FETCH_DETAIL,
   LOADING_POST_WALLETS,
   LOADING_DELETE_WALLET,
-  LOADING_EDIT_WALLET,
 } from "../actionTypes";
 
 const initialState = {
   wallets: [],
   detailWallet: {},
+  newWallet: {},
+  deleteWallet: "",
   loadingWallets: true,
   loadingDetail: true,
+  loadingNewWallet: true,
+  loadingDeleteWallet: true,
 };
 
 function walletReducer(state = initialState, action) {
@@ -49,8 +46,37 @@ function walletReducer(state = initialState, action) {
         loadingDetail: action.payload,
       };
 
-      default:return state
+    case SUCCESS_POST_WALLETS:
+      return {
+        ...state,
+        newWallet: action.payload,
+      };
+
+    case LOADING_POST_WALLETS:
+      return {
+        ...state,
+        loadingNewWallet: action.payload,
+      };
+
+    case SUCCESS_DELETE_WALLET:
+      const postDeleteWallet = state.wallets.filter((el) => {
+        return el.id !== action.payload;
+      });
+      return {
+        ...state,
+        wallets: postDeleteWallet,
+        deleteNews: "delete wallet success",
+      };
+
+    case LOADING_DELETE_WALLET:
+      return {
+        ...state,
+        loadingDeleteWallet: action.payload,
+      };
+
+    default:
+      return state;
   }
 }
 
-export default walletReducer
+export default walletReducer;
