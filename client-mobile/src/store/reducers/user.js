@@ -1,9 +1,25 @@
-const initialState = {}
+import { USER_LOGIN, USER_LOGOUT } from "../actionTypes";
+const initialState = {
+  authenticated: false,
+};
 
-import {} from '../actionTypes'
+function userReducer(state = initialState, action) {
+  // switch action.type
+  switch (action.type) {
+    case USER_LOGIN:
+      return {
+        ...state,
+        authenticated: action.payload,
+      };
+    case USER_LOGOUT:
+      return {
+        ...state,
+        authenticated: action.payload,
+      };
 
-function userReducer(state=initialState, action){
-    // switch action.type
+    default:
+      return state;
+  }
 }
 
-module.exports = userReducer
+export default userReducer;

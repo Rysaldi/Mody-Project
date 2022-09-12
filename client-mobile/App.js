@@ -1,35 +1,26 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
 import { StatusBar } from "expo-status-bar";
 import { View, StyleSheet, Dimensions } from "react-native";
 import DashboardScreen from "./src/screens/DashboardScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import LogoutScreen from "./src/screens/LogoutScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
-
 import RegisterUser from "./src/screens/RegisterUser";
 import WalletScreen from "./src/screens/WalletScreen";
 import TransactionScreen from "./src/screens/TransactionScreen";
 import ReportScreen from "./src/screens/ReportScreen";
 import HistoryScreen from "./src/screens/HistoryScreen";
-import { Provider } from "react-redux";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from "react";
+import { Provider, useSelector } from "react-redux";
 import store from "./src/store/store";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
-
-  // const stackDashboard = (
-  //   <Stack.Navigator>
-  //     <Stack.Screen
-  //       name="Home"
-  //       component={DashboardScreen}
-  //       options={{ headerShown: false }}
-  //     />
-  //   </Stack.Navigator>
-  // );
 
   const StackWallet = () => (
     <Stack.Navigator>
@@ -58,6 +49,20 @@ export default function App() {
       />
     </Stack.Navigator>
   );
+  const StackLoginRegister = () => (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="SignIn"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={RegisterUser}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -76,6 +81,11 @@ export default function App() {
             name="Settings"
             component={StackSettings}
             options={{ headerShown: false }}
+          />
+          <Tab.Screen
+            name="LoginRegister"
+            component={StackLoginRegister}
+            options={{ headerShown: false, tabBarStyle: { display: "none" } }}
           />
         </Tab.Navigator>
 

@@ -10,7 +10,6 @@ class TransactionsController {
 			let { name, amount, CategoryId, date } = req.body;
 
 			const findTransactions = await Transaction.findByPk(transactionId, { transaction: t });
-
 			const findCategory = await Category.findByPk(findTransactions.CategoryId, { transaction: t });
 			const findWallet = await Wallet.findByPk(findTransactions.WalletId, { transaction: t });
 
@@ -40,7 +39,7 @@ class TransactionsController {
 				);
 			}
 
-			const updateTransaction = await Transaction.update(
+			await Transaction.update(
 				{
 					name,
 					amount: +amount,
@@ -211,30 +210,30 @@ class TransactionsController {
 
 	static async getTransaction(req, res, next) {
 		try {
-			const { WalletId } = req.body;
-			const { search } = req.query;
-			const param = {
-				include: [
-					{
-						model: Category,
-						attributes: { exclude: ["createdAt", "updatedAt"] },
-					},
-				],
-				order: [["id", "DESC"]],
-				where: {
-					WalletId: WalletId,
+		const { WalletId } = req.body;
+		const { search } = req.query;
+		const param = {
+			include: [
+				{
+					model: Category,
+					attributes: { exclude: ["createdAt", "updatedAt"] },
+				},
+			],
+			order: [["id", "DESC"]],
+			where: {
+				WalletId: WalletId,
+			},
+		};
+		if (search) {
+			param.where = {
+				...param.where,
+				name: {
+					[Op.iLike]: `%${search}%`,
 				},
 			};
-			if (search) {
-				param.where = {
-					...param.where,
-					name: {
-						[Op.iLike]: `%${search}%`,
-					},
-				};
-			}
-			const findTransactions = await Transaction.findAll(param);
-			res.status(200).json(findTransactions);
+		}
+		const findTransactions = await Transaction.findAll(param);
+		res.status(200).json(findTransactions);
 		} catch (error) {
 			next(error);
 		}
@@ -242,25 +241,25 @@ class TransactionsController {
 
 	static async getDetailTransaction(req, res, next) {
 		try {
-			const { transactionId } = req.params;
+		const { transactionId } = req.params;
 
-			const transaction = await Transaction.findByPk(transactionId, {
-				include: [
-					{
-						model: User,
-						attributes: { exclude: ["createdAt", "updatedAt", "password"] },
-					},
-					{
-						model: Category,
-						attributes: { exclude: ["createdAt", "updatedAt"] },
-					},
-					{
-						model: Wallet,
-						attributes: { exclude: ["createdAt", "updatedAt"] },
-					},
-				],
-			});
-			res.status(200).json(transaction);
+		const transaction = await Transaction.findByPk(transactionId, {
+			include: [
+				{
+					model: User,
+					attributes: { exclude: ["createdAt", "updatedAt", "password"] },
+				},
+				{
+					model: Category,
+					attributes: { exclude: ["createdAt", "updatedAt"] },
+				},
+				{
+					model: Wallet,
+					attributes: { exclude: ["createdAt", "updatedAt"] },
+				},
+			],
+		});
+		res.status(200).json(transaction);
 		} catch (error) {
 			next(error);
 		}

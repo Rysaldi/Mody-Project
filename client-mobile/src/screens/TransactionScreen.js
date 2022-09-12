@@ -8,10 +8,10 @@ import {
 } from "react-native";
 // import DateTimePicker from "@react-native-community/datetimepicker";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../store/actionCreator/categories";
-export default function TransactionScreen() {
+export default function TransactionScreen({ route }) {
   dispatch = useDispatch();
   const { categories } = useSelector((state) => state.categoryReducer);
   const [formAddTransaction, setFormAddTransaction] = React.useState({
