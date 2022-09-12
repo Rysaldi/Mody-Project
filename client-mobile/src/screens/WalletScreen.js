@@ -12,15 +12,25 @@ import {
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchWallets } from "../store/actionCreator";
+import { fetchWallets, addNewWallet, deleteWallet } from "../store/actionCreator/wallets/index";
 
-export default function WalletScreen({navigation}) {
-  const [addWalletForm, setAddWalletForm] = React.useState({
-    name: "",
-  });
-
-
+export default function WalletScreen({navigation,route}) {
   const dispatch = useDispatch();
+  const [walletName, setWalletName] = React.useState('');
+
+  const submitAddWallet = ()=>{
+    dispatch(addNewWallet({
+      name:walletName
+    }))
+    .then(_=>{
+      setWalletName('')
+    })
+  }
+
+  const submitDeleteWallet = (walletId)=>{
+    dispatch(deleteWallet(walletId))
+  }
+
   const { wallets } = useSelector((state) => {
     return state.walletReducer;
   });
@@ -28,7 +38,6 @@ export default function WalletScreen({navigation}) {
     dispatch(fetchWallets());
   }, []);
 
-  // console.log(wallets);
 
   const renderCategoryList = ({ item }) => {
     return (
@@ -43,6 +52,12 @@ export default function WalletScreen({navigation}) {
           onPress={() => navigation.navigate("TransactionApp", { id: item.id })}>
             <Text style={styles.buttonText}>Transaction</Text>
           </Pressable>
+          {/* sementara  */}
+          <Pressable style={styles.buttonToTransaction} 
+          onPress={() => {submitDeleteWallet(item.id)}}>
+            <Text style={styles.buttonText}>delete</Text>
+          </Pressable>
+          {/* sementara */}
           <Pressable style={styles.buttonToReport}
           onPress={() => navigation.navigate("ReportApp", { id: item.id })}>
             <Text style={styles.buttonText}>See Report</Text>
@@ -52,8 +67,6 @@ export default function WalletScreen({navigation}) {
     );
   };
 
-  // navigation ini perlu??? 
-  // const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -63,14 +76,14 @@ export default function WalletScreen({navigation}) {
         <View style={styles.formAddWallet}>
           <Text style={styles.textAdd}>Name</Text>
           <TextInput
-            value={addWalletForm.name}
-            onChangeText={setAddWalletForm}
+            value={walletName}
+            onChangeText={setWalletName}
             style={styles.input}
           />
         </View>
         <View style={styles.buttonToAdd}>
           <Pressable style={styles.buttonAdd}>
-            <Text style={styles.buttonText}>Add Wallet</Text>
+            <Text style={styles.buttonText} onPress={submitAddWallet}>Add Wallet</Text>
           </Pressable>
         </View>
       </View>
