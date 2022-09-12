@@ -4,6 +4,16 @@ import DropDownPicker from "react-native-dropdown-picker";
 import React, { useState } from "react";
 
 export default function TransactionScreen({ route }) {
+  console.log(route);
+  const [formAddTransaction, setFormAddTransaction] = React.useState({
+    name: "",
+    amount: "",
+    category: "",
+  });
+  const [date, setDate] = React.useState(new Date(Date.now()));
+  const [isPickerShow, setIsPickerShow] = React.useState(false);
+
+export default function TransactionScreen({ route }) {
 	const [formAddTransaction, setFormAddTransaction] = React.useState({
 		name: "",
 		amount: "",
