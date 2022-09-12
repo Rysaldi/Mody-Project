@@ -15,7 +15,6 @@ export default function ReportScreen({route}) {
   }, []);
   // console.log(detailWallet);
 
-
   // return (
   //   <View style={styles.container}>
   //     <View

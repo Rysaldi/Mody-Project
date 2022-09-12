@@ -30,9 +30,9 @@ export default function LoginScreen() {
     });
   };
   const onSubmit = () => {
-    console.log(formAdd);
     dispatch(userLogin(formAdd));
   };
+  
   return (
     <>
       <View style={styles.container}>
