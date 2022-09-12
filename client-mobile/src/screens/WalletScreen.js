@@ -8,25 +8,24 @@ import {
   TextInput,
   Pressable,
   Image,
-  FlatList
+  FlatList,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWallets } from "../store/actionCreator";
 
-export default function WalletScreen({navigation}) {
+export default function WalletScreen({ navigation }) {
   const [addWalletForm, setAddWalletForm] = React.useState({
     name: "",
   });
 
-
-  const dispatch = useDispatch();
-  const { wallets } = useSelector((state) => {
-    return state.walletReducer;
-  });
-  React.useEffect(() => {
-    dispatch(fetchWallets());
-  }, []);
+  // const dispatch = useDispatch();
+  // const { wallets } = useSelector((state) => {
+  //   return state.walletReducer;
+  // });
+  // React.useEffect(() => {
+  //   dispatch(fetchWallets());
+  // }, []);
 
   // console.log(wallets);
 
@@ -39,12 +38,18 @@ export default function WalletScreen({navigation}) {
             style={styles.walletIcon}
           />
           <Text style={styles.walletName}>{item.name}</Text>
-          <Pressable style={styles.buttonToTransaction} 
-          onPress={() => navigation.navigate("TransactionApp", { id: item.id })}>
+          <Pressable
+            style={styles.buttonToTransaction}
+            onPress={() =>
+              navigation.navigate("TransactionApp", { id: item.id })
+            }
+          >
             <Text style={styles.buttonText}>Transaction</Text>
           </Pressable>
-          <Pressable style={styles.buttonToReport}
-          onPress={() => navigation.navigate("ReportApp", { id: item.id })}>
+          <Pressable
+            style={styles.buttonToReport}
+            onPress={() => navigation.navigate("ReportApp", { id: item.id })}
+          >
             <Text style={styles.buttonText}>See Report</Text>
           </Pressable>
         </View>
@@ -52,7 +57,7 @@ export default function WalletScreen({navigation}) {
     );
   };
 
-  // navigation ini perlu??? 
+  // navigation ini perlu???
   // const navigation = useNavigation();
 
   return (
@@ -76,10 +81,10 @@ export default function WalletScreen({navigation}) {
       </View>
       <View style={styles.walletList}>
         <FlatList
-              data={wallets}
-              renderItem={renderCategoryList}
-              keyExtractor={(el) => el.id}
-            />
+          data={wallets}
+          renderItem={renderCategoryList}
+          keyExtractor={(el) => el.id}
+        />
       </View>
     </View>
   );

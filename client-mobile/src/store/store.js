@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
   // transactionReducer,
   userReducer,
   // userWalletReducer,
-  // walletReducer
+  walletReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
