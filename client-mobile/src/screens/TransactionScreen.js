@@ -1,10 +1,20 @@
+
 import { View, Text, Pressable, StyleSheet, Dimensions, TextInput } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DropDownPicker from "react-native-dropdown-picker";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchCategories,
+  fetchCategory,
+} from "../store/actionCreator/categories";
 
 export default function TransactionScreen({ route }) {
+const { categories } = useSelector((state) => state.categoryReducer);
+  const { category } = useSelector((state) => state.categoryReducer);
+dispatch = useDispatch();
   console.log(route);
+
   const [formAddTransaction, setFormAddTransaction] = React.useState({
     name: "",
     amount: "",
@@ -27,6 +37,10 @@ export default function TransactionScreen({ route }) {
 		{ label: "Apple", value: "apple" },
 		{ label: "Banana", value: "banana" },
 	]);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, []);
 
 	const showPicker = () => {
 		setIsPickerShow(true);

@@ -18,6 +18,7 @@ import {
   deleteWallet,
 } from "../store/actionCreator/wallets/index";
 
+
 export default function WalletScreen({ navigation, route }) {
   const dispatch = useDispatch();
   const [walletName, setWalletName] = React.useState("");
