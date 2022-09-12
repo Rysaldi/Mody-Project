@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import Pie from "react-native-pie";
-import { fetchDetail } from "../store/actionCreator";
+import { fetchDetail } from "../store/actionCreator/wallets/index";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 export default function ReportScreen({route}) {
