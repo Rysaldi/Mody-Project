@@ -18,13 +18,12 @@ class ProfileController {
 
 	static async updateProfile(req, res, next) {
 		try {
-			const { firstName, lastName, profilePicture, phone } = req.body;
-
+			const { firstName, lastName, phone } = req.body;
 			const updateProfile = await Profile.update(
 				{
 					firstName,
 					lastName,
-					profilePicture,
+					profilePicture: req.imageUrl,
 					phone,
 				},
 				{
