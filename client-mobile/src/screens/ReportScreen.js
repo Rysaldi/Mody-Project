@@ -98,7 +98,6 @@ export default function ReportScreen({ route }) {
 
     </View>
   );
-  
 }
 
 const styles = StyleSheet.create({
