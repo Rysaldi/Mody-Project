@@ -22,3 +22,6 @@ export const LOADING_EDIT_WALLET = "wallets/loadingEdit";
 
 export const USER_LOGIN = "user/userLogin";
 export const USER_LOGOUT = "user/userLogout";
+
+export const SUCCESS_ADD_USER_TO_WALLET = '/userWallet/successAdd'
+export const LOADING_ADD_USER_TO_WALLET = '/userWallet/LoadingAdd'
