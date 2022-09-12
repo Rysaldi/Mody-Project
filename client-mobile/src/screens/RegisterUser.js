@@ -9,7 +9,7 @@ import {
   Dimensions,
   TextInput,
   Pressable,
-  ImageBackground
+  ImageBackground,
 } from "react-native";
 import { userRegister } from "../store/actionCreator/users/users";
 import { useDispatch } from "react-redux";
@@ -44,50 +44,10 @@ export default function RegisterUser() {
         resizeMode="cover"
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
       >
-
         <StatusBar translucent backgroundColor="transparent" />
-
-
-        //rohmat
         <View style={styles.form}>
           <View style={styles.signUp}>
-            <Text style={styles.textHeader}>Sign Up</Text>
-{*
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => onChange({ email: text })}
-              value={registerForm.email}
-              placeholder="Email"
-              name="email"
-            />
-          </View>
-          <View style={styles.formInputFullName}>
-            <Image
-              source={require("../../assets/icons/account.png")}
-              style={styles.accountIcon}
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => onChange({ username: text })}
-              value={registerForm.username}
-              placeholder="Username"
-            />
-          </View>
-          <View style={styles.formInputPassword}>
-            <Image
-              source={require("../../assets/icons/password1.png")}
-              style={styles.emailIcon}
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={(text) => onChange({ password: text })}
-              value={registerForm.password}
-              placeholder="Password"
-              secureTextEntry={true}
-            /> *}
-
-
-        //default
+            <Text style={styles.fontInter}>Sign Up</Text>
           </View>
           <View style={styles.formInput}>
             <View style={styles.formInputEmail}>
@@ -98,8 +58,8 @@ export default function RegisterUser() {
 
               <TextInput
                 style={styles.input}
-                onChangeText={setEmail}
-                value={email}
+                onChangeText={(text) => onChange({ email: text })}
+                value={registerForm.email}
                 placeholder="Email"
                 name="email"
               />
@@ -111,8 +71,8 @@ export default function RegisterUser() {
               />
               <TextInput
                 style={styles.input}
-                onChangeText={setUsername}
-                value={username}
+                onChangeText={(text) => onChange({ username: text })}
+                value={registerForm.username}
                 placeholder="Username"
               />
             </View>
@@ -123,8 +83,8 @@ export default function RegisterUser() {
               />
               <TextInput
                 style={styles.input}
-                onChangeText={setPassword}
-                value={password}
+                onChangeText={(text) => onChange({ password: text })}
+                value={registerForm.password}
                 placeholder="Password"
                 secureTextEntry={true}
               />
@@ -134,7 +94,7 @@ export default function RegisterUser() {
               <Text style={styles.buttonText}>Submit</Text>
             </Pressable>
             <View style={styles.registerAccount}>
-              <Text>
+              <Text style={styles.textDetail}>
                 Already have an account? click{" "}
               </Text>
               <Pressable>
@@ -155,7 +115,7 @@ export default function RegisterUser() {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1
+    flex: 1,
   },
 
   form: {
@@ -176,7 +136,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     textAlign: "left",
-    marginBottom: 10
+    marginBottom: 10,
   },
   formInputEmail: {
     flexDirection: "row",
@@ -216,7 +176,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     borderBottomWidth: 2,
     borderColor: "#d9d9d9",
-    fontSize: 17
+    fontSize: 17,
   },
 
   buttonTemp: {

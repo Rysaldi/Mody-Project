@@ -12,8 +12,8 @@ import userWalletReducer from "./reducers/userWallet";
 import walletReducer from "./reducers/wallet";
 
 const rootReducer = combineReducers({
-  // categoryReducer,
-  // profileReducer,
+  categoryReducer,
+  profileReducer,
   // transactionReducer,
   userReducer,
   userWalletReducer,

@@ -41,6 +41,7 @@ export const fetchProfile = () => {
 };
 
 export const updateProfile = (payload) => {
+  console.log(payload);
   return (dispatch) => {
     return fetch(baseUrl + "profiles/update", {
       method: "PUT",
@@ -51,6 +52,7 @@ export const updateProfile = (payload) => {
       body: JSON.stringify(payload),
     })
       .then((response) => {
+        // console.log("udah dikirim", response);
         return response.json();
       })
       .then(() => {
