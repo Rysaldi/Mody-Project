@@ -27,7 +27,7 @@ class Controller {
 			}})
 			if(findUser){
 				const newUserWallet = await UserWallet.create({
-					UserId : findUser.id,
+					UserId : +findUser.id,
 					WalletId,
 					role,
 				});

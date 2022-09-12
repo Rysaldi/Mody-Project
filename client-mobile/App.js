@@ -11,6 +11,7 @@ import WalletScreen from "./src/screens/WalletScreen";
 import TransactionScreen from "./src/screens/TransactionScreen";
 import ReportScreen from "./src/screens/ReportScreen";
 import HistoryScreen from "./src/screens/HistoryScreen";
+import AddUserToWallet from "./src/screens/AddUserToWallet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -46,6 +47,7 @@ export default function App() {
       <Stack.Screen name="TransactionApp" component={TransactionScreen} />
       <Stack.Screen name="ReportApp" component={ReportScreen} />
       <Stack.Screen name="HistoryApp" component={HistoryScreen} />
+      <Stack.Screen name="AddToWallet" component={AddUserToWallet} />
     </Stack.Navigator>
   );
 

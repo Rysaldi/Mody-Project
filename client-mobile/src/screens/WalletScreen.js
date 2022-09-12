@@ -73,7 +73,7 @@ export default function WalletScreen({ navigation, route }) {
           </Pressable>
           <Pressable
             style={styles.buttonToReport}
-            onPress={() => navigation.navigate("ReportApp", { id: item.id })}
+            onPress={() => navigation.navigate("AddToWallet", { id: item.id })}
           >
             <Image
               style={styles.imageIcon}

@@ -9,6 +9,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const baseUrl = "https://mody-server.herokuapp.com/";
+// const baseUrl = "http://localhost:3000/";
 
 
 
