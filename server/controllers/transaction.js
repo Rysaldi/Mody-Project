@@ -10,7 +10,6 @@ class TransactionsController {
 			let { name, amount, CategoryId, date } = req.body;
 
 			const findTransactions = await Transaction.findByPk(transactionId, { transaction: t });
-
 			const findCategory = await Category.findByPk(findTransactions.CategoryId, { transaction: t });
 			const findWallet = await Wallet.findByPk(findTransactions.WalletId, { transaction: t });
 
@@ -40,7 +39,7 @@ class TransactionsController {
 				);
 			}
 
-			const updateTransaction = await Transaction.update(
+			await Transaction.update(
 				{
 					name,
 					amount: +amount,
@@ -60,7 +59,7 @@ class TransactionsController {
 			const updatedWallet = await Wallet.findByPk(findTransactions.WalletId, { transaction: t });
 
 			const updatedCategory = await Category.findByPk(CategoryId, { transaction: t });
-			console.log(updatedCategory.type);
+
 			if (updatedCategory.type === "Income") {
 				await Wallet.update(
 					{

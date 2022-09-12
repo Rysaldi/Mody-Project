@@ -15,8 +15,6 @@ function errorHandler(error, req, res, next) {
 		res.status(400).json({ message: "Invalid id" });
 	} else if (error.name === "invalid email/password") {
 		res.status(401).json({ message: "Invalid email/password" });
-	} else if (error.name === "NoToken") {
-		res.status(401).json({ message: "Please login first" });
 	} else if (error.name === "Unauthorized" || error.name === "JsonWebTokenError") {
 		res.status(401).json({ message: "Invalid token" });
 	} else if (error.name === "Forbidden") {
@@ -25,8 +23,6 @@ function errorHandler(error, req, res, next) {
 		res.status(404).json({ message: "Data not found" });
 	} else if (error.name === "TransactionsNotFound") {
 		res.status(404).json({ message: "Transaction cannot be found" });
-	} else if (error.name === "CategoryNotFound") {
-		res.status(404).json({ message: "Category cannot be found" });
 	} else if (error.name === "WalletNotFound") {
 		res.status(404).json({ message: "Wallet cannot be found" });
 	} else if (error.name === "SequelizeForeignKeyConstraintError") {
