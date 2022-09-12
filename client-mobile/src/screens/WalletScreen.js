@@ -58,7 +58,7 @@ export default function WalletScreen({ navigation, route }) {
           >
             <Image
               style={styles.imageIcon}
-              source={require("../../assets/icons/Transaction_Final.png")}
+              source={require("../../assets/icons/TrancsactionGreen.png")}
             />
           </Pressable>
 
@@ -68,7 +68,7 @@ export default function WalletScreen({ navigation, route }) {
           >
             <Image
               style={styles.imageIcon}
-              source={require("../../assets/icons/Edit.png")}
+              source={require("../../assets/icons/editGreen.png")}
             />
           </Pressable>
           <Pressable
@@ -77,7 +77,7 @@ export default function WalletScreen({ navigation, route }) {
           >
             <Image
               style={styles.imageIcon}
-              source={require("../../assets/icons/add_contributor.png")}
+              source={require("../../assets/icons/addContributorYellow.png")}
             />
           </Pressable>
           <Pressable
@@ -88,7 +88,7 @@ export default function WalletScreen({ navigation, route }) {
           >
             <Image
               style={styles.imageIcon}
-              source={require("../../assets/icons/trash.png")}
+              source={require("../../assets/icons/red_trash.png")}
             />
           </Pressable>
         </View>
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     backgroundColor: "white",
     paddingVertical: 20,
-    borderRadius: 4,
+    borderRadius: 5,
     elevation: 5,
     flexDirection: "column",
     paddingLeft: 15,
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   imageIcon: {
-    height: Dimensions.get("window").height * 0.05,
-    width: Dimensions.get("window").width * 0.08,
+    height: Dimensions.get("window").height * 0.035,
+    width: Dimensions.get("window").width * 0.05,
   },
 });
