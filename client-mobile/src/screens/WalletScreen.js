@@ -8,10 +8,15 @@ import {
   Pressable,
   Image,
 } from "react-native";
-export default function WalletScreen() {
+export default function WalletScreen({ navigation }) {
   const [addWalletForm, setAddWalletForm] = React.useState({
     name: "",
   });
+
+  const handleToTransaction = () => {
+    navigation.navigate("TransactionApp");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.formAdd}>
@@ -38,7 +43,10 @@ export default function WalletScreen() {
             style={styles.walletIcon}
           />
           <Text style={styles.walletName}>Wallet 1</Text>
-          <Pressable style={styles.buttonToTransaction}>
+          <Pressable
+            style={styles.buttonToTransaction}
+            onPress={handleToTransaction}
+          >
             <Text style={styles.buttonText}>Transaction</Text>
           </Pressable>
           <Pressable style={styles.buttonToReport}>

@@ -8,8 +8,12 @@ import {
 } from "react-native";
 // import DateTimePicker from "@react-native-community/datetimepicker";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategories } from "../store/actionCreator/categories";
 export default function TransactionScreen() {
+  dispatch = useDispatch();
+  const { categories } = useSelector((state) => state.categoryReducer);
   const [formAddTransaction, setFormAddTransaction] = React.useState({
     name: "",
     amount: "",
@@ -33,6 +37,10 @@ export default function TransactionScreen() {
       return;
     }
   };
+  useEffect(() => {
+    dispatch(fetchCategories());
+    console.log(categories);
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.formAddTransaction}>
