@@ -28,8 +28,6 @@ export default function WalletScreen({navigation}) {
     dispatch(fetchWallets());
   }, []);
 
-  // console.log(wallets);
-
   const renderCategoryList = ({ item }) => {
     return (
       <>
@@ -51,9 +49,6 @@ export default function WalletScreen({navigation}) {
       </>
     );
   };
-
-  // navigation ini perlu??? 
-  // const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -92,22 +87,23 @@ const styles = StyleSheet.create({
   formAdd: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.29,
-    backgroundColor: "#d9d9d9",
+    backgroundColor: "#2F6FFF",
     paddingTop: 35,
     paddingLeft: 25,
     paddingRight: 25,
+    borderBottomRightRadius:40
   },
 
   headerText: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 25,
-    color: "#000",
+    color: "white",
   },
   textAdd: {
     fontWeight: "bold",
     fontSize: 18,
-    color: "#000",
+    color: "white",
   },
   formAddWallet: {
     flexDirection: "row",
@@ -117,10 +113,10 @@ const styles = StyleSheet.create({
   input: {
     height: Dimensions.get("window").height * 0.03,
     width: Dimensions.get("window").width * 0.55,
-
     paddingRight: 10,
     borderBottomWidth: 2,
-    borderColor: "#000",
+    borderColor: "white",
+    color:"white"
   },
   buttonToAdd: {
     alignItems: "center",
@@ -132,11 +128,12 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height * 0.045,
     width: Dimensions.get("window").width * 0.3,
     borderRadius: 20,
-    backgroundColor: "#2F6FFF",
+    backgroundColor: "white",
     marginTop: 15,
+    elevation: 5
   },
   buttonText: {
-    color: "white",
+    color: "#1a1a1a",
   },
 
   walletList: {
