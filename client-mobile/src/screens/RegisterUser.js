@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -15,12 +15,21 @@ import { useDispatch } from "react-redux";
 export default function RegisterUser() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
+  const [registerForm, setRegisterForm] = React.useState({
+    email: "",
+    username: "",
+    password: "",
+  });
+  const onChange = (e) => {
+    const keys = Object.keys(e)[0];
+    const values = Object.values(e)[0];
+    setRegisterForm({
+      ...registerForm,
+      [keys]: values,
+    });
+  };
   const onSubmit = () => {
-    dispatch(userRegister({ email, username, password }))
+    dispatch(userRegister(registerForm))
       .then(() => {
         navigation.navigate("SignIn");
       })
@@ -44,8 +53,8 @@ export default function RegisterUser() {
 
             <TextInput
               style={styles.input}
-              onChangeText={setEmail}
-              value={email}
+              onChangeText={(text) => onChange({ email: text })}
+              value={registerForm.email}
               placeholder="Email"
               name="email"
             />
@@ -57,8 +66,8 @@ export default function RegisterUser() {
             />
             <TextInput
               style={styles.input}
-              onChangeText={setUsername}
-              value={username}
+              onChangeText={(text) => onChange({ username: text })}
+              value={registerForm.username}
               placeholder="Username"
             />
           </View>
@@ -69,8 +78,8 @@ export default function RegisterUser() {
             />
             <TextInput
               style={styles.input}
-              onChangeText={setPassword}
-              value={password}
+              onChangeText={(text) => onChange({ password: text })}
+              value={registerForm.password}
               placeholder="Password"
               secureTextEntry={true}
             />
