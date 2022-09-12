@@ -63,7 +63,7 @@ export default function WalletScreen({ navigation, route }) {
           </Pressable>
 
           <Pressable
-            style={styles.buttonToReport}
+            style={styles.buttonToTransaction}
             onPress={() => navigation.navigate("ReportApp", { id: item.id })}
           >
             <Image
@@ -206,7 +206,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     paddingLeft: 15,
     paddingRight: 15,
-
+    width: Dimensions.get("window").width * 0.88,
+    height: Dimensions.get("window").height * 0.13,
     alignItems: "center",
   },
   walletIcon: {
@@ -224,14 +225,12 @@ const styles = StyleSheet.create({
   buttonToTransaction: {
     justifyContent: "center",
     alignItems: "center",
-    height: Dimensions.get("window").height * 0.04,
-    width: Dimensions.get("window").width * 0.15,
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   buttonToReport: {
     justifyContent: "center",
     alignItems: "center",
-    height: Dimensions.get("window").height * 0.04,
-    width: Dimensions.get("window").width * 0.15,
   },
   features: {
     flexDirection: "row",
@@ -243,10 +242,9 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.8,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 15,
   },
   imageIcon: {
     height: Dimensions.get("window").height * 0.035,
-    width: Dimensions.get("window").width * 0.05,
+    width: Dimensions.get("window").width * 0.055,
   },
 });
