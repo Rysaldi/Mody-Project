@@ -11,7 +11,8 @@ import {
 
 
 import React, { useState } from "react";
-export default function TransactionScreen({route}) {
+export default function TransactionScreen({ route }) {
+  console.log(route);
   const [formAddTransaction, setFormAddTransaction] = React.useState({
     name: "",
     amount: "",
