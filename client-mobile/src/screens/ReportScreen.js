@@ -1,5 +1,4 @@
 import { StyleSheet, View, Text, FlatList, Dimensions, ScrollView } from "react-native";
-import { fetchDetail } from "../store/actionCreator/wallets/index";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 export default function ReportScreen({ route }) {

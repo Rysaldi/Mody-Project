@@ -1,22 +1,27 @@
 import {
   SUCCESS_FETCH_WALLETS,
   SUCCESS_FETCH_DETAIL,
-  SUCCESS_POST_WALLETS,
   SUCCESS_DELETE_WALLET,
-  SUCCESS_EDIT_WALLET,
-  ERROR_FETCH_WALLETS,
-  ERROR_FETCH_DETAIL,
-  ERROR_POST_WALLETS,
-  ERROR_DELETE_WALLET,
-  ERROR_EDIT_WALLET,
   LOADING_FETCH_WALLETS,
   LOADING_FETCH_DETAIL,
-  LOADING_POST_WALLETS,
-  LOADING_DELETE_WALLET,
-  LOADING_EDIT_WALLET,
+
 } from "../../actionTypes";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const baseUrl = "https://mody-server.herokuapp.com/";
+// const baseUrl = "http://localhost:3000/";
+
+
+
+//-----------------------getAccessToken--------------------------
+const getAccessToken = async () => {
+  try {
+    const accessToken = await AsyncStorage.getItem("access_token");
+    return accessToken
+
+  } catch (error) {}
+};
+//-----------------------getAccessToken--------------------------
 
 //-----------------------FETCHALLWALLETS--------------------------
 export const successFetchAllWallet = (payload) => {
@@ -32,12 +37,13 @@ export const loadingFetchAllWallet = (payload) => {
   };
 };
 export const fetchWallets = () => {
-  return (dispatch) => {
+  return async (dispatch) => {
+    const accessToken = await getAccessToken()
     return fetch(`${baseUrl}wallets`, {
       method: "GET",
       headers: {
         access_token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYyOTA4MTI2fQ.nQmg1YVbpI_lbJ7-wijlnRyL2tijPp2VRFGFgWQ6m8c",
+          accessToken
       },
     })
       .then((result) => {
@@ -48,6 +54,9 @@ export const fetchWallets = () => {
       })
       .then((data) => {
         dispatch(successFetchAllWallet(data));
+      })
+      .catch(err=>{
+        throw err
       })
       .finally(() => {
         dispatch(loadingFetchAllWallet(false));
@@ -71,12 +80,13 @@ export const loadingFetchDetailWallet = (payload) => {
   };
 };
 export const fetchDetail = (id) => {
-  return (dispatch) => {
+  return async (dispatch) => {
+    const accessToken = await getAccessToken()
     return fetch(`${baseUrl}wallets/${id}`, {
       method: "GET",
       headers: {
         access_token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYyOTA4MTI2fQ.nQmg1YVbpI_lbJ7-wijlnRyL2tijPp2VRFGFgWQ6m8c",
+          accessToken,
       },
     })
       .then((result) => {
@@ -97,13 +107,14 @@ export const fetchDetail = (id) => {
 
 //-----------------------POSTWALLET---------------------------------------
 export const addNewWallet = (payload) => {
-  return (dispatch) => {
+  return async (dispatch) => {
+    const accessToken = await getAccessToken()
     return fetch(`${baseUrl}wallets/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         access_token:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYyOTA4MTI2fQ.nQmg1YVbpI_lbJ7-wijlnRyL2tijPp2VRFGFgWQ6m8c",
+          accessToken,
       },
       body: JSON.stringify(payload),
     }).then((result) => {
@@ -136,12 +147,13 @@ export const successDeleteWallet = (payload) => {
   };
 
 export const deleteWallet = (walletId) => {
-    return (dispatch) => {
+    return async (dispatch) => {
+      const accessToken = await getAccessToken()
       fetch(`${baseUrl}wallets/${walletId}`, {
         method: "delete",
         headers: {
           "Content-Type": "application/json",
-          access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYyOTA4MTI2fQ.nQmg1YVbpI_lbJ7-wijlnRyL2tijPp2VRFGFgWQ6m8c"
+          access_token: accessToken
         },
       })
         .then((result) => {

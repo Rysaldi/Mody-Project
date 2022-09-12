@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
   // profileReducer,
   // transactionReducer,
   userReducer,
-  // userWalletReducer,
+  userWalletReducer,
   walletReducer,
 });
 
