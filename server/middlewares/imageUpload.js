@@ -7,7 +7,7 @@ const imageUpload = async (req, res, next) => {
       const axios = require("axios");
       const privateKey = process.env.imagekit_api_key;
       const form = new FormData();
-  
+
       if (!req.file) {
         next();
       } else {
@@ -31,7 +31,7 @@ const imageUpload = async (req, res, next) => {
         },
       })
         .then((response) => {
-          req.imageUrl = response.data.url;
+          req.profilePicture = response.data.url;
           next();
         })
         .catch((err) => {

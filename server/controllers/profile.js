@@ -23,7 +23,7 @@ class ProfileController {
 				{
 					firstName,
 					lastName,
-					profilePicture: req.imageUrl,
+					profilePicture: req.profilePicture,
 					phone,
 				},
 				{
