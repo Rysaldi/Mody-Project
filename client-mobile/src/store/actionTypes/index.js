@@ -25,3 +25,7 @@ export const LOADING_EDIT_WALLET = "wallets/loadingEdit";
 
 export const USER_LOGIN = "user/userLogin";
 export const USER_LOGOUT = "user/userLogout";
+
+export const SUCCESS_FETCH_PROFILE = "profile/successFetch";
+export const LOADING_FETCH_PROFILE = "profile/loadingFetch";
+export const SUCCESS_UPDATE_PROFILE = "profile/successUpdate";

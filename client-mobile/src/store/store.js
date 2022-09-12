@@ -13,7 +13,7 @@ import walletReducer from "./reducers/wallet";
 
 const rootReducer = combineReducers({
   categoryReducer,
-  // profileReducer,
+  profileReducer,
   // transactionReducer,
   // userReducer,
   // userWalletReducer,
