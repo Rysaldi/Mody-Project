@@ -72,8 +72,8 @@ export default function WalletScreen({ navigation, route }) {
             />
           </Pressable>
           <Pressable
-            style={styles.buttonToTransaction}
-            onPress={() => navigation.navigate("ReportApp", { id: item.id })}
+            style={styles.buttonToReport}
+            onPress={() => navigation.navigate("AddToWallet", { id: item.id })}
           >
             <Image
               style={styles.imageIcon}
@@ -141,7 +141,8 @@ const styles = StyleSheet.create({
     paddingTop: 35,
     paddingLeft: 25,
     paddingRight: 25,
-    borderBottomRightRadius: 50,
+    borderBottomRightRadius:40
+
   },
 
   headerText: {
@@ -163,7 +164,6 @@ const styles = StyleSheet.create({
   input: {
     height: Dimensions.get("window").height * 0.03,
     width: Dimensions.get("window").width * 0.55,
-
     paddingRight: 10,
     borderBottomWidth: 2,
     borderColor: "white",
@@ -181,12 +181,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "white",
     marginTop: 15,
+    elevation: 5
   },
   buttonText: {
-    color: "#2F6FFF",
+
+    color: "#1a1a1a",
     fontSize: 14,
     textAlign: "center",
     fontWeight: "bold",
+
   },
 
   walletList: {
