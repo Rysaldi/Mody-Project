@@ -19,6 +19,7 @@ const authentication = async (request, response, next) => {
     request.user = {
       id: currentUser.id,
     };
+    
     next();
   } catch (error) {
     next(error);
