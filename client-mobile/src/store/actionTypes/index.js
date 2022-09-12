@@ -1,8 +1,7 @@
 export const SUCCESS_FETCH_CATEGORIES = "categories/successFetchAll";
 export const LOADING_FETCH_CATEGORIES = "categories/loadingFetchAll";
-export const SUCCESS_FETCH_CATEGORY = "categories/successFetchOne";
-export const LOADING_FETCH_CATEGORY = "categories/loadingFetchOne";
-// export const FETCH_SESUATU_SUKSES = 'contoh'
+// export const SUCCESS_FETCH_CATEGORY = "categories/successFetchOne";
+// export const LOADING_FETCH_CATEGORY = "categories/loadingFetchOne";
 
 export const SUCCESS_FETCH_WALLETS = "wallets/successFetchAll";
 export const ERROR_FETCH_WALLETS = "wallets/errorFetchAll";

@@ -1,8 +1,8 @@
 import {
   LOADING_FETCH_CATEGORIES,
   SUCCESS_FETCH_CATEGORIES,
-  SUCCESS_FETCH_CATEGORY,
-  LOADING_FETCH_CATEGORY,
+  // SUCCESS_FETCH_CATEGORY,
+  // LOADING_FETCH_CATEGORY,
 } from "../../actionTypes";
 const baseUrl = "https://mody-server.herokuapp.com/";
 
@@ -20,19 +20,19 @@ export const setLoading = (loading) => {
   };
 };
 
-export const setCategory = (category) => {
-  return {
-    type: SUCCESS_FETCH_CATEGORY,
-    payload: category,
-  };
-};
+// export const setCategory = (category) => {
+//   return {
+//     type: SUCCESS_FETCH_CATEGORY,
+//     payload: category,
+//   };
+// };
 
-export const setLoadingCategory = (loading) => {
-  return {
-    type: LOADING_FETCH_CATEGORY,
-    payload: loading,
-  };
-};
+// export const setLoadingCategory = (loading) => {
+//   return {
+//     type: LOADING_FETCH_CATEGORY,
+//     payload: loading,
+//   };
+// };
 
 // akses token dari server
 const access_token =
@@ -49,6 +49,7 @@ export const fetchCategories = () => {
         return response.json();
       })
       .then((categories) => {
+        // console.log(categories);
         dispatch(setCategories(categories));
       })
       .finally(() => {
@@ -57,21 +58,23 @@ export const fetchCategories = () => {
   };
 };
 
-export const fetchCategory = (id) => {
-  return (dispatch) => {
-    return fetch(baseUrl + `categories/${id}`, {
-      headers: {
-        access_token,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((category) => {
-        dispatch(setCategory(category));
-      })
-      .finally(() => {
-        dispatch(setLoadingCategory(false));
-      });
-  };
-};
+// ga kepake
+// export const fetchCategory = (id) => {
+//   console.log(id);
+//   return (dispatch) => {
+//     return fetch(baseUrl + `categories/${id}`, {
+//       headers: {
+//         access_token,
+//       },
+//     })
+//       .then((response) => {
+//         return response.json();
+//       })
+//       .then((category) => {
+//         dispatch(setCategory(category));
+//       })
+//       .finally(() => {
+//         dispatch(setLoadingCategory(false));
+//       });
+//   };
+// };
