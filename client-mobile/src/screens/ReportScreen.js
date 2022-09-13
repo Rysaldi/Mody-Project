@@ -18,6 +18,7 @@ export default function ReportScreen({ route }) {
   const { detailWallet } = useSelector((state) => {
     return state.walletReducer;
   });
+  const [loading, setLoading] = useState(true);
 
   const setTotalIncome = (transactions) => {
     if (!transactions || transactions.length === 0) {
@@ -82,16 +83,20 @@ export default function ReportScreen({ route }) {
     );
   };
 
-  const wantedGraphicData = [
-    {
-      x: " ",
-      y: percentageIncome(detailWallet.Transactions),
-    },
-    {
-      x: " ",
-      y: percentageExpenses(detailWallet.Transactions),
-    },
-  ];
+  const wantedGraphicData = (transaction) => {
+    return [
+      {
+        x: " ",
+        y: percentageExpenses(transaction),
+      },
+      {
+        x: " ",
+        y: percentageIncome(transaction),
+      },
+    ];
+  };
+
+  console.log(wantedGraphicData());
   const graphicColor = [
     "#FFE9A0",
     "#367E18",
@@ -113,114 +118,134 @@ export default function ReportScreen({ route }) {
     "#EAE509",
   ];
   const defaultGraphicData = [{ x: "Empty", y: 100 }];
-  const [graphicData, setGraphicData] = useState(defaultGraphicData);
-  useEffect(() => {
-    setGraphicData(wantedGraphicData); // Setting the data that we want to display
-    dispatch(fetchDetail(id));
-  }, []);
-  const categoryName = detailWallet.Transactions.map((el) => {
-    return { name: el.Category.name, amount: el.amount };
-  });
 
-  const wantedGraphicDataByCategory = categoryName.map((el) => {
-    return {
-      x: el.name,
-      y: (el.amount / setTotalIncome(detailWallet.Transactions)) * 100,
-    };
-  });
+  useEffect(() => {
+    dispatch(fetchDetail(id)).finally(() => {
+      setLoading(false);
+    });
+  }, []);
+
+  const setCategoryName = (transaction) => {
+    const categoryName = transaction.map((el) => {
+      return { name: el.Category.name, amount: el.amount };
+    });
+    return categoryName;
+  };
+
+  const wantedGraphicDataByCategory = (categoryName) => {
+    const wantedGraphicDataByCategories = categoryName.map((el) => {
+      return {
+        x: el.name,
+        y: (el.amount / setTotalIncome(detailWallet.Transactions)) * 100,
+      };
+    });
+    return wantedGraphicDataByCategories;
+  };
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.pieChart}>
-          <Text style={styles.walletName}>{detailWallet.name}</Text>
-          <VictoryPie
-            colorScale={["#cc5656", "#7eb764"]}
-            animate={{ easing: "exp", duration: 2000 }}
-            data={graphicData}
-            innerRadius={20}
-            width={350}
-            height={250}
-            style={{
-              data: {
-                stroke: "#fff",
-                strokeWidth: 2,
-              },
-            }}
-          />
-          <View style={styles.total}>
-            <View style={styles.income}>
-              <Text style={styles.incomeText}>Income</Text>
-              <Text style={styles.amountIncome}>
-                Rp. {setTotalIncome(detailWallet.Transactions)}
-              </Text>
-            </View>
-            <View style={styles.outcome}>
-              <Text style={styles.incomeText}>Expenses</Text>
-              <Text style={styles.amountOutcome}>
-                Rp. {setTotalExpense(detailWallet.Transactions)}
-              </Text>
-            </View>
-          </View>
-        </View>
+      {loading && <Text>Loading gesss</Text>}
+      {!loading && (
+        <ScrollView style={styles.scrollView}>
+          {detailWallet.Transactions.length === 0 ? (
+            <Text>Please Create Transaction</Text>
+          ) : (
+            <>
+              <View style={styles.pieChart}>
+                <Text style={styles.walletName}>{detailWallet.name}</Text>
+                <VictoryPie
+                  colorScale={["#cc5656", "#7eb764"]}
+                  animate={{ easing: "exp", duration: 2000 }}
+                  data={wantedGraphicData(detailWallet.Transactions)}
+                  innerRadius={20}
+                  width={350}
+                  height={250}
+                  style={{
+                    data: {
+                      stroke: "#fff",
+                      strokeWidth: 2,
+                    },
+                  }}
+                />
 
-        <View style={styles.pieChartbyCategory}>
-          <VictoryPie
-            colorScale={[
-              "#FFE9A0",
-              "#367E18",
-              "#F57328",
-              "#CC3636",
-              "#CDF0EA",
-              "#25316D",
-              "#5F6F94",
-              "#97D2EC",
-              "#FEF5AC",
-              "#FDEEDC",
-              "#FFD8A9",
-              "#F1A661",
-              "#E38B29",
-              "#76BA99",
-              "#876445",
-              "#5BB318",
-              "#7DCE13",
-              "#EAE509",
-            ]}
-            animate={{ easing: "exp", duration: 5000 }}
-            data={wantedGraphicDataByCategory}
-            // innerRadius={20}
-            labelRadius={({ innerRadius }) => innerRadius + 95}
-            padAngle={({ datum }) => datum.x}
-            width={450}
-            height={250}
-            style={{
-              data: {
-                stroke: "#fff",
-                strokeWidth: 2,
-              },
-            }}
-          />
-        </View>
-        <View style={styles.walletList}>
-          <View style={styles.collaborator}>
-            <Text>Collaborator</Text>
-            <FlatList
-              data={detailWallet.UserWallets}
-              renderItem={renderUserWallets}
-              keyExtractor={(el) => el.id}
-            />
-          </View>
+                <View style={styles.total}>
+                  <View style={styles.income}>
+                    <Text style={styles.incomeText}>Income</Text>
+                    <Text style={styles.amountIncome}>
+                      Rp. {setTotalIncome(detailWallet.Transactions)}
+                    </Text>
+                  </View>
+                  <View style={styles.outcome}>
+                    <Text style={styles.incomeText}>Expenses</Text>
+                    <Text style={styles.amountOutcome}>
+                      Rp. {setTotalExpense(detailWallet.Transactions)}
+                    </Text>
+                  </View>
+                </View>
+              </View>
 
-          <View style={styles.transaction}>
-            <Text>Transaction Detail</Text>
-            <FlatList
-              data={detailWallet.Transactions}
-              renderItem={renderItem}
-              keyExtractor={(el) => el.id}
-            />
+              <View style={styles.pieChartbyCategory}>
+                <VictoryPie
+                  colorScale={[
+                    "#FFE9A0",
+                    "#367E18",
+                    "#F57328",
+                    "#CC3636",
+                    "#CDF0EA",
+                    "#25316D",
+                    "#5F6F94",
+                    "#97D2EC",
+                    "#FEF5AC",
+                    "#FDEEDC",
+                    "#FFD8A9",
+                    "#F1A661",
+                    "#E38B29",
+                    "#76BA99",
+                    "#876445",
+                    "#5BB318",
+                    "#7DCE13",
+                    "#EAE509",
+                  ]}
+                  animate={{ easing: "exp", duration: 2000 }}
+                  data={wantedGraphicDataByCategory(
+                    setCategoryName(detailWallet.Transactions)
+                  )}
+                  innerRadius={20}
+                  labelRadius={({ innerRadius }) => innerRadius + 95}
+                  padAngle={({ datum }) => datum.x}
+                  width={450}
+                  height={250}
+                  style={{
+                    data: {
+                      stroke: "#fff",
+                      strokeWidth: 2,
+                    },
+                  }}
+                />
+              </View>
+            </>
+          )}
+          <View style={styles.walletList}>
+            <View style={styles.collaborator}>
+              <Text>Collaborator</Text>
+              <FlatList
+                data={detailWallet.UserWallets}
+                renderItem={renderUserWallets}
+                keyExtractor={(el) => el.id}
+              />
+            </View>
+
+            <View style={styles.transaction}>
+              <Text>Transaction Detail</Text>
+              <FlatList
+                data={detailWallet.Transactions}
+                renderItem={renderItem}
+                keyExtractor={(el) => el.id}
+              />
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      )}
     </View>
   );
 }

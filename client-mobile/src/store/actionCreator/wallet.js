@@ -88,10 +88,8 @@ export const fetchDetail = (id) => {
       })
       .then((data) => {
         dispatch(successFetchDetailWallet(data));
+        return data
       })
-      .finally(() => {
-        dispatch(loadingFetchDetailWallet(false));
-      });
   };
 };
 
