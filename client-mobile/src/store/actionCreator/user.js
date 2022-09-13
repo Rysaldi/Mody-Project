@@ -1,7 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { USER_LOGIN, USER_LOGOUT, USER_HISTORY, LOADING_SET } from "../actionTypes";
 
-const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
+const baseUrl = "https://e526-180-254-67-19.ap.ngrok.io/";
+// const baseUrl = "https://mody-server.herokuapp.com/";
 
 export const userLoginDispatch = (payload) => {
 	return {

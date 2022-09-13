@@ -19,6 +19,7 @@ class ProfileController {
 	static async updateProfile(req, res, next) {
 		try {
 			const { firstName, lastName, phone } = req.body;
+			console.log(req.body)
 			const updateProfile = await Profile.update(
 				{
 					firstName,

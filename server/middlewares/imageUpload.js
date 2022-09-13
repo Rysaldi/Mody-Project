@@ -7,15 +7,12 @@ const imageUpload = async (req, res, next) => {
       const axios = require("axios");
       const privateKey = process.env.imagekit_api_key;
       const form = new FormData();
-
-      console.log(req.file);
-      
       if (!req.file) {
         next();
       } else {
         let fileType = req.file.mimetype.split("/");
   
-        if (fileType[0] !== "image") {
+        if (fileType[0] !== "profilepicture") {
           throw { name: "File needs to be an image" };
         }
       }
