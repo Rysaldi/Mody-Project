@@ -1,9 +1,16 @@
 const initialState = {
   profile: {},
-  loading: true,
+  // updateProfile: {},
+  loadingFetchProfile: true,
+  loadingUpdateProfile: true,
 };
 
-import { LOADING_FETCH_PROFILE, SUCCESS_FETCH_PROFILE } from "../actionTypes";
+import {
+  LOADING_FETCH_PROFILE,
+  SUCCESS_FETCH_PROFILE,
+  // SUCCESS_UPDATE_PROFILE,
+  LOADING_UPDATE_PROFILE,
+} from "../actionTypes";
 
 function profileReducer(state = initialState, action) {
   // switch action.type
@@ -17,7 +24,17 @@ function profileReducer(state = initialState, action) {
     case LOADING_FETCH_PROFILE:
       return {
         ...state,
-        loading: action.payload,
+        loadingFetchProfile: action.payload,
+      };
+    // case SUCCESS_UPDATE_PROFILE:
+    //   return {
+    //     ...state,
+    //     updateProfile: action.payload,
+    //   };
+    case LOADING_UPDATE_PROFILE:
+      return {
+        ...state,
+        loadingUpdateProfile: action.payload,
       };
 
     default:

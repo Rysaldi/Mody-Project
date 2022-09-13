@@ -14,9 +14,9 @@ export default function LogoutScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const onTapLogout = () => {
-    dispatch(userLogout());
+    dispatch(userLogout()).finally(() => dispatch(loadingUserLogout(false)));
   };
-  
+
   return (
     <>
       <View style={styles.container}>

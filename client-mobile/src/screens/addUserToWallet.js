@@ -36,10 +36,12 @@ export default function AddUserToWallet({ navigation, route }) {
         role: value,
         UserId: 2,
       })
-    ).then((_) => {
-      setAddToWalletEmail("");
-      navigation.navigate("WalletApp");
-    });
+    )
+      .then((_) => {
+        setAddToWalletEmail("");
+        navigation.navigate("WalletApp");
+      })
+      .finally(() => dispatch(setLoadingAddUserToWallet(false)));
   };
 
   return (

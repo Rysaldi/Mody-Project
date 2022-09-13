@@ -5,13 +5,14 @@ import {
   FlatList,
   Dimensions,
   ScrollView,
+  Image,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { fetchDetail } from "../store/actionCreator/wallet";
-
+import LoadingScreen from "../components/LoadingScreen";
 import { VictoryPie } from "victory-native";
-import { fetchCategories } from "../store/actionCreator/category";
+
 export default function ReportScreen({ route }) {
   const { id } = route.params;
   const dispatch = useDispatch();
@@ -49,10 +50,43 @@ export default function ReportScreen({ route }) {
   const renderItem = ({ item }) => {
     return (
       <View style={styles.walletCard}>
-        <Text style={styles.item}>
-          {item.name} - Rp. {item.amount} - {item.Category.type} -{" "}
-          {item.Category.name}
-        </Text>
+        <View style={styles.cardDetail}>
+          <Text style={styles.incomeName}>Type</Text>
+          {/* <Text style={styles.semiColon}>:</Text> */}
+          {/* <Text style={styles.incomeDetails}>{item.Category.type}</Text> */}
+          <>
+            {item.Category.type === "Income" ? (
+              <Text style={styles.incomeDetailsIncome}>
+                {item.Category.type}
+              </Text>
+            ) : (
+              <Text style={styles.incomeDetailsExpense}>
+                {item.Category.type}
+              </Text>
+            )}
+          </>
+        </View>
+        <View style={styles.cardDetail}>
+          <Text style={styles.incomeName}>Name</Text>
+          {/* <Text style={styles.semiColon}>:</Text> */}
+          <Text style={styles.incomeDetails}>{item.name}</Text>
+        </View>
+        <View style={styles.cardDetail}>
+          <Text style={styles.incomeName}>Amount</Text>
+          {/* <Text style={styles.semiColon}>:</Text> */}
+          <Text style={styles.incomeDetails}>{item.amount}</Text>
+        </View>
+        <View style={styles.cardDetail}>
+          <Text style={styles.incomeName}>Category</Text>
+          {/* <Text style={styles.semiColon}>:</Text> */}
+          <Text style={styles.incomeDetails}>{item.Category.name}</Text>
+        </View>
+        <View style={styles.trashPosition}>
+          <Image
+            source={require("../../assets/icons/red_trash.png")}
+            style={styles.buttonDelete}
+          />
+        </View>
       </View>
     );
   };
@@ -60,9 +94,13 @@ export default function ReportScreen({ route }) {
   const renderUserWallets = ({ item }) => {
     return (
       <View style={styles.walletCard}>
-        <Text style={styles.item}>{item.User.email} - </Text>
-        <Text style={styles.item}>{item.User.username} - </Text>
-        <Text style={styles.item}>{item.role} - </Text>
+        <View style={styles.cardDetail}>
+          <Text style={styles.incomeName}>Joined</Text>
+          {/* <Text style={styles.semiColon}>:</Text> */}
+          <Text style={styles.incomeDetails}>
+            {item.User.email} as {item.User.username} & {item.role}
+          </Text>
+        </View>
       </View>
     );
   };
@@ -96,7 +134,7 @@ export default function ReportScreen({ route }) {
     ];
   };
 
-  console.log(wantedGraphicData());
+  // console.log(wantedGraphicData());
   const graphicColor = [
     "#FFE9A0",
     "#367E18",
@@ -142,13 +180,20 @@ export default function ReportScreen({ route }) {
     return wantedGraphicDataByCategories;
   };
 
+  const itemRender = () => {};
+
+  //<Flatlist data={detailWallet} renderItem={renderUserWallets} keyExtractor={(el) => el.id}/>
   return (
     <View style={styles.container}>
-      {loading && <Text>Loading gesss</Text>}
+      {loading && <LoadingScreen />}
       {!loading && (
         <ScrollView style={styles.scrollView}>
           {detailWallet.Transactions.length === 0 ? (
-            <Text>Please Create Transaction</Text>
+            <View style={styles.boxEmpty}>
+              <Text style={styles.emptyValue}>
+                Upss... seems like you haven't create an transaction
+              </Text>
+            </View>
           ) : (
             <>
               <View style={styles.pieChart}>
@@ -210,11 +255,10 @@ export default function ReportScreen({ route }) {
                   data={wantedGraphicDataByCategory(
                     setCategoryName(detailWallet.Transactions)
                   )}
-                  innerRadius={20}
                   labelRadius={({ innerRadius }) => innerRadius + 95}
                   padAngle={({ datum }) => datum.x}
-                  width={450}
-                  height={250}
+                  width={500}
+                  height={260}
                   style={{
                     data: {
                       stroke: "#fff",
@@ -262,22 +306,24 @@ const styles = StyleSheet.create({
     marginTop: 15,
     backgroundColor: "white",
     paddingVertical: 20,
-    borderRadius: 4,
-    elevation: 5,
-    flexDirection: "row",
+    borderRadius: 10,
+    flexDirection: "column",
     paddingLeft: 15,
     paddingRight: 15,
+    width: Dimensions.get("window").width * 0.8,
 
-    alignItems: "center",
+    position: "relative",
   },
   walletList: {
     width: Dimensions.get("window").width,
-
     paddingTop: 35,
-    paddingLeft: 25,
-    paddingRight: 25,
   },
   scrollView: {
+    width: Dimensions.get("window").width,
+  },
+  transaction: {
+    alignItems: "center",
+    justifyContent: "center",
     width: Dimensions.get("window").width,
   },
   pieChart: {
@@ -320,5 +366,54 @@ const styles = StyleSheet.create({
   },
   collaborator: {
     marginBottom: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    width: Dimensions.get("window").width,
   },
+
+  emptyValue: {
+    fontSize: 15,
+  },
+  boxEmpty: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height * 0.1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  cardDetail: {
+    flexDirection: "row",
+
+    marginBottom: 5,
+  },
+  incomeDetails: {
+    marginLeft: 15,
+  },
+  incomeName: {
+    width: Dimensions.get("window").width * 0.2,
+  },
+
+  incomeDetailsExpense: {
+    color: "#cc5656",
+    fontWeight: "bold",
+    fontSize: 14,
+    marginLeft: 15,
+  },
+  incomeDetailsIncome: {
+    color: "#7eb764",
+    fontWeight: "bold",
+    fontSize: 14,
+    marginLeft: 15,
+  },
+  buttonDelete: {
+    width: Dimensions.get("window").width * 0.06,
+    height: Dimensions.get("window").height * 0.036,
+  },
+  trashPosition: {
+    backgroundColor: "green",
+    width: Dimensions.get("window").width,
+    // height: Dimensions.get("window").height * 0.1,
+  },
+  // item: {
+  //   fontSize: 16,
+  // },
 });

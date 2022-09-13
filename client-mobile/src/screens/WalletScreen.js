@@ -17,10 +17,20 @@ import {
   addNewWallet,
   deleteWallet,
 } from "../store/actionCreator/wallet";
+import LoadingScreen from "../components/LoadingScreen";
 
 export default function WalletScreen({ navigation, route }) {
   const dispatch = useDispatch();
   const [walletName, setWalletName] = React.useState("");
+  const { wallets, loadingWallets } = useSelector((state) => {
+    return state.walletReducer;
+  });
+
+  React.useEffect(() => {
+    dispatch(fetchWallets()).catch((err) => {
+      console.log(error);
+    });
+  }, []);
 
   const submitAddWallet = () => {
     dispatch(
@@ -35,13 +45,6 @@ export default function WalletScreen({ navigation, route }) {
   const submitDeleteWallet = (walletId) => {
     dispatch(deleteWallet(walletId));
   };
-
-  const { wallets } = useSelector((state) => {
-    return state.walletReducer;
-  });
-  React.useEffect(() => {
-    dispatch(fetchWallets()).catch((err) => {});
-  }, []);
 
   const renderCategoryList = ({ item }) => {
     return (
@@ -99,36 +102,42 @@ export default function WalletScreen({ navigation, route }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.formAdd}>
-        <Text style={styles.headerText}>Wallet</Text>
-        <Text style={styles.textAdd}>Add New Wallet</Text>
-        <View style={styles.formAddWallet}>
-          <Text style={styles.textAdd}>Name</Text>
-          <TextInput
-            value={walletName}
-            onChangeText={setWalletName}
-            style={styles.input}
-          />
+    <>
+      {loadingWallets ? (
+        <LoadingScreen />
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.formAdd}>
+            <Text style={styles.headerText}>Wallet</Text>
+            <Text style={styles.textAdd}>Add New Wallet</Text>
+            <View style={styles.formAddWallet}>
+              <Text style={styles.textAdd}>Name</Text>
+              <TextInput
+                value={walletName}
+                onChangeText={setWalletName}
+                style={styles.input}
+              />
+            </View>
+            <View style={styles.buttonToAdd}>
+              <Pressable style={styles.buttonAdd}>
+                <Text style={styles.buttonText} onPress={submitAddWallet}>
+                  Add Wallet
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+          <View style={styles.walletList}>
+            <FlatList
+              data={wallets}
+              renderItem={renderCategoryList}
+              keyExtractor={(el) => el.id}
+              horizontal={false}
+              style={{ paddingHorizontal: 25 }}
+            />
+          </View>
         </View>
-        <View style={styles.buttonToAdd}>
-          <Pressable style={styles.buttonAdd}>
-            <Text style={styles.buttonText} onPress={submitAddWallet}>
-              Add Wallet
-            </Text>
-          </Pressable>
-        </View>
-      </View>
-      <View style={styles.walletList}>
-        <FlatList
-          data={wallets}
-          renderItem={renderCategoryList}
-          keyExtractor={(el) => el.id}
-          horizontal={false}
-          style={{ paddingHorizontal: 25 }}
-        />
-      </View>
-    </View>
+      )}
+    </>
   );
 }
 

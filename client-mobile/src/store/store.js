@@ -6,7 +6,7 @@ import {
 import thunk from "redux-thunk";
 import categoryReducer from "./reducers/category";
 import profileReducer from "./reducers/profile";
-import transactionReducer from "./reducers/transaction";
+
 import userReducer from "./reducers/user";
 import userWalletReducer from "./reducers/userWallet";
 import walletReducer from "./reducers/wallet";
@@ -14,7 +14,7 @@ import walletReducer from "./reducers/wallet";
 const rootReducer = combineReducers({
   categoryReducer,
   profileReducer,
-  // transactionReducer,
+
   userReducer,
   userWalletReducer,
   walletReducer,

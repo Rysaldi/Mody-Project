@@ -1,8 +1,8 @@
 const initialState = {
   categories: [],
   detailCategory: {},
-  loading: true,
-  loadingDetailCategory: true,
+  loadingCategories: true,
+  // loadingDetailCategory: true,
 };
 
 import {
@@ -24,7 +24,7 @@ function categoryReducer(state = initialState, action) {
     case LOADING_FETCH_CATEGORIES:
       return {
         ...state,
-        loading: action.payload,
+        loadingCategories: action.payload,
       };
     // case SUCCESS_FETCH_CATEGORY:
     //   return {

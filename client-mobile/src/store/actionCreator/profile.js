@@ -1,4 +1,9 @@
-import { LOADING_FETCH_PROFILE, SUCCESS_FETCH_PROFILE } from "../actionTypes";
+import {
+  LOADING_FETCH_PROFILE,
+  SUCCESS_FETCH_PROFILE,
+  // SUCCESS_UPDATE_PROFILE,
+  LOADING_UPDATE_PROFILE,
+} from "../actionTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
 const baseUrl = "https://mody-server.herokuapp.com/";
@@ -16,11 +21,23 @@ export const setProfile = (profile) => {
     payload: profile,
   };
 };
+// export const setUpdateProfile = (profile) => {
+//   return {
+//     type: SUCCESS_UPDATE_PROFILE,
+//     payload: profile,
+//   };
+// };
 
-export const setLoading = (loading) => {
+export const setLoadingProfile = () => {
   return {
     type: LOADING_FETCH_PROFILE,
-    payload: loading,
+    payload,
+  };
+};
+export const setLoadingUpdateProfile = () => {
+  return {
+    type: LOADING_UPDATE_PROFILE,
+    payload,
   };
 };
 
@@ -38,44 +55,43 @@ export const fetchProfile = () => {
       })
       .then((profile) => {
         dispatch(setProfile(profile));
-      })
-      .finally(() => {
-        dispatch(setLoading(false));
       });
+    // .finally(() => {
+    //   dispatch(setLoading(false));
+    // });
   };
 };
 
 export const updateProfile = (payload) => {
-	console.log("masuk ke store");
-	return async (dispatch) => {
-		const access_token = await getAccessToken()
-		let localUri = payload.profilePicture.uri;
-		let filename = localUri.split('/').pop();
-		let match = /\.(\w+)$/.exec(filename);
-		let type = match ? `profilePicture/${match[1]}` : `profilePicture`;
-		const data = new FormData();
-		data.append("firstName", payload.firstName);
-		data.append("lastName", payload.lastName);
-		data.append("phone", payload.phone);
-		data.append("profilePicture", {uri:localUri, name:filename, type});
-		return fetch(baseUrl + "profiles/update", {
-			method: "PUT",
-			headers: {
-				access_token,
-				"Accept": "application/json",
-				"Content-Type": "multipart/form-data",
-			},
-			body: data,
-		})
-			.then((response) => {
-				console.log("udah dikirim", data);
-				return response.json();
-			})
-			.then(() => {
-				// dispatch(fetchProfile());
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
+  console.log("masuk ke store");
+  return async (dispatch) => {
+    const access_token = await getAccessToken();
+    let localUri = payload.profilePicture.uri;
+    let filename = localUri.split("/").pop();
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `profilePicture/${match[1]}` : `profilePicture`;
+    const data = new FormData();
+    data.append("firstName", payload.firstName);
+    data.append("lastName", payload.lastName);
+    data.append("phone", payload.phone);
+    data.append("profilePicture", { uri: localUri, name: filename, type });
+    return fetch(baseUrl + "profiles/update", {
+      method: "PUT",
+      headers: {
+        access_token,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+      body: data,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("update profile failed");
+        }
+        return response.json();
+      })
+      .then(() => {
+        dispatch(fetchProfile());
+      });
+  };
 };
