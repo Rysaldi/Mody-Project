@@ -47,43 +47,43 @@ export default function AddUserToWallet({ navigation, route }) {
   return (
     <>
       <View style={styles.container}>
-          <Text style={styles.headerText}>Add User To Wallet</Text>
-          <Text style={styles.textAdd}>Add New User</Text>
-          <View style={styles.formAddWallet}>
-            <Text style={styles.textAdd}>Email</Text>
-            <TextInput
-              value={addToWalletEmail}
-              onChangeText={setAddToWalletEmail}
-              style={styles.input}
-            />
-          </View>
-          <View style={styles.formAddWallet}>
-            <Text style={styles.textAdd}>Role</Text>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={role}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setRole}
-              style={{marginTop:10, borderColor:"#ddd"}}
-            />
-          </View>
-          <View style={styles.buttonToAdd}>
-            <Pressable style={styles.buttonAdd}>
-              <Text style={styles.buttonText} onPress={submitAddToWallet}>
-                Add User to Wallet
-              </Text>
-            </Pressable>
-          </View>
+        <Text style={styles.headerText}>Add User To Wallet</Text>
+        <Text style={styles.textAdd}>Add New User</Text>
+        <View style={styles.formAddWallet}>
+          <Text style={styles.textAdd}>Email</Text>
+          <TextInput
+            value={addToWalletEmail}
+            onChangeText={setAddToWalletEmail}
+            style={styles.input}
+          />
         </View>
+        <View style={styles.formAddWallet}>
+          <Text style={styles.textAdd}>Role</Text>
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={role}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setRole}
+            style={{ marginTop: 10, borderColor: "#ddd" }}
+          />
+        </View>
+        <View style={styles.buttonToAdd}>
+          <Pressable style={styles.buttonAdd}>
+            <Text style={styles.buttonText} onPress={submitAddToWallet}>
+              Add User to Wallet
+            </Text>
+          </Pressable>
+        </View>
+      </View>
     </>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding:20
+    padding: 20,
   },
   formAdd: {
     width: Dimensions.get("window").width,
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
     color: "#171717",
-    marginTop:10
+    marginTop: 10,
   },
   formAddWallet: {
     justifyContent: "space-between",
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: "#ddd",
     color: "#171717",
-    marginTop:10
+    marginTop: 10,
   },
   buttonToAdd: {
     alignItems: "center",

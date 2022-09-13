@@ -46,7 +46,9 @@ export default function LoginScreen() {
 
   return (
     <>
-      {loading ? <LoadingScreen/> : (
+      {loading ? (
+        <LoadingScreen />
+      ) : (
         <View style={styles.container}>
           <ImageBackground
             source={require("../../assets/bg.jpg")}

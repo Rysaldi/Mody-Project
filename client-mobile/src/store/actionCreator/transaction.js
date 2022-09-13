@@ -1,7 +1,7 @@
 import SUCCESS_POST_TRANSACTION from "../actionTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
+// const baseUrl = "https://9251-180-242-194-246.ap.ngrok.io/";
 const baseUrl = "https://mody-server.herokuapp.com/";
 
 const getAccessToken = async () => {

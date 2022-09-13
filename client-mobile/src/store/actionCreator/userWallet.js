@@ -5,7 +5,7 @@ import {
 } from "../actionTypes/index";
 
 const baseUrl = "https://mody-server.herokuapp.com/";
-// const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
+// const baseUrl = "https://9251-180-242-194-246.ap.ngrok.io/";
 
 //-----------------------getAccessToken--------------------------
 const getAccessToken = async () => {
