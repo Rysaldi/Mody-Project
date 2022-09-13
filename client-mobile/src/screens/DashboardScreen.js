@@ -8,11 +8,12 @@ import {
 } from "react-native";
 import CardLatesHistory from "../components/CardLatesHistory";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   userHistory,
   loadingUserHistoryDispatch,
 } from "../store/actionCreator/user";
+import LoadingScreen from "../components/LoadingScreen";
 
 export default function DashboardScreen() {
   const dispatch = useDispatch();
@@ -30,138 +31,113 @@ export default function DashboardScreen() {
       });
   }, []);
 
-  console.log(userDetail);
+  useEffect(() => {}, []);
   return (
     <>
-      {/* Navbar */}
-      <View style={styles.containerNavbar}>
-        <Image
-          style={styles.logo}
-          source={require("../../assets/moody_pertama.png")}
-        />
-        <View style={styles.frameImgNav}>
-          <Image
-            style={styles.imgNav}
-            source={require("../../assets/pp.jpg")}
-          />
-        </View>
-      </View>
-
-      {/* Header */}
-      <View style={styles.containerHeader}>
-        <View>
-          <Text style={styles.textHeader}>Welcome to Your</Text>
-          <View style={{ display: "flex", flexDirection: "row" }}>
-            <Text style={styles.textHeaderDash}>Dash</Text>
-            <Text style={styles.textHeaderBoard}>board</Text>
-          </View>
-        </View>
-        <View style={{ display: "flex", flexDirection: "row" }}>
-          <View style={styles.containerContentIconHeader}>
-            <View style={styles.frameHeaderIconPlus}>
+      {loadingUserHistory ? (
+        <LoadingScreen />
+      ) : (
+        <>
+          {/* Navbar */}
+          <View style={styles.mainContainer}>
+            <View style={styles.containerNavbar}>
               <Image
-                style={styles.iconHeader}
-                source={require("../../assets/icons/arrowUp.png")}
+                style={styles.logo}
+                source={require("../../assets/moody_pertama.png")}
               />
+              <View style={styles.frameImgNav}>
+                <Image
+                  style={styles.imgNav}
+                  source={{ uri: userDetail.Profile.profilePicture }}
+                />
+              </View>
             </View>
-            <Text style={styles.plusNumber}>Rp. 120.000.000,00</Text>
-          </View>
-          <View style={styles.containerContentIconHeader}>
-            <View style={styles.frameHeaderIconMinus}>
-              <Image
-                style={styles.iconHeader}
-                source={require("../../assets/icons/arrowDown.png")}
-              />
-            </View>
-            <Text style={styles.minusNumber}>Rp. 12.000.000,00</Text>
-          </View>
-        </View>
-      </View>
 
-      {/* Main Sections */}
-      <View style={{ flex: 2.7, paddingTop: 10 }}>
-        <View style={{ paddingHorizontal: 20 }}>
-          <Text style={styles.textHeader}>This week expenses</Text>
-        </View>
-        <ScrollView style={{ paddingHorizontal: 20, paddingTop: 15 }}>
-          {/* ITEM */}
-          <View style={styles.mainCard}>
-            <View style={styles.contentMainCard}>
-              <View style={styles.frameMainLogo}>
-                <Image
-                  style={styles.mainLogo}
-                  source={require("../../assets/icons/food.png")}
-                />
+            {/* Header */}
+            <View style={styles.containerHeader}>
+              <View>
+                <Text style={styles.textHeader}>Welcome to Your</Text>
+                <View style={{ display: "flex", flexDirection: "row" }}>
+                  <Text style={styles.textHeaderDash}>Dash</Text>
+                  <Text style={styles.textHeaderBoard}>board</Text>
+                </View>
               </View>
-              <Text style={styles.textCard}>Food</Text>
             </View>
-            <Text style={styles.minusNumber}>- Rp. 20.000.,00</Text>
-          </View>
-          {/* ITEM */}
-          <View style={styles.mainCard}>
-            <View style={styles.contentMainCard}>
-              <View style={styles.frameMainLogo}>
-                <Image
-                  style={styles.mainLogo}
-                  source={require("../../assets/icons/entertaiment.png")}
-                />
-              </View>
-              <Text style={styles.textCard}>Entertainment</Text>
-            </View>
-            <Text style={styles.minusNumber}>- Rp. 20.000.,00</Text>
-          </View>
-          {/* ITEM */}
-          <View style={styles.mainCard}>
-            <View style={styles.contentMainCard}>
-              <View style={styles.frameMainLogo}>
-                <Image
-                  style={styles.mainLogo}
-                  source={require("../../assets/icons/holiday.png")}
-                />
-              </View>
-              <Text style={styles.textCard}>Holiday</Text>
-            </View>
-            <Text style={styles.minusNumber}>- Rp. 20.000.,00</Text>
-          </View>
-          {/* ITEM */}
-          <View style={styles.mainCard}>
-            <View style={styles.contentMainCard}>
-              <View style={styles.frameMainLogo}>
-                <Image
-                  style={styles.mainLogo}
-                  source={require("../../assets/icons/investasi.png")}
-                />
-              </View>
-              <Text style={styles.textCard}>Investasi</Text>
-            </View>
-            <Text style={styles.plusNumber}>Rp. 20.000.,00</Text>
-          </View>
-        </ScrollView>
-      </View>
 
-      {/* latest history */}
-      <View style={{ flex: 2, paddingHorizontal: 20 }}>
-        <View>
-          <Text style={styles.textHeader}>Latest History</Text>
-          <CardLatesHistory />
-          <CardLatesHistory />
-          <View style={{ alignItems: "center" }}>
-            <Text
-              style={{
-                textAlign: "center",
-                backgroundColor: "#ddd",
-                padding: 5,
-                width: 100,
-                borderRadius: 8,
-                color: "#808090",
-                marginTop: 10,
-              }}
-            >
-              Show More
-            </Text>
+            {/* Main Sections */}
+            <View style={{ flex: 2.7, paddingTop: 10 }}>
+              <View style={{ paddingHorizontal: 20 }}>
+                <Text style={styles.textHeader}>This week expenses</Text>
+              </View>
+              <ScrollView style={{ paddingHorizontal: 20, paddingTop: 15 }}>
+                {/* ITEM */}
+                <View style={styles.mainCard}>
+                  <View style={styles.contentMainCard}>
+                    <View style={styles.frameMainLogo}>
+                      <Image
+                        style={styles.mainLogo}
+                        source={require("../../assets/icons/food.png")}
+                      />
+                    </View>
+                    <Text style={styles.textCard}>Food</Text>
+                  </View>
+                  <Text style={styles.minusNumber}>- Rp. 20.000.,00</Text>
+                </View>
+                {/* ITEM */}
+                <View style={styles.mainCard}>
+                  <View style={styles.contentMainCard}>
+                    <View style={styles.frameMainLogo}>
+                      <Image
+                        style={styles.mainLogo}
+                        source={require("../../assets/icons/entertaiment.png")}
+                      />
+                    </View>
+                    <Text style={styles.textCard}>Entertainment</Text>
+                  </View>
+                  <Text style={styles.minusNumber}>- Rp. 20.000.,00</Text>
+                </View>
+                {/* ITEM */}
+                <View style={styles.mainCard}>
+                  <View style={styles.contentMainCard}>
+                    <View style={styles.frameMainLogo}>
+                      <Image
+                        style={styles.mainLogo}
+                        source={require("../../assets/icons/holiday.png")}
+                      />
+                    </View>
+                    <Text style={styles.textCard}>Holiday</Text>
+                  </View>
+                  <Text style={styles.minusNumber}>- Rp. 20.000.,00</Text>
+                </View>
+                {/* ITEM */}
+                <View style={styles.mainCard}>
+                  <View style={styles.contentMainCard}>
+                    <View style={styles.frameMainLogo}>
+                      <Image
+                        style={styles.mainLogo}
+                        source={require("../../assets/icons/investasi.png")}
+                      />
+                    </View>
+                    <Text style={styles.textCard}>Investasi</Text>
+                  </View>
+                  <Text style={styles.plusNumber}>Rp. 20.000.,00</Text>
+                </View>
+              </ScrollView>
+            </View>
+
+            {/* latest history */}
+            <View style={{ flex: 2, paddingHorizontal: 20, paddingTop: 20 }}>
+              <View>
+                <Text style={styles.textHeader}>
+                  Latest Transactions History
+                </Text>
+                <CardLatesHistory />
+                <CardLatesHistory />
+              </View>
+            </View>
           </View>
-        </View>
-      </View>
+        </>
+      )}
     </>
   );
 }
@@ -171,6 +147,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     color: "#242525",
+    marginBottom: 10,
   },
   frameImgNav: {
     width: 50,
@@ -191,12 +168,15 @@ const styles = StyleSheet.create({
     height: 50,
   },
   containerNavbar: {
-    flex: 0.7,
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingTop: 10,
     alignItems: "center",
+  },
+  mainContainer: {
+    flex: 1,
+    marginTop: 10,
   },
   containerHeader: {
     flex: 0.7,

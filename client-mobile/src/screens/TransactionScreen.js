@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Dimensions,
   TextInput,
-  Image
+  Image,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -17,7 +17,7 @@ import {
 } from "../store/actionCreator/category";
 import { addTransaction } from "../store/actionCreator/transaction";
 
-export default function TransactionScreen({ route }) {
+export default function TransactionScreen({ navigation, route }) {
   const dispatch = useDispatch();
   const { id } = route.params;
   const [formAddTransaction, setFormAddTransaction] = React.useState({
@@ -25,7 +25,7 @@ export default function TransactionScreen({ route }) {
     amount: "",
     CategoryId: "",
     description: "",
-    photo: "",
+    // photo: "",
   });
   const { categories } = useSelector((state) => state.categoryReducer);
   const [date, setDate] = React.useState(new Date(Date.now()));
@@ -78,7 +78,11 @@ export default function TransactionScreen({ route }) {
         date,
         WalletId: id,
       })
-    );
+    )
+      .then(() => {
+        navigation.navigate("WalletApp");
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -114,11 +118,26 @@ export default function TransactionScreen({ route }) {
         <View style={styles.formInput}>
           <Text style={styles.inputName}>Date</Text>
           <Pressable onPress={showPicker}>
-						<View style={{ borderColor: "#ddd", borderWidth: 1, padding: 12, backgroundColor: "white", borderRadius: 7, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-							<Text>{date.toUTCString()}</Text>
-							<Image style={{ width: 14, height: 14 }} source={require("../../assets/icons/arrowBottom.png")} />
-						</View>
-					</Pressable>
+            <View
+              style={{
+                borderColor: "#ddd",
+                borderWidth: 1,
+                padding: 12,
+                backgroundColor: "white",
+                borderRadius: 7,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text>{date.toLocaleString()}</Text>
+              <Image
+                style={{ width: 14, height: 14 }}
+                source={require("../../assets/icons/arrowBottom.png")}
+              />
+            </View>
+          </Pressable>
           <>
             {isPickerShow && (
               <DateTimePicker
@@ -140,7 +159,7 @@ export default function TransactionScreen({ route }) {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}
-            style = {{borderColor:"#ddd"}}
+            style={{ borderColor: "#ddd" }}
           />
         </View>
         <View style={styles.formInput}>
@@ -181,16 +200,16 @@ const styles = StyleSheet.create({
   },
   inputName: {
     fontWeight: "bold",
-    marginBottom: 10
+    marginBottom: 10,
   },
   inputNameForm: {
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   input: {
     height: Dimensions.get("window").height * 0.05,
     borderBottomWidth: 2,
     borderColor: "#d9d9d9",
-    color: "#000"
+    color: "#000",
   },
   formInput: {
     marginTop: 15,
