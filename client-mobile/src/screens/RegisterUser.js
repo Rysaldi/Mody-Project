@@ -11,7 +11,7 @@ import {
   Pressable,
   ImageBackground,
 } from "react-native";
-import { userRegister } from "../store/actionCreator/users/users";
+import { userRegister } from "../store/actionCreator/user";
 import { useDispatch } from "react-redux";
 export default function RegisterUser() {
   const navigation = useNavigation();

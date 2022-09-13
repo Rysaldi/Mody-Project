@@ -1,5 +1,6 @@
 const imageUpload = async (req, res, next) => {
     try {
+      console.log("MASUK");
       const multer = require("multer");
       const storage = multer.memoryStorage();
       const upload = multer({ storage });
@@ -8,6 +9,8 @@ const imageUpload = async (req, res, next) => {
       const privateKey = process.env.imagekit_api_key;
       const form = new FormData();
 
+      console.log(req.file);
+      
       if (!req.file) {
         next();
       } else {

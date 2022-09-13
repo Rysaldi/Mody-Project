@@ -1,6 +1,6 @@
 const { comparePassword } = require("../helpers/bcrypt");
 const { createToken } = require("../helpers/jwt");
-const { User, Profile } = require("../models");
+const { User, Profile, Transaction } = require("../models");
 
 class userController {
 	static async register(req, res, next) {
@@ -42,10 +42,14 @@ class userController {
 
 	static async findById(req, res, next) {
 		try {
-			const { userId } = req.params;
-			const findUser = await User.findByPk(userId, {
+			const { id } = req.user;
+			const findUser = await User.findByPk(id, {
 				attributes: {
-					exclude: ["password"],
+					exclude: ["password", "createdAt", "updatedAt"],
+				},
+				include: {
+					model: Transaction,
+					order: [["createdAt"]],
 				},
 			});
 			if (!findUser) {
@@ -59,77 +63,34 @@ class userController {
 
 	static async login(req, res, next) {
 		try {
-			try {
-				const { email, password } = req.body;
-				// validation user input
-				if (!email || !password) {
-					throw { name: "Invalid input" };
-				}
-				const user = await User.findOne({
-					where: {
-						email,
-					},
-				});
-				// check if user exist
-				if (user) {
-					const isPasswordValid = comparePassword(password, user.password);
-					// check if password valid
-					if (!isPasswordValid) {
-						throw { name: "invalid email/password" };
-					}
-					// create payload and assign user id
-					const payload = {
-						id: user.id,
-					};
-					const access_token = createToken(payload);
-					res.status(200).json({
-						access_token,
-					});
-				} else {
+			const { email, password } = req.body;
+			// validation user input
+			if (!email || !password) {
+				throw { name: "Invalid input" };
+			}
+			const user = await User.findOne({
+				where: {
+					email,
+				},
+			});
+			// check if user exist
+			if (user) {
+				const isPasswordValid = comparePassword(password, user.password);
+				// check if password valid
+				if (!isPasswordValid) {
 					throw { name: "invalid email/password" };
 				}
-			} catch (error) {
-				next(error);
-			}
-		} catch (error) {
-			next(error);
-		}
-	}
-
-	static async googleSignIn(req, res, next) {
-		try {
-			const { token_google } = req.headers;
-			const client = new OAuth2Client(process.env.google_client_id_android);
-			const ticket = await client.verifyIdToken({
-				idToken: token_google,
-				audience: process.env.google_client_id_android,
-			});
-			const payload = ticket.getPayload();
-
-			const [user, created] = await User.findOrCreate({
-				where: {
-					email: payload.email,
-				},
-				defaults: {
-					username: payload.name,
-					email: payload.email,
-					password: "passwordIsUnnecessary",
-				},
-				hooks: false,
-			});
-
-			const access_token = createToken({
-				id: user.id,
-			});
-
-			res
-				.status(200)
-				.json({
-					access_token,
+				// create payload and assign user id
+				const payload = {
 					id: user.id,
-					email: user.email,
-					username: user.username,
+				};
+				const access_token = createToken(payload);
+				res.status(200).json({
+					access_token,
 				});
+			} else {
+				throw { name: "invalid email/password" };
+			}
 		} catch (error) {
 			next(error);
 		}

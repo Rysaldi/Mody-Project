@@ -1,11 +1,12 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   SUCCESS_ADD_USER_TO_WALLET,
   LOADING_ADD_USER_TO_WALLET,
-} from "../../actionTypes/index";
+} from "../actionTypes/index";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-const baseUrl = "https://mody-server.herokuapp.com/";
-// const baseUrl = "http://localhost:3000/";
+// const baseUrl = "https://mody-server.herokuapp.com/";
+const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
+
 //-----------------------getAccessToken--------------------------
 const getAccessToken = async () => {
   try {
@@ -13,7 +14,6 @@ const getAccessToken = async () => {
     return accessToken;
   } catch (error) {}
 };
-//-----------------------getAccessToken------------------------------
 
 //-----------------------POSTUSERWALLET-------------------------------
 export const addNewUserWallet = (payload) => {
@@ -48,4 +48,3 @@ export const addNewUserWallet = (payload) => {
       });
   };
 };
-//-----------------------POSTUSERWALLET-------------------------------

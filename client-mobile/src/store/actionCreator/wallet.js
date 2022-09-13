@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   SUCCESS_FETCH_WALLETS,
   SUCCESS_FETCH_DETAIL,
@@ -5,13 +6,10 @@ import {
   LOADING_FETCH_WALLETS,
   LOADING_FETCH_DETAIL,
 
-} from "../../actionTypes";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+} from "../actionTypes";
 
-const baseUrl = "https://mody-server.herokuapp.com/";
-// const baseUrl = "http://localhost:3000/";
-
-
+// const baseUrl = "https://mody-server.herokuapp.com/";
+const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
 
 //-----------------------getAccessToken--------------------------
 const getAccessToken = async () => {
@@ -21,7 +19,6 @@ const getAccessToken = async () => {
 
   } catch (error) {}
 };
-//-----------------------getAccessToken--------------------------
 
 //-----------------------FETCHALLWALLETS--------------------------
 export const successFetchAllWallet = (payload) => {
@@ -64,8 +61,6 @@ export const fetchWallets = () => {
   };
 };
 
-//-----------------------FETCHALLWALLETS--------------------------------
-
 //-----------------------FETCHWALLETDETAIL-------------------------------
 export const successFetchDetailWallet = (payload) => {
   return {
@@ -103,7 +98,6 @@ export const fetchDetail = (id) => {
       });
   };
 };
-//-----------------------FETCHWALLETDETAIL-------------------------------
 
 //-----------------------POSTWALLET---------------------------------------
 export const addNewWallet = (payload) => {
@@ -134,9 +128,6 @@ export const addNewWallet = (payload) => {
     });
   };
 };
-
-//-----------------------POSTWALLET---------------------------------------
-
 
 //-----------------------DELETEWALLET---------------------------------------
 export const successDeleteWallet = (payload) => {
@@ -169,4 +160,3 @@ export const deleteWallet = (walletId) => {
         });
     };
   };
-//-----------------------DELETEWALLET---------------------------------------
