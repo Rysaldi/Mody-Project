@@ -116,6 +116,7 @@ export default function ReportScreen({ route }) {
   const [graphicData, setGraphicData] = useState(defaultGraphicData);
   useEffect(() => {
     setGraphicData(wantedGraphicData); // Setting the data that we want to display
+    dispatch(fetchDetail(id));
   }, []);
   const categoryName = detailWallet.Transactions.map((el) => {
     return { name: el.Category.name, amount: el.amount };
@@ -185,7 +186,7 @@ export default function ReportScreen({ route }) {
               "#7DCE13",
               "#EAE509",
             ]}
-            animate={{ easing: "exp", duration: 2000 }}
+            animate={{ easing: "exp", duration: 5000 }}
             data={wantedGraphicDataByCategory}
             // innerRadius={20}
             labelRadius={({ innerRadius }) => innerRadius + 95}
