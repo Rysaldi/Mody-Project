@@ -1,7 +1,7 @@
 import { LOADING_FETCH_PROFILE, SUCCESS_FETCH_PROFILE } from "../actionTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// const baseUrl = "https://mody-server.herokuapp.com/";
-const baseUrl = "https://e526-180-254-67-19.ap.ngrok.io/";
+const baseUrl = "https://mody-server.herokuapp.com/";
+// const baseUrl = "https://e526-180-254-67-19.ap.ngrok.io/";
 const getAccessToken = async () => {
 	try {
 		const accessToken = await AsyncStorage.getItem("access_token");

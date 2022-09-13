@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
     minusNumber: {
         color: "#cc5656",
         fontWeight: "bold",
-        fontSize: 10
+        fontSize: 12
     },
     plusNumber: {
         color: "#7eb764",
         fontWeight: "bold",
-        fontSize: 10
+        fontSize: 12
     },
 })

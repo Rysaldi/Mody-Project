@@ -8,8 +8,8 @@ import {
 
 } from "../actionTypes";
 
-// const baseUrl = "https://mody-server.herokuapp.com/";
-const baseUrl = "https://e526-180-254-67-19.ap.ngrok.io/";
+const baseUrl = "https://mody-server.herokuapp.com/";
+// const baseUrl = "https://e526-180-254-67-19.ap.ngrok.io/";
 
 //-----------------------getAccessToken--------------------------
 const getAccessToken = async () => {
