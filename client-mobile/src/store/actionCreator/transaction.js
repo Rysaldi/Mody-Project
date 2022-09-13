@@ -1,4 +1,3 @@
-import SUCCESS_POST_TRANSACTION from "../actionTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // const baseUrl = "https://9251-180-242-194-246.ap.ngrok.io/";
@@ -11,36 +10,41 @@ const getAccessToken = async () => {
   } catch (error) {}
 };
 
-export const transactionAddDispatch = (payload) => {
-  return {
-    type: SUCCESS_POST_TRANSACTION,
-    payload,
+export const addTransaction = (payload) => {
+  return async (dispatch) => {
+    const access_token = await getAccessToken();
+    console.log(payload);
+    return fetch(`${baseUrl}transactions`, {
+      method: "POST",
+      headers: {
+        access_token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }).then((result) => {
+      if (!result.ok) {
+        throw new Error("post new transaction failed");
+      }
+      return result.json();
+    });
   };
 };
 
-export const addTransaction = (newTransaction) => {
+export const deleteTransaction = (transactionId) => {
+  console.log(transactionId);
   return async (dispatch) => {
     const access_token = await getAccessToken();
-    console.log(newTransaction);
-    // return fetch(`${baseUrl}wallets`, {
-    // 	method: "POST",
-    // 	headers: {
-    // 		access_token,
-    // 		"Content-Type": "application/json",
-    // 	},
-    //   body: JSON.stringify(newTransaction)
-    // })
-    // 	.then((result) => {
-    // 		if (!result.ok) {
-    // 			throw new Error("post new trasaction failed");
-    // 		}
-    // 		return result.json();
-    // 	})
-    // 	.then((data) => {
-
-    // 	})
-    // 	.catch((err) => {
-    // 		throw err;
-    // 	})
+    return fetch(`${baseUrl}transactions/${transactionId}`, {
+      method: "DELETE",
+      headers: {
+        access_token,
+        "Content-Type": "application/json",
+      },
+    }).then((result) => {
+      if (!result.ok) {
+        throw new Error("error deleting transaction");
+      }
+      return result.json();
+    });
   };
 };

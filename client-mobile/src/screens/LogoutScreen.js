@@ -8,11 +8,15 @@ import {
   Pressable,
 } from "react-native";
 import { userLogout, loadingUserLogout } from "../store/actionCreator/user";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { userHistory } from "../store/actionCreator/user";
 
 export default function LogoutScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const { userDetail } = useSelector((state) => {
+    return state.userReducer;
+  });
 
   const onTapLogout = () => {
     dispatch(userLogout())
@@ -25,73 +29,79 @@ export default function LogoutScreen() {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.containerHeader}>
-          <View style={styles.outlineFrame}>
-            <View style={styles.frame}>
-              <Image
-                style={styles.profilePicture}
-                source={require("../../assets/pp.jpg")}
-              />
+        <View style={styles.containerSettings}>
+          <View style={styles.containerHeader}>
+            <View style={styles.outlineFrame}>
+              <View style={styles.frame}>
+                <Image
+                  style={styles.profilePicture}
+                  source={{ uri: userDetail.Profile.profilePicture }}
+                />
+              </View>
+            </View>
+            <Text style={styles.textHeader}>
+              {userDetail.Profile.firstName} {userDetail.Profile.lastName}
+            </Text>
+            <Text style={styles.textEmail}>{userDetail.email}</Text>
+            <View style={{ display: "flex", alignItems: "center" }}>
+              <View style={styles.button}>
+                <Text
+                  style={styles.textBotton}
+                  onPress={() => navigation.navigate("ProfileApp")}
+                >
+                  Edit Profile
+                </Text>
+                <Image
+                  style={{ width: 12, height: 12 }}
+                  source={require("../../assets/icons/arrowRightWhite.png")}
+                />
+              </View>
             </View>
           </View>
-          <Text style={styles.textHeader}>Rohmat HT</Text>
-          <Text style={styles.textEmail}>rohmathidayattullah@gmail.com</Text>
-          <View style={{ display: "flex", alignItems: "center" }}>
-            <View style={styles.button}>
-              <Text
-                style={styles.textBotton}
-                onPress={() => navigation.navigate("ProfileApp")}
-              >
-                Edit Profile
-              </Text>
-              <Image
-                style={{ width: 12, height: 12 }}
-                source={require("../../assets/icons/arrowRightWhite.png")}
-              />
-            </View>
-          </View>
-        </View>
-        <View style={{ flex: 2, marginTop: 30 }}>
-          <Text
-            style={{
-              backgroundColor: "#ddd",
-              padding: 10,
-              fontSize: 18,
-              fontWeight: "bold",
-              color: "#242525",
-            }}
-          >
-            Preferences
-          </Text>
-          <Pressable onPress={onTapLogout}>
-            <View
+          <View style={{ flex: 2, marginTop: 30 }}>
+            <Text
               style={{
-                display: "flex",
-                flexDirection: "row",
-                marginTop: 20,
-                justifyContent: "space-between",
-                alignItems: "center",
+                backgroundColor: "#ddd",
+                padding: 10,
+                fontSize: 18,
+                fontWeight: "bold",
+                color: "#242525",
               }}
             >
+              Preferences
+            </Text>
+            <Pressable onPress={onTapLogout}>
               <View
                 style={{
                   display: "flex",
                   flexDirection: "row",
+                  marginTop: 20,
+                  justifyContent: "space-between",
                   alignItems: "center",
                 }}
               >
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image
+                    style={{ width: 30, height: 30, marginRight: 10 }}
+                    source={require("../../assets/icons/logout.png")}
+                  />
+                  <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                    Logout
+                  </Text>
+                </View>
                 <Image
-                  style={{ width: 30, height: 30, marginRight: 10 }}
-                  source={require("../../assets/icons/logout.png")}
+                  style={{ width: 12, height: 12 }}
+                  source={require("../../assets/icons/arrowRight.png")}
                 />
-                <Text style={{ fontSize: 16, fontWeight: "bold" }}>Logout</Text>
               </View>
-              <Image
-                style={{ width: 12, height: 12 }}
-                source={require("../../assets/icons/arrowRight.png")}
-              />
-            </View>
-          </Pressable>
+            </Pressable>
+          </View>
         </View>
       </View>
     </>
@@ -102,7 +112,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  containerSettings: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
     padding: 30,
+    marginTop: 35,
   },
   containerHeader: {
     flex: 1,

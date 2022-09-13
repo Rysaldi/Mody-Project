@@ -12,7 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { fetchDetail } from "../store/actionCreator/wallet";
 import LoadingScreen from "../components/LoadingScreen";
-import { VictoryPie } from "victory-native";
+import { deleteTransaction } from "../store/actionCreator/transaction";
+import { VictoryPie, VictoryLabel } from "victory-native";
 
 export default function ReportScreen({ route }) {
   const { id } = route.params;
@@ -46,6 +47,12 @@ export default function ReportScreen({ route }) {
       }
     });
     return totalExpense;
+  };
+
+  const hapusTransaction = (transactionId) => {
+    dispatch(deleteTransaction(transactionId))
+      .then(() => dispatch(fetchDetail(id)))
+      .catch((err) => console.log(err));
   };
 
   const renderItem = ({ item }) => {
@@ -83,9 +90,20 @@ export default function ReportScreen({ route }) {
             {/* <Text style={styles.semiColon}>:</Text> */}
             <Text style={styles.incomeDetails}>{item.Category.name}</Text>
           </View>
+          <View style={styles.cardDetail}>
+            <Text style={styles.incomeName}>Date</Text>
+            {/* <Text style={styles.semiColon}>:</Text> */}
+            <Text style={styles.incomeDetails}>
+              {new Date(item.date).toLocaleString()}
+            </Text>
+          </View>
         </View>
         <View style={styles.trashPosition}>
-          <Pressable>
+          <Pressable
+            onPress={() => {
+              hapusTransaction(item.id);
+            }}
+          >
             <Image
               source={require("../../assets/icons/red_trash.png")}
               style={styles.buttonDelete}
@@ -103,7 +121,7 @@ export default function ReportScreen({ route }) {
           <Text style={styles.incomeName}>Joined</Text>
           {/* <Text style={styles.semiColon}>:</Text> */}
           <Text style={styles.incomeDetails}>
-            {item.User.email} as {item.User.username} & {item.role}
+            {item.User.email} as {item.role}
           </Text>
         </View>
       </View>
@@ -166,11 +184,17 @@ export default function ReportScreen({ route }) {
     dispatch(fetchDetail(id)).finally(() => {
       setLoading(false);
     });
+    console.log(detailWallet.Transactions);
   }, []);
 
+  const makeNewLine = (string) => {
+    const before = string.split(" ");
+    const after = before.join("\n");
+    return after;
+  };
   const setCategoryName = (transaction) => {
     const categoryName = transaction.map((el) => {
-      return { name: el.Category.name, amount: el.amount };
+      return { name: makeNewLine(el.Category.name), amount: el.amount };
     });
     return categoryName;
   };
@@ -205,7 +229,7 @@ export default function ReportScreen({ route }) {
                 <Text style={styles.walletName}>{detailWallet.name}</Text>
                 <VictoryPie
                   colorScale={["#cc5656", "#7eb764"]}
-                  animate={{ easing: "exp", duration: 2000 }}
+                  animate={{ easing: "exp", duration: 3000 }}
                   data={wantedGraphicData(detailWallet.Transactions)}
                   innerRadius={20}
                   width={350}
@@ -256,11 +280,11 @@ export default function ReportScreen({ route }) {
                     "#7DCE13",
                     "#EAE509",
                   ]}
-                  animate={{ easing: "exp", duration: 2000 }}
+                  animate={{ easing: "exp", duration: 3000 }}
                   data={wantedGraphicDataByCategory(
                     setCategoryName(detailWallet.Transactions)
                   )}
-                  labelRadius={({ innerRadius }) => innerRadius + 95}
+                  labelRadius={({ innerRadius }) => innerRadius + 100}
                   padAngle={({ datum }) => datum.x}
                   width={500}
                   height={260}
@@ -268,6 +292,9 @@ export default function ReportScreen({ route }) {
                     data: {
                       stroke: "#fff",
                       strokeWidth: 2,
+                    },
+                    labels: {
+                      fontSize: 12,
                     },
                   }}
                 />
@@ -394,7 +421,7 @@ const styles = StyleSheet.create({
   incomeDetails: {
     marginLeft: 15,
 
-    width: Dimensions.get("window").width * 0.4,
+    width: Dimensions.get("window").width * 0.42,
   },
   incomeName: {
     width: Dimensions.get("window").width * 0.2,
@@ -419,7 +446,7 @@ const styles = StyleSheet.create({
   trashPosition: {
     position: "absolute",
     right: 10,
-    top: 55,
+    top: 65,
     alignItems: "center",
     justifyContent: "center",
     // height: Dimensions.get("window").height * 0.1,

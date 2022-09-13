@@ -134,7 +134,7 @@ export const userLogout = () => {
 export const userHistory = () => async (dispatch) => {
   const access_token = await getAccessToken();
 
-  return fetch(baseUrl + "/users/detail", {
+  return fetch(baseUrl + "users/detail", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -149,5 +149,6 @@ export const userHistory = () => async (dispatch) => {
     })
     .then((data) => {
       dispatch(userHistoryDispatch(data));
+      return data;
     });
 };

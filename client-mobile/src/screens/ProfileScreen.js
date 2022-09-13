@@ -16,8 +16,8 @@ import {
   fetchProfile,
   updateProfile,
   setLoadingProfile,
-  // setLoadingUpdateProfile, <-- ga kepake kayanya uncomment kalo butuh
 } from "../store/actionCreator/profile";
+import LoadingScreen from "../components/LoadingScreen";
 
 export default function ProfileScreen({ navigation }) {
   const [hashGalleryPermission, setHashGalleryPermission] =
@@ -32,36 +32,33 @@ export default function ProfileScreen({ navigation }) {
 
   const dispatch = useDispatch();
 
-  const { profile, loadingFetchProfile } = useSelector((state) => {
+  const { loadingFetchProfile } = useSelector((state) => {
     return state.profileReducer;
   });
 
   useEffect(() => {
-    (async () => {
-      const galleryStatus =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      setHashGalleryPermission(galleryStatus.status === "granted");
-    })();
-
     dispatch(fetchProfile())
-      .then(() => {
+      .then((profile) => {
         setInputProfile({
           firstName: profile.firstName,
           lastName: profile.lastName,
           phone: profile.phone,
           profilePicture: profile.profilePicture,
         });
-
-        // console.log(
-        //   inputProfile,
-        //   profile,
-        //   "<<<<< INI DARI FETCH PROFILE SCREEN"
-        // );
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
       })
-      .finally(dispatch(setLoadingProfile(false)));
+      .finally(() => {
+        dispatch(setLoadingProfile(false));
+        console.log(inputProfile);
+      });
+
+    (async () => {
+      const galleryStatus =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      setHashGalleryPermission(galleryStatus.status === "granted");
+    })();
   }, []);
 
   const pickImage = async () => {
@@ -115,14 +112,19 @@ export default function ProfileScreen({ navigation }) {
             </Text>
           </Pressable>
           <Image
-            source={{ uri: image.uri }}
+            source={{ uri: inputProfile.uri }}
             style={{ width: 150, height: 150, borderRadius: 10 }}
           />
         </View>
       </>
     );
   };
+
   const submitProfile = () => {
+    if (!image) {
+      setImage("");
+    }
+    dispatch(setLoadingProfile(true));
     dispatch(
       updateProfile({
         ...inputProfile,
@@ -130,12 +132,12 @@ export default function ProfileScreen({ navigation }) {
       })
     )
       .then(() => {
-        console.log("berhasil");
+        dispatch(fetchProfile());
       })
       .catch((error) => {
         console.log(error);
       })
-      .finally((_) => {
+      .finally(() => {
         navigation.navigate("SettingsApp");
       });
   };
@@ -152,7 +154,7 @@ export default function ProfileScreen({ navigation }) {
   return (
     <>
       {loadingFetchProfile ? (
-        <Text>Loading...</Text>
+        <LoadingScreen />
       ) : (
         <View style={styles.container}>
           <View style={styles.containerHeader}>
@@ -160,7 +162,9 @@ export default function ProfileScreen({ navigation }) {
               <View style={styles.frame}>
                 <Image
                   style={styles.profilePicture}
-                  source={require("../../assets/pp.jpg")} // urang mau ganti kalo udah pada kelar aja takut bentrok by inyund melenyund takinyundkinyund
+                  source={{
+                    uri: inputProfile.profilePicture,
+                  }}
                 />
               </View>
             </View>
