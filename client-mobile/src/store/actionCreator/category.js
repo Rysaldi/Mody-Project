@@ -3,6 +3,7 @@ import {
   SUCCESS_FETCH_CATEGORIES,
   // SUCCESS_FETCH_CATEGORY,
   // LOADING_FETCH_CATEGORY,
+  LOADING_FETCH_CATEGORIES,
 } from "../actionTypes";
 // const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
 const baseUrl = "https://mody-server.herokuapp.com/";
@@ -14,10 +15,10 @@ export const setCategories = (categories) => {
   };
 };
 
-export const setLoading = (loading) => {
+export const setLoadingCategories = (payload) => {
   return {
     type: LOADING_FETCH_CATEGORIES,
-    payload: loading,
+    payload,
   };
 };
 
@@ -49,9 +50,9 @@ export const fetchCategories = () => {
       .then((categories) => {
         // console.log(categories);
         dispatch(setCategories(categories));
-      })
-      .finally(() => {
-        dispatch(setLoading(false));
       });
+    // .finally(() => {
+    //   dispatch(setLoading(false));
+    // });
   };
 };

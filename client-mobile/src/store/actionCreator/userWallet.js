@@ -16,6 +16,12 @@ const getAccessToken = async () => {
 };
 
 //-----------------------POSTUSERWALLET-------------------------------
+export const setLoadingAddUserToWallet = () => {
+  return {
+    type: LOADING_ADD_USER_TO_WALLET,
+    payload,
+  };
+};
 export const addNewUserWallet = (payload) => {
   // console.log(payload);
   return async (dispatch) => {

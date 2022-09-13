@@ -16,9 +16,9 @@ import DropDownPicker from "react-native-dropdown-picker";
 
 export default function AddUserToWallet({ navigation, route }) {
   const { id } = route.params;
-  // console.log(id);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
+  const [loading, setLoading] = React.useState(true);
   const [addToWalletEmail, setAddToWalletEmail] = React.useState("");
 
   const [open, setOpen] = React.useState(false);
@@ -34,12 +34,14 @@ export default function AddUserToWallet({ navigation, route }) {
         email: addToWalletEmail,
         WalletId: id,
         role: value,
-        UserId : 2
+        UserId: 2,
       })
-    ).then((_) => {
-      setAddToWalletEmail("");
-      navigation.navigate("WalletApp");
-    });
+    )
+      .then((_) => {
+        setAddToWalletEmail("");
+        navigation.navigate("WalletApp");
+      })
+      .finally(() => dispatch(setLoadingAddUserToWallet(false)));
   };
 
   return (

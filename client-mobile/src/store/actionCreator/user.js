@@ -3,6 +3,9 @@ import {
   USER_LOGIN,
   USER_LOGOUT,
   USER_HISTORY,
+  LOADING_USER_LOGIN,
+  LOADING_USER_LOGOUT,
+  LOADING_USER_HISTORY,
   LOADING_SET,
 } from "../actionTypes";
 
@@ -15,6 +18,12 @@ export const userLoginDispatch = (payload) => {
     payload,
   };
 };
+export const loadingSet = (payload) => {
+  return {
+    type: LOADING_SET,
+    payload,
+  };
+};
 
 export const userHistoryDispatch = (payload) => {
   return {
@@ -23,29 +32,49 @@ export const userHistoryDispatch = (payload) => {
   };
 };
 
-const userLogoutDispatch = (payload) => {
+export const userLogoutDispatch = (payload) => {
   return {
     type: USER_LOGOUT,
     payload,
   };
 };
 
-export const loadingSet = (payload) => {
+export const loadingUserLogin = (payload) => {
   return {
-    type: LOADING_SET,
+    type: LOADING_USER_LOGIN,
+    payload,
+  };
+};
+export const loadingUserLogout = (payload) => {
+  return {
+    type: LOADING_USER_LOGOUT,
+    payload,
+  };
+};
+export const loadingUserHistory = (payload) => {
+  return {
+    type: LOADING_USER_HISTORY,
     payload,
   };
 };
 
-const setAccessToken = async (token) => {
+export const setAccessToken = async (token) => {
   try {
     await AsyncStorage.setItem("access_token", token);
   } catch (error) {}
 };
 
+export const getAccessToken = async () => {
+  try {
+    const access_token = await AsyncStorage.getItem("access_token");
+    return access_token;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const userRegister = (registerUserForm) => {
   return (dispatch) => {
-    dispatch(loadingSet(true));
     return fetch(`${baseUrl}users/register`, {
       method: "POST",
       headers: {
@@ -96,12 +125,23 @@ export const userLogout = () => {
   };
 };
 
-export const userHistory = () => (dispatch) => {
+export const userHistory = () => async (dispatch) => {
+  const access_token = await getAccessToken();
+
   return fetch(baseUrl + "/users/detail", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      access_token,
     },
-    body: JSON.stringify(loginUserForm),
-  });
+  })
+    .then((result) => {
+      if (!result.ok) {
+        throw new Error("fetching wallets failed");
+      }
+      return result.json();
+    })
+    .then((data) => {
+      dispatch(userHistoryDispatch(data));
+    });
 };
