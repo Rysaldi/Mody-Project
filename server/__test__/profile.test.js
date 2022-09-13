@@ -73,17 +73,43 @@ describe("Profiles Routes Test", () => {
 		});
 	});
 
-	describe("PUT /profiles - success edit profile", () => {
-		test("200 ok - should return message success edit", async () => {
+	describe("PUT /profiles - Succes edit profile", () => {
+		it("200 - should return object message succes", async () => {
 			const response = await request(app)
 				.put("/profiles/update")
-				.send({ firstname: "bebas", lastName: "bebass", phone: "123" })
-				.set("access_token", access_token);
+				.set("access_token", access_token)
+				.send({ firstName: "admin", lastName: "admin", phone: "0821212121" });
 			expect(response.status).toBe(200);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
 		});
 	});
+
+
+	describe("PUT /profiles - Succes edit photo profile", () => {
+		it("200 - should return object message succes", async () => {
+			const response = await request(app)
+				.put("/profiles/update")
+				.set("access_token", access_token)
+				.attach("profilePicture", "./data/kfc-logo-icon-PNG.png")
+			expect(response.status).toBe(200);
+			expect(response.body).toBeInstanceOf(Object);
+			expect(response.body).toHaveProperty("message", expect.any(String));
+		});
+	});
+
+	describe("PUT /profiles - fail edit photo profile", () => {
+		it("200 - should return object message succes", async () => {
+			const response = await request(app)
+				.put("/profiles/update")
+				.set("access_token", access_token)
+				.attach("profilePicture", "./data/profile.json")
+			expect(response.status).toBe(400);
+			expect(response.body).toBeInstanceOf(Object);
+			expect(response.body).toHaveProperty("message", expect.any(String));
+		});
+	});
+
 
 	describe("PUT /profiles - failed edit profile", () => {
 		test("401 failed edit - should return object of error message", async () => {

@@ -167,12 +167,11 @@ describe("UserWallets routes test", () => {
 		test("201 OK - should return an error if access token is not provided", (done) => {
 			request(app)
 				.post("/userWallets")
-				.send({ UserId: 2, WalletId: 1, role: "Member" })
-        .set("access_token", access_token)
+				.send({ UserId: 2, WalletId: 1, role: "Member", email: "user1@mail.com" })
+				.set("access_token", access_token)
 				.end((err, res) => {
 					if (err) return done(err);
 					const { body, status } = res;
-
 					expect(status).toBe(201);
 					expect(body).toEqual(expect.any(Object));
 					expect(body).toHaveProperty("id", expect.any(Number));
@@ -188,7 +187,7 @@ describe("UserWallets routes test", () => {
 		test("404 Not Found - should return an error if wallet is not found", (done) => {
 			request(app)
 				.post("/userWallets")
-				.send({ role: "Manager", WalletId: 10, UserId: 2 })
+				.send({ role: "Manager", WalletId: 10, UserId: 2, email: "sahedTamvan@mail.com" })
 				.set("access_token", access_token)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -203,7 +202,7 @@ describe("UserWallets routes test", () => {
 	});
 
 	describe("POST /userWallets - failed create new userwallets", () => {
-		test("400 Bad Request - should return an error if user id is not provided", (done) => {
+		test("400 Bad Request - should return an error if email is not provided", (done) => {
 			request(app)
 				.post("/userWallets")
 				.send({ WalletId: 1, role: "Member" })
@@ -214,7 +213,7 @@ describe("UserWallets routes test", () => {
 
 					expect(status).toBe(400);
 					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(Object));
+					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
 		});
@@ -224,7 +223,7 @@ describe("UserWallets routes test", () => {
 		test("400 Bad Request - should return an error if role is not provided", (done) => {
 			request(app)
 				.post("/userWallets")
-				.send({ WalletId: 1, UserId: 2 })
+				.send({ WalletId: 1, email: "user1@mail.com" })
 				.set("access_token", access_token)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -242,7 +241,7 @@ describe("UserWallets routes test", () => {
 		test("400 Bad Request - should return an error if wallet is not provided", (done) => {
 			request(app)
 				.post("/userWallets")
-				.send({ role: "Member", UserId: 2 })
+				.send({ role: "Member", email : "user1@mail.com" })
 				.set("access_token", access_token)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -379,7 +378,7 @@ describe("UserWallets routes test", () => {
 		});
 	});
 
-  describe("DELETE /userWallets - failed delete userwallets", () => {
+	describe("DELETE /userWallets - failed delete userwallets", () => {
 		test("401 Unauthorized - should return error message", (done) => {
 			request(app)
 				.delete("/userWallets/10")
