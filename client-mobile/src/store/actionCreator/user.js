@@ -9,7 +9,7 @@ import {
   LOADING_SET,
 } from "../actionTypes";
 
-// const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
+// const baseUrl = "https://9251-180-242-194-246.ap.ngrok.io/";
 const baseUrl = "https://mody-server.herokuapp.com/";
 
 export const userLoginDispatch = (payload) => {
@@ -73,6 +73,12 @@ export const getAccessToken = async () => {
   }
 };
 
+const clearAccessToken = async () => {
+  try {
+    return AsyncStorage.clear();
+  } catch (error) {}
+};
+
 export const userRegister = (registerUserForm) => {
   return (dispatch) => {
     return fetch(`${baseUrl}users/register`, {
@@ -119,7 +125,7 @@ export const userLogin = (loginUserForm) => {
 
 export const userLogout = () => {
   return (dispatch) => {
-    AsyncStorage.clear().then((_) => {
+    clearAccessToken().then((_) => {
       dispatch(userLogoutDispatch(false));
     });
   };

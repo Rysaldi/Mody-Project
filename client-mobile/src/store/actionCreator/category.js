@@ -5,7 +5,7 @@ import {
   // LOADING_FETCH_CATEGORY,
   LOADING_FETCH_CATEGORIES,
 } from "../actionTypes";
-// const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
+// const baseUrl = "https://9251-180-242-194-246.ap.ngrok.io/";
 const baseUrl = "https://mody-server.herokuapp.com/";
 
 export const setCategories = (categories) => {

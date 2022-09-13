@@ -1,28 +1,28 @@
 {
-	"development": {
-		"username": "postgres",
-		"password": "hacktiv123",
-		"database": "mody_DB",
-		"host": "127.0.0.1",
-		"dialect": "postgres"
-	},
-	"test": {
-		"username": "postgres",
-		"password": "postgres",
-		"database": "mody_DB_test",
-		"host": "127.0.0.1",
-		"dialect": "postgres"
-	},
-	"production": {
-		"use_env_variable": "DATABASE_URL",
-		"ssl": true,
-		"dialect": "postgres",
-		"protocol": "postgres",
-		"dialectOptions": {
-			"ssl": {
-				"require": true,
-				"rejectUnauthorized": false
-			}
-		}
-	}
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "mody_DB",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "mody_DB_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "ssl": true,
+    "dialect": "postgres",
+    "protocol": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
 }

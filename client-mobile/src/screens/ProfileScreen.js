@@ -22,10 +22,6 @@ import {
 export default function ProfileScreen({ navigation }) {
   const [hashGalleryPermission, setHashGalleryPermission] =
     React.useState(null);
-  const dispatch = useDispatch();
-  const { profile, loadingFetchProfile } = useSelector((state) => {
-    state.profileReducer;
-  });
   const [image, setImage] = React.useState(null);
   const [inputProfile, setInputProfile] = React.useState({
     firstName: "",
@@ -34,12 +30,38 @@ export default function ProfileScreen({ navigation }) {
     profilePicture: null,
   });
 
+  const dispatch = useDispatch();
+
+  const { profile, loadingFetchProfile } = useSelector((state) => {
+    return state.profileReducer;
+  });
+
   useEffect(() => {
     (async () => {
       const galleryStatus =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       setHashGalleryPermission(galleryStatus.status === "granted");
     })();
+
+    dispatch(fetchProfile())
+      .then(() => {
+        setInputProfile({
+          firstName: profile.firstName,
+          lastName: profile.lastName,
+          phone: profile.phone,
+          profilePicture: profile.profilePicture,
+        });
+
+        // console.log(
+        //   inputProfile,
+        //   profile,
+        //   "<<<<< INI DARI FETCH PROFILE SCREEN"
+        // );
+      })
+      .catch((error) => {
+        // console.log(error);
+      })
+      .finally(dispatch(setLoadingProfile(false)));
   }, []);
 
   const pickImage = async () => {
@@ -101,7 +123,6 @@ export default function ProfileScreen({ navigation }) {
     );
   };
   const submitProfile = () => {
-    console.log("submit berhasil");
     dispatch(
       updateProfile({
         ...inputProfile,
@@ -110,10 +131,12 @@ export default function ProfileScreen({ navigation }) {
     )
       .then(() => {
         console.log("berhasil");
-        navigation.navigate("SettingsApp");
       })
       .catch((error) => {
         console.log(error);
+      })
+      .finally((_) => {
+        navigation.navigate("SettingsApp");
       });
   };
 
@@ -126,25 +149,9 @@ export default function ProfileScreen({ navigation }) {
     });
   };
 
-  useEffect(() => {
-    dispatch(fetchProfile())
-      .then(() => {
-        setInputProfile({
-          firstName: profile.firstName,
-          lastName: profile.lastName,
-          phone: profile.phone,
-          profilePicture: profile.profilePicture,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(dispatch(setLoadingProfile(false)));
-  }, []);
-
   return (
     <>
-      {loading ? (
+      {loadingFetchProfile ? (
         <Text>Loading...</Text>
       ) : (
         <View style={styles.container}>

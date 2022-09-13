@@ -7,14 +7,19 @@ import {
   Dimensions,
   Pressable,
 } from "react-native";
-import { userLogout } from "../store/actionCreator/user";
+import { userLogout, loadingUserLogout } from "../store/actionCreator/user";
 import { useDispatch } from "react-redux";
 
 export default function LogoutScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
   const onTapLogout = () => {
-    dispatch(userLogout()).finally(() => dispatch(loadingUserLogout(false)));
+    dispatch(userLogout())
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => dispatch(loadingUserLogout(false)));
   };
 
   return (

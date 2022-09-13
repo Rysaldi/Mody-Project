@@ -5,7 +5,8 @@ import {
   LOADING_UPDATE_PROFILE,
 } from "../actionTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
+// const baseUrl = "https://9251-180-242-194-246.ap.ngrok.io/";
+
 const baseUrl = "https://mody-server.herokuapp.com/";
 
 const getAccessToken = async () => {
@@ -15,10 +16,10 @@ const getAccessToken = async () => {
   } catch (error) {}
 };
 
-export const setProfile = (profile) => {
+export const setProfile = (payload) => {
   return {
     type: SUCCESS_FETCH_PROFILE,
-    payload: profile,
+    payload,
   };
 };
 // export const setUpdateProfile = (profile) => {
@@ -28,7 +29,7 @@ export const setProfile = (profile) => {
 //   };
 // };
 
-export const setLoadingProfile = () => {
+export const setLoadingProfile = (payload) => {
   return {
     type: LOADING_FETCH_PROFILE,
     payload,
@@ -42,6 +43,7 @@ export const setLoadingUpdateProfile = () => {
 };
 
 export const fetchProfile = () => {
+  // console.log("masuk fetch profile");
   return async (dispatch) => {
     const access_token = await getAccessToken();
 
@@ -51,17 +53,15 @@ export const fetchProfile = () => {
       },
     })
       .then((response) => {
+        // console.log("masuk fetch profile response nih");
         return response.json();
       })
       .then((profile) => {
         dispatch(setProfile(profile));
+        // console.log(profile);
       });
-    // .finally(() => {
-    //   dispatch(setLoading(false));
-    // });
   };
 };
-
 export const updateProfile = (payload) => {
   console.log("masuk ke store");
   return async (dispatch) => {
@@ -75,6 +75,7 @@ export const updateProfile = (payload) => {
     data.append("lastName", payload.lastName);
     data.append("phone", payload.phone);
     data.append("profilePicture", { uri: localUri, name: filename, type });
+    console.log(JSON.stringify(data, null, 2));
     return fetch(baseUrl + "profiles/update", {
       method: "PUT",
       headers: {
@@ -85,13 +86,14 @@ export const updateProfile = (payload) => {
       body: data,
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("update profile failed");
-        }
+        // console.log("udah dikirim", data);
         return response.json();
       })
       .then(() => {
         dispatch(fetchProfile());
+      })
+      .catch((err) => {
+        // console.log(err);
       });
   };
 };
