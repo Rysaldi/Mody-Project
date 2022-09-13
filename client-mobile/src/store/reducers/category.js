@@ -42,4 +42,4 @@ function categoryReducer(state = initialState, action) {
   }
 }
 
-module.exports = categoryReducer;
+export default categoryReducer;

@@ -4,8 +4,8 @@ import {
   LOADING_ADD_USER_TO_WALLET,
 } from "../actionTypes/index";
 
-// const baseUrl = "https://mody-server.herokuapp.com/";
-const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
+const baseUrl = "https://mody-server.herokuapp.com/";
+// const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
 
 //-----------------------getAccessToken--------------------------
 const getAccessToken = async () => {
@@ -30,18 +30,17 @@ export const addNewUserWallet = (payload) => {
         role: payload.role,
         WalletId: payload.WalletId,
         email: payload.email,
-        UserId : payload.UserId
+        UserId: payload.UserId,
       }),
     })
-    .then((result) => {
-      console.log(result);
-      if (!result.ok) {
-        return result.json().then((message) => {
-          throw message;
-        });
-      }
-      return result
-        .json()
+      .then((result) => {
+        console.log(result);
+        if (!result.ok) {
+          return result.json().then((message) => {
+            throw message;
+          });
+        }
+        return result.json();
       })
       .catch((error) => {
         throw error;
