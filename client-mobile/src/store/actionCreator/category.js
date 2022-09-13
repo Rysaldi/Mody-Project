@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-  LOADING_FETCH_CATEGORIES,
   SUCCESS_FETCH_CATEGORIES,
   // SUCCESS_FETCH_CATEGORY,
   // LOADING_FETCH_CATEGORY,

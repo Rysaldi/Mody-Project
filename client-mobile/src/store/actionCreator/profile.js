@@ -46,34 +46,36 @@ export const fetchProfile = () => {
 };
 
 export const updateProfile = (payload) => {
-  console.log("masuk ke store");
-  return async (dispatch) => {
-    const access_token = await getAccessToken();
-
-    const data = new FormData();
-    data.append("firstName", payload.firstName);
-    data.append("lastName", payload.lastName);
-    data.append("phone", payload.phone);
-    data.append("profilePicture", payload.profilePicture.uri);
-    console.log(data, "ini data !!");
-    return fetch(baseUrl + "profiles/update", {
-      method: "PUT",
-      headers: {
-        access_token,
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-      },
-      body: data,
-    })
-      .then((response) => {
-        console.log("udah dikirim", data);
-        return response.json();
-      })
-      .then(() => {
-        // dispatch(fetchProfile());
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+	console.log("masuk ke store");
+	return async (dispatch) => {
+		const access_token = await getAccessToken()
+		let localUri = payload.profilePicture.uri;
+		let filename = localUri.split('/').pop();
+		let match = /\.(\w+)$/.exec(filename);
+		let type = match ? `profilePicture/${match[1]}` : `profilePicture`;
+		const data = new FormData();
+		data.append("firstName", payload.firstName);
+		data.append("lastName", payload.lastName);
+		data.append("phone", payload.phone);
+		data.append("profilePicture", {uri:localUri, name:filename, type});
+		return fetch(baseUrl + "profiles/update", {
+			method: "PUT",
+			headers: {
+				access_token,
+				"Accept": "application/json",
+				"Content-Type": "multipart/form-data",
+			},
+			body: data,
+		})
+			.then((response) => {
+				console.log("udah dikirim", data);
+				return response.json();
+			})
+			.then(() => {
+				// dispatch(fetchProfile());
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 };
