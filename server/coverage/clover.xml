@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1663047641907" clover="3.2.0">
-  <project timestamp="1663047641907" name="All files">
-    <metrics statements="488" coveredstatements="470" conditionals="131" coveredconditionals="115" methods="54" coveredmethods="54" elements="673" coveredelements="639" complexity="0" loc="488" ncloc="488" packages="6" files="27" classes="27"/>
+<coverage generated="1663049765733" clover="3.2.0">
+  <project timestamp="1663049765733" name="All files">
+    <metrics statements="488" coveredstatements="470" conditionals="133" coveredconditionals="117" methods="54" coveredmethods="54" elements="675" coveredelements="641" complexity="0" loc="488" ncloc="488" packages="6" files="27" classes="27"/>
     <package name="server">
       <metrics statements="15" coveredstatements="15" conditionals="2" coveredconditionals="1" methods="0" coveredmethods="0"/>
       <file name="app.js" path="/Users/ryu/hacktiv8/Final Project/Mody-Project/server/app.js">
@@ -290,7 +290,7 @@
       </file>
     </package>
     <package name="server.middlewares">
-      <metrics statements="106" coveredstatements="104" conditionals="58" coveredconditionals="56" methods="8" coveredmethods="8"/>
+      <metrics statements="106" coveredstatements="104" conditionals="60" coveredconditionals="58" methods="8" coveredmethods="8"/>
       <file name="authentication.js" path="/Users/ryu/hacktiv8/Final Project/Mody-Project/server/middlewares/authentication.js">
         <metrics statements="16" coveredstatements="15" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="1" count="6" type="stmt"/>
@@ -385,7 +385,7 @@
         <line num="39" count="6" type="stmt"/>
       </file>
       <file name="imageUpload.js" path="/Users/ryu/hacktiv8/Final Project/Mody-Project/server/middlewares/imageUpload.js">
-        <metrics statements="22" coveredstatements="22" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
+        <metrics statements="22" coveredstatements="22" conditionals="6" coveredconditionals="6" methods="2" coveredmethods="2"/>
         <line num="1" count="6" type="stmt"/>
         <line num="2" count="3" type="stmt"/>
         <line num="3" count="3" type="stmt"/>
@@ -395,19 +395,19 @@
         <line num="7" count="3" type="stmt"/>
         <line num="8" count="3" type="stmt"/>
         <line num="9" count="3" type="stmt"/>
-        <line num="11" count="3" type="stmt"/>
-        <line num="13" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="14" count="1" type="stmt"/>
-        <line num="16" count="2" type="stmt"/>
-        <line num="18" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="23" count="2" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
-        <line num="26" count="1" type="stmt"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="37" count="1" type="stmt"/>
-        <line num="40" count="2" type="stmt"/>
-        <line num="44" count="6" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="11" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="15" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="41" count="6" type="stmt"/>
       </file>
     </package>
     <package name="server.models">
