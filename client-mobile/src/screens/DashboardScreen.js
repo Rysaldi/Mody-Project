@@ -9,7 +9,10 @@ import {
 import CardLatesHistory from "../components/CardLatesHistory";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { userHistory, loadingUserHistory } from "../store/actionCreator/user";
+import {
+  userHistory,
+  loadingUserHistoryDispatch,
+} from "../store/actionCreator/user";
 
 export default function DashboardScreen() {
   const dispatch = useDispatch();
@@ -23,12 +26,11 @@ export default function DashboardScreen() {
         console.log(error);
       })
       .finally(() => {
-        dispatch(loadingUserHistory(false));
+        dispatch(loadingUserHistoryDispatch(false));
       });
   }, []);
 
   console.log(userDetail);
-
   return (
     <>
       {/* Navbar */}
@@ -273,11 +275,11 @@ const styles = StyleSheet.create({
   minusNumber: {
     color: "#cc5656",
     fontWeight: "bold",
-    fontSize: 10,
+    fontSize: 12,
   },
   plusNumber: {
     color: "#7eb764",
     fontWeight: "bold",
-    fontSize: 10,
+    fontSize: 12,
   },
 });

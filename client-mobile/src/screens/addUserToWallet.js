@@ -47,40 +47,34 @@ export default function AddUserToWallet({ navigation, route }) {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.formAdd}>
-          <Text style={styles.headerText}>Add User To Wallet</Text>
-          <Text style={styles.textAdd}>Add New User</Text>
-          <View style={styles.formAddWallet}>
-            <Text style={styles.textAdd}>Email</Text>
-            <TextInput
-              value={addToWalletEmail}
-              onChangeText={setAddToWalletEmail}
-              style={styles.input}
-            />
-          </View>
-          <View style={styles.formAddWallet}>
-            <Text style={styles.textAdd}>Role</Text>
-            {/* <TextInput
-              value={addToWalletRole}
-              onChangeText={setAddToWalletRole}
-              style={styles.input}
-            /> */}
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={role}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setRole}
-            />
-          </View>
-          <View style={styles.buttonToAdd}>
-            <Pressable style={styles.buttonAdd}>
-              <Text style={styles.buttonText} onPress={submitAddToWallet}>
-                Add User to Wallet
-              </Text>
-            </Pressable>
-          </View>
+        <Text style={styles.headerText}>Add User To Wallet</Text>
+        <Text style={styles.textAdd}>Add New User</Text>
+        <View style={styles.formAddWallet}>
+          <Text style={styles.textAdd}>Email</Text>
+          <TextInput
+            value={addToWalletEmail}
+            onChangeText={setAddToWalletEmail}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.formAddWallet}>
+          <Text style={styles.textAdd}>Role</Text>
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={role}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setRole}
+            style={{ marginTop: 10, borderColor: "#ddd" }}
+          />
+        </View>
+        <View style={styles.buttonToAdd}>
+          <Pressable style={styles.buttonAdd}>
+            <Text style={styles.buttonText} onPress={submitAddToWallet}>
+              Add User to Wallet
+            </Text>
+          </Pressable>
         </View>
       </View>
     </>
@@ -89,6 +83,7 @@ export default function AddUserToWallet({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
   },
   formAdd: {
     width: Dimensions.get("window").width,
@@ -99,31 +94,31 @@ const styles = StyleSheet.create({
     paddingRight: 25,
     borderBottomRightRadius: 50,
   },
-
   headerText: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 25,
-    color: "white",
+    color: "#242525",
   },
   textAdd: {
     fontWeight: "bold",
     fontSize: 18,
-    color: "white",
+    color: "#171717",
+    marginTop: 10,
   },
   formAddWallet: {
-    flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 15,
   },
   input: {
     height: Dimensions.get("window").height * 0.03,
-    width: Dimensions.get("window").width * 0.55,
+    width: Dimensions.get("window").width * 0.9,
 
     paddingRight: 10,
     borderBottomWidth: 2,
-    borderColor: "white",
-    color: "white",
+    borderColor: "#ddd",
+    color: "#171717",
+    marginTop: 10,
   },
   buttonToAdd: {
     alignItems: "center",
@@ -135,11 +130,11 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height * 0.045,
     width: Dimensions.get("window").width * 0.3,
     borderRadius: 20,
-    backgroundColor: "white",
+    backgroundColor: "#2F6FFF",
     marginTop: 15,
   },
   buttonText: {
-    color: "#2F6FFF",
+    color: "white",
     fontSize: 14,
     textAlign: "center",
     fontWeight: "bold",
@@ -152,7 +147,7 @@ const styles = StyleSheet.create({
   },
   walletCard: {
     marginTop: 15,
-    backgroundColor: "white",
+    backgroundColor: "#171717",
     paddingVertical: 20,
     borderRadius: 5,
     elevation: 5,
