@@ -51,7 +51,7 @@ export const loadingUserLogout = (payload) => {
     payload,
   };
 };
-export const loadingUserHistory = (payload) => {
+export const loadingUserHistoryDispatch = (payload) => {
   return {
     type: LOADING_USER_HISTORY,
     payload,
@@ -137,7 +137,7 @@ export const userHistory = () => async (dispatch) => {
   })
     .then((result) => {
       if (!result.ok) {
-        throw new Error("fetching wallets failed");
+        throw new Error("fetching user history failed");
       }
       return result.json();
     })

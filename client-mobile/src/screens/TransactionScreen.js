@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Dimensions,
   TextInput,
+  Image
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -84,7 +85,7 @@ export default function TransactionScreen({ route }) {
     <View style={styles.container}>
       <View style={styles.formAddTransaction}>
         <View style={styles.formInput}>
-          <Text style={styles.inputName}>Name</Text>
+          <Text style={styles.inputNameForm}>Name</Text>
           <TextInput
             style={styles.input}
             onChangeText={(text) =>
@@ -97,7 +98,7 @@ export default function TransactionScreen({ route }) {
           />
         </View>
         <View style={styles.formInput}>
-          <Text style={styles.inputName}>Amount</Text>
+          <Text style={styles.inputNameForm}>Amount</Text>
           <TextInput
             style={styles.input}
             keyboardType="numeric"
@@ -112,7 +113,12 @@ export default function TransactionScreen({ route }) {
         </View>
         <View style={styles.formInput}>
           <Text style={styles.inputName}>Date</Text>
-          <Text onPress={showPicker}>{date.toUTCString()}</Text>
+          <Pressable onPress={showPicker}>
+						<View style={{ borderColor: "#ddd", borderWidth: 1, padding: 12, backgroundColor: "white", borderRadius: 7, display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+							<Text>{date.toUTCString()}</Text>
+							<Image style={{ width: 14, height: 14 }} source={require("../../assets/icons/arrowBottom.png")} />
+						</View>
+					</Pressable>
           <>
             {isPickerShow && (
               <DateTimePicker
@@ -134,6 +140,7 @@ export default function TransactionScreen({ route }) {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setItems}
+            style = {{borderColor:"#ddd"}}
           />
         </View>
         <View style={styles.formInput}>
@@ -150,9 +157,6 @@ export default function TransactionScreen({ route }) {
           />
         </View>
         <View style={styles.buttonToAdd}>
-          <Pressable style={styles.buttonCancel}>
-            <Text style={styles.buttonText}>Cancel</Text>
-          </Pressable>
           <Pressable style={styles.buttonAdd}>
             <Text style={styles.buttonText} onPress={submitNewTransaction}>
               Submit
@@ -177,12 +181,16 @@ const styles = StyleSheet.create({
   },
   inputName: {
     fontWeight: "bold",
+    marginBottom: 10
+  },
+  inputNameForm: {
+    fontWeight: "bold"
   },
   input: {
     height: Dimensions.get("window").height * 0.05,
-
     borderBottomWidth: 2,
     borderColor: "#d9d9d9",
+    color: "#000"
   },
   formInput: {
     marginTop: 15,
