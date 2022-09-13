@@ -1,47 +1,48 @@
 import { LOADING_FETCH_PROFILE, SUCCESS_FETCH_PROFILE } from "../actionTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// const baseUrl = "https://mody-server.herokuapp.com/";
-const baseUrl = "https://e526-180-254-67-19.ap.ngrok.io/";
+// const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
+const baseUrl = "https://mody-server.herokuapp.com/";
+
 const getAccessToken = async () => {
-	try {
-		const accessToken = await AsyncStorage.getItem("access_token");
-		return accessToken;
-	} catch (error) { }
+  try {
+    const accessToken = await AsyncStorage.getItem("access_token");
+    return accessToken;
+  } catch (error) {}
 };
 
 export const setProfile = (profile) => {
-	return {
-		type: SUCCESS_FETCH_PROFILE,
-		payload: profile,
-	};
+  return {
+    type: SUCCESS_FETCH_PROFILE,
+    payload: profile,
+  };
 };
 
 export const setLoading = (loading) => {
-	return {
-		type: LOADING_FETCH_PROFILE,
-		payload: loading,
-	};
+  return {
+    type: LOADING_FETCH_PROFILE,
+    payload: loading,
+  };
 };
 
 export const fetchProfile = () => {
-	return async (dispatch) => {
-		const access_token = await getAccessToken()
+  return async (dispatch) => {
+    const access_token = await getAccessToken();
 
-		return fetch(baseUrl + "profiles", {
-			headers: {
-				access_token,
-			},
-		})
-			.then((response) => {
-				return response.json();
-			})
-			.then((profile) => {
-				dispatch(setProfile(profile));
-			})
-			.finally(() => {
-				dispatch(setLoading(false));
-			});
-	};
+    return fetch(baseUrl + "profiles", {
+      headers: {
+        access_token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((profile) => {
+        dispatch(setProfile(profile));
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  };
 };
 
 export const updateProfile = (payload) => {

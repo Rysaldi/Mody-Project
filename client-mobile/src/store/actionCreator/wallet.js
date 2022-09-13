@@ -5,18 +5,16 @@ import {
   SUCCESS_DELETE_WALLET,
   LOADING_FETCH_WALLETS,
   LOADING_FETCH_DETAIL,
-
 } from "../actionTypes";
 
-// const baseUrl = "https://mody-server.herokuapp.com/";
-const baseUrl = "https://e526-180-254-67-19.ap.ngrok.io/";
+const baseUrl = "https://mody-server.herokuapp.com/";
+// const baseUrl = "https://15bd-103-213-129-77.ap.ngrok.io/";
 
 //-----------------------getAccessToken--------------------------
 const getAccessToken = async () => {
   try {
     const accessToken = await AsyncStorage.getItem("access_token");
-    return accessToken
-
+    return accessToken;
   } catch (error) {}
 };
 
@@ -35,12 +33,11 @@ export const loadingFetchAllWallet = (payload) => {
 };
 export const fetchWallets = () => {
   return async (dispatch) => {
-    const accessToken = await getAccessToken()
+    const accessToken = await getAccessToken();
     return fetch(`${baseUrl}wallets`, {
       method: "GET",
       headers: {
-        access_token:
-          accessToken
+        access_token: accessToken,
       },
     })
       .then((result) => {
@@ -52,8 +49,8 @@ export const fetchWallets = () => {
       .then((data) => {
         dispatch(successFetchAllWallet(data));
       })
-      .catch(err=>{
-        throw err
+      .catch((err) => {
+        throw err;
       })
       .finally(() => {
         dispatch(loadingFetchAllWallet(false));
@@ -76,12 +73,11 @@ export const loadingFetchDetailWallet = (payload) => {
 };
 export const fetchDetail = (id) => {
   return async (dispatch) => {
-    const accessToken = await getAccessToken()
+    const accessToken = await getAccessToken();
     return fetch(`${baseUrl}wallets/${id}`, {
       method: "GET",
       headers: {
-        access_token:
-          accessToken,
+        access_token: accessToken,
       },
     })
       .then((result) => {
@@ -102,13 +98,12 @@ export const fetchDetail = (id) => {
 //-----------------------POSTWALLET---------------------------------------
 export const addNewWallet = (payload) => {
   return async (dispatch) => {
-    const accessToken = await getAccessToken()
+    const accessToken = await getAccessToken();
     return fetch(`${baseUrl}wallets/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        access_token:
-          accessToken,
+        access_token: accessToken,
       },
       body: JSON.stringify(payload),
     }).then((result) => {
@@ -120,7 +115,7 @@ export const addNewWallet = (payload) => {
       return result
         .json()
         .then((data) => {
-          dispatch(fetchWallets())
+          dispatch(fetchWallets());
         })
         .catch((error) => {
           throw error;
@@ -131,32 +126,32 @@ export const addNewWallet = (payload) => {
 
 //-----------------------DELETEWALLET---------------------------------------
 export const successDeleteWallet = (payload) => {
-    return {
-      type: SUCCESS_DELETE_WALLET,
-      payload,
-    };
+  return {
+    type: SUCCESS_DELETE_WALLET,
+    payload,
   };
+};
 
 export const deleteWallet = (walletId) => {
-    return async (dispatch) => {
-      const accessToken = await getAccessToken()
-      fetch(`${baseUrl}wallets/${walletId}`, {
-        method: "delete",
-        headers: {
-          "Content-Type": "application/json",
-          access_token: accessToken
-        },
+  return async (dispatch) => {
+    const accessToken = await getAccessToken();
+    fetch(`${baseUrl}wallets/${walletId}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: accessToken,
+      },
+    })
+      .then((result) => {
+        if (!result.ok) {
+          throw new Error("error deleting wallet");
+        }
+        return result.json();
       })
-        .then((result) => {
-          if (!result.ok) {
-            throw new Error("error deleting wallet");
-          }
-          return result.json();
-        })
-        .then(() => dispatch(successDeleteWallet(walletId)))
-        .then(()=>dispatch(fetchWallets()))
-        .catch((err) => {
-          throw err
-        });
-    };
+      .then(() => dispatch(successDeleteWallet(walletId)))
+      .then(() => dispatch(fetchWallets()))
+      .catch((err) => {
+        throw err;
+      });
   };
+};
