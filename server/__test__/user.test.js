@@ -337,12 +337,11 @@ describe("User Routes Test", () => {
 
 		test("200 Sucess read detail - should return data user in object", (done) => {
 			request(app)
-				.get("/users/1")
+				.get("/users/detail")
 				.set("access_token", access_token)
 				.end((err, res) => {
 					if (err) return done(err);
 					const { body, status } = res;
-
 					expect(status).toBe(200);
 					expect(body).toEqual(expect.any(Object));
 					expect(body).toHaveProperty("id", expect.any(Number));

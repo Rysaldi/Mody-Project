@@ -7,6 +7,7 @@ let access_token;
 
 beforeAll(async () => {
 	try {
+
 		const users = require("../data/user.json");
 		users.forEach((user) => {
 			delete user.id;
@@ -55,7 +56,7 @@ describe("GET /categories", () => {
 				expect(response.status).toBe(200);
 				expect(response.body).toBeInstanceOf(Array);
 				expect(response.body[0]).toBeInstanceOf(Object);
-			} catch (error) {}
+			} catch (error) { }
 		});
 	});
 
@@ -69,7 +70,7 @@ describe("GET /categories", () => {
 					expect(response.body).toHaveProperty("message", expect.any(String));
 				});
 		});
-	})
+	});
 });
 
 describe("POST /categories", () => {
@@ -157,7 +158,7 @@ describe("PUT /categories/:id", () => {
 					expect(response.body).toBeInstanceOf(Object);
 				});
 		});
-		it("Should be return an status 400 and object with message error",async () => {
+		it("Should be return an status 400 and object with message error", async () => {
 			const payload = {
 				name: "test",
 				type: "",
@@ -196,7 +197,7 @@ describe("DELETE /categories:id", () => {
 				const response = await request(app).delete("/categories/1").set("access_token", access_token);
 				expect(response.status).toBe(200);
 				expect(response.body).toBeInstanceOf(Object);
-			} catch (error) {}
+			} catch (error) { }
 		});
 	});
 
@@ -206,7 +207,24 @@ describe("DELETE /categories:id", () => {
 				const response = await request(app).delete("/categories/100").set("access_token", access_token);
 				expect(response.status).toBe(404);
 				expect(response.body).toBeInstanceOf(Object);
-			} catch (error) {}
+			} catch (error) { }
 		});
 	});
+});
+
+describe("GET /categories - when category data is empty", () => {
+	it("Should be return an status 200 and emppty array", async () => {
+		try {
+			await queryInterface.bulkDelete("Categories", null, {
+				truncate: true,
+				cascade: true,
+				restartIdentity: true,
+			});
+			const response = await request(app).get("/categories").set("access_token", access_token);
+			console.log(response);
+			expect(response.status).toBe(200);
+			expect(response.body).toBeInstanceOf(Array);
+			expect(response.body[0]).toBeInstanceOf(Object);
+		} catch (error) { }
+	})
 });

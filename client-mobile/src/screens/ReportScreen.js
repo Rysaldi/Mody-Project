@@ -14,7 +14,6 @@ export default function ReportScreen({ route }) {
   }, []);
 
   const setTotalIncome = (transactions) => {
-    console.log(transactions);
     ;
     if (!transactions || transactions.length === 0) {
       return 0;
@@ -29,7 +28,6 @@ export default function ReportScreen({ route }) {
   };
 
   const setTotalExpense = (transactions) => {
-    console.log(transactions);
     if (!transactions || transactions.length === 0) {
       return 0;
     }
