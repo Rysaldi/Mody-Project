@@ -1,6 +1,5 @@
 const imageUpload = async (req, res, next) => {
     try {
-      console.log("MASUK");
       const multer = require("multer");
       const storage = multer.memoryStorage();
       const upload = multer({ storage });
@@ -37,10 +36,6 @@ const imageUpload = async (req, res, next) => {
           req.profilePicture = response.data.url;
           next();
         })
-        .catch((err) => {
-            next(err);
-          
-        });
     } catch (err) {
       next(err);
     }

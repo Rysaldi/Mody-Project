@@ -22,18 +22,23 @@ class Controller {
 	static async addNewUserWallet(req, res, next) {
 		try {
 			const { WalletId, role, email } = req.body;
-			const findUser = await User.findOne({where :{
-				email:email
-			}})
-			if(findUser){
+			if (!email) {
+				throw { name: "EmailRequired" };
+			}
+			const findUser = await User.findOne({
+				where: {
+					email: email
+				}
+			});
+			if (findUser) {
 				const newUserWallet = await UserWallet.create({
-					UserId : +findUser.id,
+					UserId: +findUser.id,
 					WalletId,
 					role,
 				});
 				res.status(201).json(newUserWallet);
-			}else {
-				throw ({name:"NotFound"})
+			} else {
+				throw ({ name: "NotFound" });
 			}
 
 		} catch (error) {

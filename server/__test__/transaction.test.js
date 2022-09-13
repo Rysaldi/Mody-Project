@@ -406,6 +406,21 @@ describe("GET /transactions success", () => {
 	});
 });
 
+describe("GET /transactions success", () => {
+	it("Should be return an object", async () => {
+		const login = await request(app).post("/users/login").send({ email: "user2@mail.com", password: "user2" });
+		return request(app)
+			.get("/transactions")
+			.set("access_token", login.body.access_token)
+			.send({ WalletId: 1 })
+			.then((response) => {
+				expect(response.status).toBe(403);
+				expect(response.body).toBeInstanceOf(Object);
+				expect(response.body).toHaveProperty("message");
+			});
+	});
+});
+
 describe("GET /transactions fail because wallet not found", () => {
 	it("Should be return an object", async () => {
 		return request(app)
@@ -436,6 +451,31 @@ describe("POST /transactions success", () => {
 				expect(response.body).toHaveProperty("Transaction");
 				expect(response.body).toHaveProperty("Transaction", expect.any(Object));
 			});
+	});
+});
+
+describe("POST /transactions - Fail test", () => {
+	it("should be return an object message", async () => {
+		const data = {
+			name: "uploadTest",
+			amount: 2000,
+			date: new Date(),
+			CategoryId: 1000,
+			WalletId: 1,
+			description: "",
+			photo: "",
+		};
+		const login = await request(app)
+			.post("/users/login")
+			.send({ email: "admin@mail.com", password: "admin" });
+		access_token = login.body.access_token;
+		const response = await request(app)
+			.post("/transactions")
+			.set("access_token", access_token)
+			.send(data);
+		expect(response.status).toBe(404);
+		expect(response.body).toBeInstanceOf(Object);
+		expect(response.body).toHaveProperty("message");
 	});
 });
 
