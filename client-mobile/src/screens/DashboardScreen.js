@@ -13,7 +13,9 @@ import { userHistory, loadingUserHistory } from "../store/actionCreator/user";
 
 export default function DashboardScreen() {
   const dispatch = useDispatch();
-  const { userDetail } = useSelector((state) => state.userReducer);
+  const { userDetail, loadingUserHistory } = useSelector(
+    (state) => state.userReducer
+  );
 
   useEffect(() => {
     dispatch(userHistory())
@@ -24,6 +26,8 @@ export default function DashboardScreen() {
         dispatch(loadingUserHistory(false));
       });
   }, []);
+
+  console.log(userDetail);
 
   return (
     <>

@@ -103,29 +103,29 @@ export default function WalletScreen({ navigation, route }) {
 
   return (
     <>
-      {loadingWallets ? (
-        <LoadingScreen />
-      ) : (
-        <View style={styles.container}>
-          <View style={styles.formAdd}>
-            <Text style={styles.headerText}>Wallet</Text>
-            <Text style={styles.textAdd}>Add New Wallet</Text>
-            <View style={styles.formAddWallet}>
-              <Text style={styles.textAdd}>Name</Text>
-              <TextInput
-                value={walletName}
-                onChangeText={setWalletName}
-                style={styles.input}
-              />
-            </View>
-            <View style={styles.buttonToAdd}>
-              <Pressable style={styles.buttonAdd}>
-                <Text style={styles.buttonText} onPress={submitAddWallet}>
-                  Add Wallet
-                </Text>
-              </Pressable>
-            </View>
+      <View style={styles.container}>
+        <View style={styles.formAdd}>
+          <Text style={styles.headerText}>Wallet</Text>
+          <Text style={styles.textAdd}>Add New Wallet</Text>
+          <View style={styles.formAddWallet}>
+            <Text style={styles.textAdd}>Name</Text>
+            <TextInput
+              value={walletName}
+              onChangeText={setWalletName}
+              style={styles.input}
+            />
           </View>
+          <View style={styles.buttonToAdd}>
+            <Pressable style={styles.buttonAdd}>
+              <Text style={styles.buttonText} onPress={submitAddWallet}>
+                Add Wallet
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+        {loadingWallets ? (
+          <LoadingScreen />
+        ) : (
           <View style={styles.walletList}>
             <FlatList
               data={wallets}
@@ -135,8 +135,8 @@ export default function WalletScreen({ navigation, route }) {
               style={{ paddingHorizontal: 25 }}
             />
           </View>
-        </View>
-      )}
+        )}
+      </View>
     </>
   );
 }

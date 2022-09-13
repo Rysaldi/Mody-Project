@@ -6,6 +6,7 @@ import {
   Dimensions,
   ScrollView,
   Image,
+  Pressable,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
@@ -50,42 +51,46 @@ export default function ReportScreen({ route }) {
   const renderItem = ({ item }) => {
     return (
       <View style={styles.walletCard}>
-        <View style={styles.cardDetail}>
-          <Text style={styles.incomeName}>Type</Text>
-          {/* <Text style={styles.semiColon}>:</Text> */}
-          {/* <Text style={styles.incomeDetails}>{item.Category.type}</Text> */}
-          <>
-            {item.Category.type === "Income" ? (
-              <Text style={styles.incomeDetailsIncome}>
-                {item.Category.type}
-              </Text>
-            ) : (
-              <Text style={styles.incomeDetailsExpense}>
-                {item.Category.type}
-              </Text>
-            )}
-          </>
-        </View>
-        <View style={styles.cardDetail}>
-          <Text style={styles.incomeName}>Name</Text>
-          {/* <Text style={styles.semiColon}>:</Text> */}
-          <Text style={styles.incomeDetails}>{item.name}</Text>
-        </View>
-        <View style={styles.cardDetail}>
-          <Text style={styles.incomeName}>Amount</Text>
-          {/* <Text style={styles.semiColon}>:</Text> */}
-          <Text style={styles.incomeDetails}>{item.amount}</Text>
-        </View>
-        <View style={styles.cardDetail}>
-          <Text style={styles.incomeName}>Category</Text>
-          {/* <Text style={styles.semiColon}>:</Text> */}
-          <Text style={styles.incomeDetails}>{item.Category.name}</Text>
+        <View>
+          <View style={styles.cardDetail}>
+            <Text style={styles.incomeName}>Type</Text>
+            {/* <Text style={styles.semiColon}>:</Text> */}
+            {/* <Text style={styles.incomeDetails}>{item.Category.type}</Text> */}
+            <>
+              {item.Category.type === "Income" ? (
+                <Text style={styles.incomeDetailsIncome}>
+                  {item.Category.type}
+                </Text>
+              ) : (
+                <Text style={styles.incomeDetailsExpense}>
+                  {item.Category.type}
+                </Text>
+              )}
+            </>
+          </View>
+          <View style={styles.cardDetail}>
+            <Text style={styles.incomeName}>Name</Text>
+            {/* <Text style={styles.semiColon}>:</Text> */}
+            <Text style={styles.incomeDetails}>{item.name}</Text>
+          </View>
+          <View style={styles.cardDetail}>
+            <Text style={styles.incomeName}>Amount</Text>
+            {/* <Text style={styles.semiColon}>:</Text> */}
+            <Text style={styles.incomeDetails}>{item.amount}</Text>
+          </View>
+          <View style={styles.cardDetail}>
+            <Text style={styles.incomeName}>Category</Text>
+            {/* <Text style={styles.semiColon}>:</Text> */}
+            <Text style={styles.incomeDetails}>{item.Category.name}</Text>
+          </View>
         </View>
         <View style={styles.trashPosition}>
-          <Image
-            source={require("../../assets/icons/red_trash.png")}
-            style={styles.buttonDelete}
-          />
+          <Pressable>
+            <Image
+              source={require("../../assets/icons/red_trash.png")}
+              style={styles.buttonDelete}
+            />
+          </Pressable>
         </View>
       </View>
     );
@@ -271,7 +276,7 @@ export default function ReportScreen({ route }) {
           )}
           <View style={styles.walletList}>
             <View style={styles.collaborator}>
-              <Text>Collaborator</Text>
+              <Text style={styles.textCollaborator}>Collaborator</Text>
               <FlatList
                 data={detailWallet.UserWallets}
                 renderItem={renderUserWallets}
@@ -280,7 +285,7 @@ export default function ReportScreen({ route }) {
             </View>
 
             <View style={styles.transaction}>
-              <Text>Transaction Detail</Text>
+              <Text style={styles.textTransaction}>Transaction Detail</Text>
               <FlatList
                 data={detailWallet.Transactions}
                 renderItem={renderItem}
@@ -307,7 +312,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingVertical: 20,
     borderRadius: 10,
-    flexDirection: "column",
+    flexDirection: "row",
     paddingLeft: 15,
     paddingRight: 15,
     width: Dimensions.get("window").width * 0.8,
@@ -325,6 +330,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: Dimensions.get("window").width,
+    position: "relative",
   },
   pieChart: {
     alignItems: "center",
@@ -387,6 +393,8 @@ const styles = StyleSheet.create({
   },
   incomeDetails: {
     marginLeft: 15,
+
+    width: Dimensions.get("window").width * 0.4,
   },
   incomeName: {
     width: Dimensions.get("window").width * 0.2,
@@ -405,15 +413,23 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   buttonDelete: {
-    width: Dimensions.get("window").width * 0.06,
-    height: Dimensions.get("window").height * 0.036,
+    width: Dimensions.get("window").width * 0.075,
+    height: Dimensions.get("window").height * 0.045,
   },
   trashPosition: {
-    backgroundColor: "green",
-    width: Dimensions.get("window").width,
+    position: "absolute",
+    right: 10,
+    top: 55,
+    alignItems: "center",
+    justifyContent: "center",
     // height: Dimensions.get("window").height * 0.1,
   },
-  // item: {
-  //   fontSize: 16,
-  // },
+  textCollaborator: {
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  textTransaction: {
+    fontWeight: "bold",
+    fontSize: 18,
+  },
 });
