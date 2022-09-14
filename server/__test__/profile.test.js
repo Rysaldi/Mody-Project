@@ -51,7 +51,6 @@ afterAll(async () => {
 
 describe("Profiles Routes Test", () => {
 	describe("GET /profiles - get profile of user currently logged in", () => {
-		jest.setTimeout(10000);
 		test("200 Success read profile - should return an object of profile user logged in", async () => {
 			const response = await request(app).get("/profiles").set("access_token", access_token);
 			expect(response.status).toBe(200);
@@ -62,7 +61,7 @@ describe("Profiles Routes Test", () => {
 			expect(response.body).toHaveProperty("profilePicture", expect.any(String));
 			expect(response.body).toHaveProperty("phone", expect.any(String));
 			expect(response.body).toHaveProperty("UserId", expect.any(Number));
-		});
+		}, 30000);
 	});
 
 	describe("GET /profiles - failed because access token is not provided", () => {
@@ -72,7 +71,7 @@ describe("Profiles Routes Test", () => {
 			expect(response.status).toBe(401);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
-		});
+		}, 30000);
 	});
 
 	describe("PUT /profiles - Succes edit profile", () => {
@@ -85,7 +84,7 @@ describe("Profiles Routes Test", () => {
 			expect(response.status).toBe(200);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
-		});
+		},30000);
 	});
 
 
