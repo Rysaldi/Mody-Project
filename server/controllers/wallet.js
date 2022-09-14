@@ -5,6 +5,7 @@ const {
   User,
   Category,
 } = require("../models");
+const { Op } = require("sequelize");
 
 class Controller {
   static async getAllWallet(req, res, next) {
@@ -39,13 +40,13 @@ class Controller {
 
   static async getDetailWallet(req, res, next) {
     try {
+      console.log("MASUK READ DETAIL WALLET");
       const { walletId } = req.params;
-
+      const { search } = req.query;
       if (isNaN(+walletId)) {
         throw { name: "Invalid Id" };
       }
-
-      const wallet = await Wallet.findByPk(walletId, {
+      const param = {
         include: [
           {
             model: UserWallet,
@@ -59,7 +60,6 @@ class Controller {
           },
           {
             model: Transaction,
-            attributes: ["name", "amount", "date", "id"],
             include: {
               model: Category,
               attributes: ["name", "type"],
@@ -69,7 +69,17 @@ class Controller {
         attributes: {
           exclude: ["createdAt", "updatedAt"],
         },
-      });
+      };
+
+      if (search) {
+        param.include[1].where = {
+          name: {
+            [Op.iLike]: `%${search}%`,
+          },
+        };
+      }
+      
+      const wallet = await Wallet.findByPk(walletId, param);
 
       if (!wallet) {
         throw { name: "NotFound" };
