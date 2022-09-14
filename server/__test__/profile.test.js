@@ -51,6 +51,7 @@ afterAll(async () => {
 
 describe("Profiles Routes Test", () => {
 	describe("GET /profiles - get profile of user currently logged in", () => {
+		jest.setTimeout(10000);
 		test("200 Success read profile - should return an object of profile user logged in", async () => {
 			const response = await request(app).get("/profiles").set("access_token", access_token);
 			expect(response.status).toBe(200);
@@ -65,6 +66,7 @@ describe("Profiles Routes Test", () => {
 	});
 
 	describe("GET /profiles - failed because access token is not provided", () => {
+		jest.setTimeout(10000);
 		test("401 unauthorized - should return object of error message", async () => {
 			const response = await request(app).get("/profiles");
 			expect(response.status).toBe(401);
@@ -74,6 +76,7 @@ describe("Profiles Routes Test", () => {
 	});
 
 	describe("PUT /profiles - Succes edit profile", () => {
+		jest.setTimeout(10000);
 		it("200 - should return object message succes", async () => {
 			const response = await request(app)
 				.put("/profiles/update")
@@ -87,6 +90,7 @@ describe("Profiles Routes Test", () => {
 
 
 	describe("PUT /profiles - Succes edit photo profile", () => {
+		jest.setTimeout(10000);
 		it("200 - should return object message succes", async () => {
 			const response = await request(app)
 				.put("/profiles/update")
@@ -99,6 +103,7 @@ describe("Profiles Routes Test", () => {
 	});
 
 	describe("PUT /profiles - fail edit photo profile", () => {
+		jest.setTimeout(10000);
 		it("200 - should return object message succes", async () => {
 			const response = await request(app)
 				.put("/profiles/update")
@@ -112,6 +117,7 @@ describe("Profiles Routes Test", () => {
 
 
 	describe("PUT /profiles - failed edit profile", () => {
+		jest.setTimeout(10000);
 		test("401 failed edit - should return object of error message", async () => {
 			const response = await request(app).put("/profiles");
 			expect(response.status).toBe(401);

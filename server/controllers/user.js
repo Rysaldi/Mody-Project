@@ -1,6 +1,6 @@
 const { comparePassword } = require("../helpers/bcrypt");
 const { createToken } = require("../helpers/jwt");
-const { User, Profile, Transaction } = require("../models");
+const { User, Profile, Transaction, Category, Wallet } = require("../models");
 
 class userController {
   static async register(req, res, next) {
@@ -42,6 +42,7 @@ class userController {
 
   static async findById(req, res, next) {
     try {
+      console.log("INI MASUK USER DETAIL WOI");
       const { id } = req.user;
       const findUser = await User.findByPk(id, {
         attributes: {

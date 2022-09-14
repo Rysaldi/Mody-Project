@@ -14,26 +14,103 @@ beforeAll(async () => {
 			user.password = hashPassword(user.password);
 		});
 		await queryInterface.bulkInsert("Users", users);
+
+		const categories = require("../data/categories.json");
+		categories.forEach((category) => {
+			delete category.id;
+			category.createdAt = category.updatedAt = new Date();
+		});
+		await queryInterface.bulkInsert("Categories", categories);
+
+		const wallets = require("../data/wallet.json");
+		wallets.forEach((wallet) => {
+			delete wallet.id;
+			wallet.createdAt = wallet.updatedAt = new Date();
+		});
+		await queryInterface.bulkInsert("Wallets", wallets);
+
+		const userWallets = require("../data/userWallet.json");
+		userWallets.forEach((userWallet) => {
+			delete userWallet.id;
+			userWallet.createdAt = userWallet.updatedAt = new Date();
+		});
+		await queryInterface.bulkInsert("UserWallets", userWallets);
+
+		const transactions = require("../data/transaction.json");
+		transactions.forEach((transaction) => {
+			delete transaction.id;
+			transaction.createdAt = transaction.updatedAt = new Date();
+		});
+		await queryInterface.bulkInsert("Transactions", transactions);
 	} catch (error) {
 		console.log(error);
 	}
 });
 
-afterAll(async () => {
-	try {
-		await queryInterface.bulkDelete(
-			"Users",
-			{},
-			{ truncate: true, cascade: true, restartIdentity: true }
-		);
-	} catch (error) {
-		console.log(error);
-	}
+afterAll(() => {
+	return queryInterface
+		.bulkDelete("Transactions", {}, { truncate: true, restartIdentity: true, cascade: true })
+		.then(() => {
+			return queryInterface.bulkDelete(
+				"UserWallets",
+				{},
+				{
+					truncate: true,
+					restartIdentity: true,
+					cascade: true,
+				}
+			);
+		})
+		.then(() => {
+			return queryInterface.bulkDelete(
+				"Wallets",
+				{},
+				{
+					truncate: true,
+					restartIdentity: true,
+					cascade: true,
+				}
+			);
+		})
+		.then(() => {
+			return queryInterface.bulkDelete(
+				"Users",
+				{},
+				{
+					truncate: true,
+					restartIdentity: true,
+					cascade: true,
+				}
+			);
+		})
+		.then(() => {
+			return queryInterface.bulkDelete(
+				"Categories",
+				{},
+				{
+					truncate: true,
+					restartIdentity: true,
+					cascade: true,
+				}
+			);
+		})
+		.then(() => {
+			return queryInterface.bulkDelete(
+				"Transactions",
+				{},
+				{
+					truncate: true,
+					restartIdentity: true,
+					cascade: true,
+				}
+			);
+		});
 });
 
 describe("User Routes Test", () => {
 	describe("POST /register - create new user", () => {
 		test("201 Success register - should create new User", (done) => {
+			jest.setTimeout(10000);
 			const newUser = { username: "testing", email: "testing@mail.com", password: "testing" };
 
 			request(app)
@@ -55,6 +132,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("400 Failed register - should return error if username is null", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({
@@ -73,6 +151,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("400 Failed register - should return error if username is empty", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({
@@ -92,6 +171,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("400 Failed register - should return error if password is null", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({
@@ -110,6 +190,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("400 Failed register - should return error if password is empty", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({
@@ -135,6 +216,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("400 Failed register - should return error if email is null", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({
@@ -153,6 +235,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("400 Failed register - should return error if email is empty", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({
@@ -172,6 +255,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("400 Failed register - should return error if email is already exists", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({ username: "admin", email: "admin@mail.com", password: "admin" })
@@ -187,6 +271,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("400 Failed register - should return error if password length length is no more than 4 characters", (done) => {
+			jest.setTimeout(10000);
 			const newUser = { username: "user10", password: "u", email: "user10@mail.com" };
 			request(app)
 				.post("/users/register")
@@ -208,6 +293,7 @@ describe("User Routes Test", () => {
 
 	describe("POST /login - user login", () => {
 		test("200 Success login - should return access_token", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/login")
 				.send({ email: "admin@mail.com", password: "admin" })
@@ -224,6 +310,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("401 Failed login - should return error when user not found", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/login")
 				.send({
@@ -242,6 +329,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("401 Failed login - should return error when input password doesnt match password in database", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/login")
 				.send({
@@ -260,6 +348,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("400 Failed login - should return error when email doesnt provided", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/login")
 				.send({ password: "asd" })
@@ -275,6 +364,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("400 Failed login - should return error when password doesnt provided", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/login")
 				.send({ email: "asd@mail.com" })
@@ -290,6 +380,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("400 Failed login - should return error when email is not email format", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/users/login")
 				.send({ email: "admin", password: "admin" })
@@ -305,6 +396,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("200 Sucess read all user - should return all user in object", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.get("/users")
 				.set("access_token", access_token)
@@ -322,6 +414,7 @@ describe("User Routes Test", () => {
 		});
 
 		test("401 failed read all user - should return error message", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.get("/users")
 				.end((err, res) => {
@@ -335,23 +428,8 @@ describe("User Routes Test", () => {
 				});
 		});
 
-		test("200 Sucess read detail - should return data user in object", (done) => {
-			request(app)
-				.get("/users/detail")
-				.set("access_token", access_token)
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-					expect(status).toBe(200);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("id", expect.any(Number));
-					expect(body).toHaveProperty("username", expect.any(String));
-					expect(body).toHaveProperty("email", expect.any(String));
-					return done();
-				});
-		});
-
 		test("401 failed read detail user - should return error message", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.get("/users/1")
 				.end((err, res) => {
@@ -364,5 +442,22 @@ describe("User Routes Test", () => {
 					return done();
 				});
 		});
+	});
+
+	test("200 Sucess read detail - should return data user in object", (done) => {
+		jest.setTimeout(10000);
+		request(app)
+			.get("/users/detail")
+			.set("access_token", access_token)
+			.end((err, res) => {
+				if (err) return done(err);
+				const { body, status } = res;
+				expect(status).toBe(200);
+				expect(body).toEqual(expect.any(Object));
+				expect(body).toHaveProperty("id", expect.any(Number));
+				expect(body).toHaveProperty("username", expect.any(String));
+				expect(body).toHaveProperty("email", expect.any(String));
+				return done();
+			});
 	});
 });
