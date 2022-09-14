@@ -51,7 +51,7 @@ export default function DashboardScreen() {
         
         </View>
         <View style={styles.amountDetail}>
-        {item.Wallet.balance < 0 ? <Text style={styles.minusNumber}>{formatCurrency({ amount: 10000, code: "IDR" })[0]}</Text> : <Text style={styles.plusNumber}>{formatCurrency({ amount: item.Wallet.balance, code: "IDR" })[0]}</Text>}
+        {item.Wallet.balance < 0 ? <Text style={styles.minusNumber}>{formatCurrency({ amount: 10000, code: "IDR" })[0]}</Text> : <Text style={styles.plusNumber}>{formatCurrency({ amount: item.Wallet.balance, code: "IDR" })}</Text>}
        </View>
       </View>
     </View>
@@ -245,22 +245,18 @@ const styles = StyleSheet.create({
   minusNumber: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 12,
+    fontSize: 10,
     padding: 5,
     borderRadius: 5,
     backgroundColor: "#a21a1a",
-    width : Dimensions.get("window").width * 0.3,
-    textAlign:"center"
   },
   plusNumber: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 12,
+    fontSize: 10,
     padding: 5,
     borderRadius: 5,
     backgroundColor: "#388c12",
-    width : Dimensions.get("window").width * 0.3,
-    textAlign:"center"
   },
   textName: {
     color: "#808080",

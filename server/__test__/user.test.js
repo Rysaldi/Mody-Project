@@ -110,9 +110,7 @@ afterAll(() => {
 describe("User Routes Test", () => {
 	describe("POST /register - create new user", () => {
 		test("201 Success register - should create new User", (done) => {
-			jest.setTimeout(10000);
 			const newUser = { username: "testing", email: "testing@mail.com", password: "testing" };
-
 			request(app)
 				.post("/users/register")
 				.send(newUser)
@@ -129,10 +127,9 @@ describe("User Routes Test", () => {
 					expect(body.user).toHaveProperty("email", newUser.email);
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("400 Failed register - should return error if username is null", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({
@@ -148,10 +145,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", expect.arrayContaining(["Username is required"]));
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("400 Failed register - should return error if username is empty", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({
@@ -168,10 +164,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", expect.arrayContaining(["Username is required"]));
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("400 Failed register - should return error if password is null", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({
@@ -187,10 +182,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", expect.arrayContaining(["Password is required"]));
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("400 Failed register - should return error if password is empty", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({
@@ -213,10 +207,9 @@ describe("User Routes Test", () => {
 					);
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("400 Failed register - should return error if email is null", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({
@@ -232,10 +225,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", expect.arrayContaining(["Email is required"]));
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("400 Failed register - should return error if email is empty", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({
@@ -252,10 +244,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", expect.arrayContaining(["Email is required"]));
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("400 Failed register - should return error if email is already exists", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/register")
 				.send({ username: "admin", email: "admin@mail.com", password: "admin" })
@@ -268,10 +259,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", expect.arrayContaining(["Email already in use"]));
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("400 Failed register - should return error if password length length is no more than 4 characters", (done) => {
-			jest.setTimeout(10000);
 			const newUser = { username: "user10", password: "u", email: "user10@mail.com" };
 			request(app)
 				.post("/users/register")
@@ -288,12 +278,11 @@ describe("User Routes Test", () => {
 					);
 					return done();
 				});
-		});
+		}, 100000);
 	});
 
 	describe("POST /login - user login", () => {
 		test("200 Success login - should return access_token", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/login")
 				.send({ email: "admin@mail.com", password: "admin" })
@@ -307,10 +296,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("access_token", expect.any(String));
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("401 Failed login - should return error when user not found", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/login")
 				.send({
@@ -326,10 +314,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", "Invalid email/password");
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("401 Failed login - should return error when input password doesnt match password in database", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/login")
 				.send({
@@ -345,10 +332,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", "Invalid email/password");
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("400 Failed login - should return error when email doesnt provided", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/login")
 				.send({ password: "asd" })
@@ -361,10 +347,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", "Please check your input");
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("400 Failed login - should return error when password doesnt provided", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/login")
 				.send({ email: "asd@mail.com" })
@@ -377,10 +362,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", "Please check your input");
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("400 Failed login - should return error when email is not email format", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.post("/users/login")
 				.send({ email: "admin", password: "admin" })
@@ -393,10 +377,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", "Invalid email/password");
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("200 Sucess read all user - should return all user in object", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.get("/users")
 				.set("access_token", access_token)
@@ -411,10 +394,9 @@ describe("User Routes Test", () => {
 					expect(body[0]).toHaveProperty("email", expect.any(String));
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("401 failed read all user - should return error message", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.get("/users")
 				.end((err, res) => {
@@ -426,10 +408,9 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		});
+		}, 100000);
 
 		test("401 failed read detail user - should return error message", (done) => {
-			jest.setTimeout(10000);
 			request(app)
 				.get("/users/1")
 				.end((err, res) => {
@@ -441,11 +422,10 @@ describe("User Routes Test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		});
+		}, 100000);
 	});
 
 	test("200 Sucess read detail - should return data user in object", (done) => {
-		jest.setTimeout(10000);
 		request(app)
 			.get("/users/detail")
 			.set("access_token", access_token)
@@ -459,5 +439,5 @@ describe("User Routes Test", () => {
 				expect(body).toHaveProperty("email", expect.any(String));
 				return done();
 			});
-	});
+	}, 100000);
 });

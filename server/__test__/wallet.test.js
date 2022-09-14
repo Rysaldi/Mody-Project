@@ -109,7 +109,6 @@ afterAll(() => {
 
 describe("POST /login - user login", () => {
 	test("200 Success login - should return access_token", (done) => {
-		jest.setTimeout(10000);
 		request(app)
 			.post("/users/login")
 			.send({ email: "admin@mail.com", password: "admin" })
@@ -123,13 +122,12 @@ describe("POST /login - user login", () => {
 				access_token = body.access_token;
 				return done();
 			});
-	});
+	}, 100000);
 });
 
 describe("POST /wallets", () => {
 	describe("success create wallet", () => {
 		it("should return object contains ", async () => {
-			jest.setTimeout(10000);
 			const newWallet = { name: "daughter's pocket money" };
 
 			const response = await request(app)
@@ -140,12 +138,11 @@ describe("POST /wallets", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("id", expect.any(Number));
 			expect(response.body).toHaveProperty("name", expect.any(String));
-		});
+		}, 100000);
 	});
 
 	describe("failed create wallet because name is empty", () => {
 		it("should return an error", async () => {
-			jest.setTimeout(10000);
 			const newWallet = { name: "" };
 
 			const response = await request(app)
@@ -156,39 +153,36 @@ describe("POST /wallets", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBeInstanceOf(Object);
-		});
+		}, 100000);
 	});
 
 	describe("failed create wallet because name is null", () => {
 		it("should return an object of error message", async () => {
-			jest.setTimeout(10000);
 			const response = await request(app).post("/wallets").send().set("access_token", access_token);
 			expect(response.status).toBe(400);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBeInstanceOf(Object);
-		});
+		}, 100000);
 	});
 });
 
 describe("GET /wallets", () => {
 	describe("success read all wallets", () => {
 		it("should return array of object ", async () => {
-			jest.setTimeout(10000);
 			const response = await request(app).get("/wallets").set("access_token", access_token);
 			expect(response.status).toBe(200);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body[0]).toHaveProperty("id", expect.any(Number));
 			expect(response.body[0]).toHaveProperty("name", expect.any(String));
 			expect(response.body[0]).toHaveProperty("balance", expect.any(Number));
-		});
+		}, 100000);
 	});
 });
 
 describe("GET /wallets/:walletId", () => {
 	describe("success read detail wallet", () => {
 		it("should return object ", async () => {
-			jest.setTimeout(10000);
 			const response = await request(app).get("/wallets/1").set("access_token", access_token);
 
 			expect(response.status).toBe(200);
@@ -210,33 +204,30 @@ describe("GET /wallets/:walletId", () => {
 			expect(response.body.Transactions[0].Category).toBeInstanceOf(Object);
 			expect(response.body.Transactions[0].Category).toHaveProperty("name", expect.any(String));
 			expect(response.body.Transactions[0].Category).toHaveProperty("type", expect.any(String));
-		});
+		}, 100000);
 	});
 
 	describe("failed read detail wallet because id is not valid", () => {
 		it("should return an object of error message ", async () => {
-			jest.setTimeout(10000);
 			const response = await request(app).get("/wallets/asd").set("access_token", access_token);
 			expect(response.status).toBe(400);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
-		});
+		}, 100000);
 	});
 
 	describe("failed read detail wallet because wallet is not found", () => {
 		it("should return an object of error message ", async () => {
-			jest.setTimeout(10000);
 			const response = await request(app).get("/wallets/100").set("access_token", access_token);
 			expect(response.status).toBe(404);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
-		});
+		}, 100000);
 	});
 });
 
 describe("DELETE /wallets/:walletId", () => {
 	describe("Wallet deletion successful", () => {
-		jest.setTimeout(10000);
 		it("Should be return an status 200 and message", async () => {
 			try {
 				const response = await request(app).delete("/wallets/1").set("access_token", access_token);
@@ -246,12 +237,11 @@ describe("DELETE /wallets/:walletId", () => {
 			} catch (error) {
 				console.log(error);
 			}
-		});
+		}, 100000);
 	});
 
 	describe("Wallet deletion failed because wallet not found", () => {
 		it("Should be return an status 404 and message", async () => {
-			jest.setTimeout(10000);
 			try {
 				const response = await request(app)
 					.delete("/wallets/100")
@@ -262,12 +252,11 @@ describe("DELETE /wallets/:walletId", () => {
 			} catch (error) {
 				console.log(error);
 			}
-		});
+		}, 100000);
 	});
 
 	describe("Wallet deletion failed because role is not owner", () => {
 		it("Should be return an status 403 and message", async () => {
-			jest.setTimeout(10000);
 			try {
 				const response = await request(app).delete("/wallets/2").set("access_token", access_token);
 				expect(response.status).toBe(403);
@@ -276,12 +265,11 @@ describe("DELETE /wallets/:walletId", () => {
 			} catch (error) {
 				console.log(error);
 			}
-		});
+		}, 100000);
 	});
 
 	describe("Wallet deletion failed because wallet Id is not a number", () => {
 		it("Should be return an status 400 and message", async () => {
-			jest.setTimeout(10000);
 			try {
 				const response = await request(app)
 					.delete("/wallets/stringhere")
@@ -292,14 +280,13 @@ describe("DELETE /wallets/:walletId", () => {
 			} catch (error) {
 				console.log(error);
 			}
-		});
+		} , 100000);
 	});
 });
 
 describe("PUT /wallets/:walletId", () => {
 	describe("Success update Wallet", () => {
 		it("Should return a status 200 and message", async () => {
-			jest.setTimeout(10000);
 			try {
 				const walletInputUpdate = {
 					name: "test1",
@@ -316,11 +303,10 @@ describe("PUT /wallets/:walletId", () => {
 			} catch (error) {
 				console.log(error);
 			}
-		});
+		}, 100000);
 	});
 	describe("Failed update wallet because wallet name is empty", () => {
 		it("Should return a status 400 and message", async () => {
-			jest.setTimeout(10000);
 			try {
 				const walletInputUpdate = {
 					name: "",
@@ -336,11 +322,10 @@ describe("PUT /wallets/:walletId", () => {
 			} catch (error) {
 				console.log(error);
 			}
-		});
+		}, 100000);
 	});
 	describe("Failed update wallet because wallet name is null", () => {
 		it("Should return a status 400 and message", async () => {
-			jest.setTimeout(10000);
 			try {
 				return request(app)
 					.put("/wallets/1")
@@ -354,6 +339,6 @@ describe("PUT /wallets/:walletId", () => {
 			} catch (error) {
 				console.log(error);
 			}
-		});
+		} , 100000);
 	});
 });

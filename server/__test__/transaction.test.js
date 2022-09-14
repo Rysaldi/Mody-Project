@@ -133,7 +133,7 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Succes Edit Transaction with Id " + id);
-		}, 30000);
+		}, 100000);
 	});
 
 	describe("PUT /transactions/:id - Succes test", () => {
@@ -161,7 +161,7 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Succes Edit Transaction with Id " + id);
-		}, 30000);
+		}, 100000);
 	});
 
 	describe("PUT /transactions/:id - Succes tes", () => {
@@ -188,7 +188,7 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Succes Edit Transaction with Id " + id);
-		}), 30000;
+		}), 100000;
 	});
 
 	describe("PUT /transactions/:id - Succes test", () => {
@@ -215,9 +215,8 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Succes Edit Transaction with Id " + id);
-		}, 30000);
+		}, 100000);
 	});
-30000
 	describe("PUT /transactions/:id - Transactions not found", () => {
 		it("should be return an object message", async () => {
 			const id = 100;
@@ -235,7 +234,7 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Transaction cannot be found");
-		},30000);
+		}, 100000);
 	});
 	describe("PUT /transactions/:id - invalid access token", () => {
 		it("should be return an object message", async () => {
@@ -254,7 +253,7 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Invalid token");
-		}, 30000);
+		}, 100000);
 	});
 	describe("PUT /transactions/:id - User Wallet not found", () => {
 		it("should be return an object message", async () => {
@@ -273,7 +272,7 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Forbidden");
-		}, 30000);
+		}, 100000);
 	});
 	describe("PUT /transactions/:id - unauthorized", () => {
 		it("should be return an object message", async () => {
@@ -293,7 +292,7 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Forbidden");
-		}, 30000);
+		}, 100000);
 	});
 	describe("PUT /transactions/:id - not provide input name", () => {
 		it("should be return an object message", async () => {
@@ -315,7 +314,7 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBeInstanceOf(Array);
 			expect(response.body.message[0]).toBe("Transaction name is required");
-		}, 30000);
+		}, 100000);
 	});
 	describe("PUT /transactions/:id - not provide input amount", () => {
 		it("should be return an object message", async () => {
@@ -337,7 +336,7 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBeInstanceOf(Array);
 			expect(response.body.message[0]).toBe("Minimum transaction amount is 1");
-		}, 30000);
+		}, 100000);
 	});
 	describe("PUT /transactions/:id - not provide input date", () => {
 		it("should be return an object message", async () => {
@@ -359,7 +358,7 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBeInstanceOf(Array);
 			expect(response.body.message[0]).toBe("Transaction date is required");
-		}, 30000);
+		}, 100000);
 	});
 });
 
@@ -373,7 +372,7 @@ describe("GET /transactions success", () => {
 				expect(response.status).toBe(200);
 				expect(response.body).toBeInstanceOf(Object);
 			});
-	}, 30000);
+	}, 100000);
 });
 
 describe("GET /transactions Succues but There are no transactions in the wallet", () => {
@@ -387,7 +386,7 @@ describe("GET /transactions Succues but There are no transactions in the wallet"
 				expect(response.status).toBe(200);
 				expect(response.body).toBeInstanceOf(Object);
 			});
-	}, 30000);
+	}, 100000);
 });
 
 
@@ -401,7 +400,7 @@ describe("GET /transactions success", () => {
 				expect(response.status).toBe(200);
 				expect(response.body).toBeInstanceOf(Object);
 			});
-	}, 30000);
+	}, 100000);
 });
 
 describe("GET /transactions success", () => {
@@ -416,7 +415,7 @@ describe("GET /transactions success", () => {
 				expect(response.body).toBeInstanceOf(Object);
 				expect(response.body).toHaveProperty("message");
 			});
-	}, 30000);
+	}, 100000);
 });
 
 describe("GET /transactions fail because wallet not found", () => {
@@ -430,7 +429,7 @@ describe("GET /transactions fail because wallet not found", () => {
 				expect(response.status).toBe(404);
 				expect(response.body).toBeInstanceOf(Object);
 			});
-	}, 30000);
+	}, 100000);
 });
 
 describe("POST /transactions success", () => {
@@ -450,7 +449,7 @@ describe("POST /transactions success", () => {
 				expect(response.body).toHaveProperty("Transaction");
 				expect(response.body).toHaveProperty("Transaction", expect.any(Object));
 			});
-	} ,30000);
+	}, 100000);
 });
 
 describe("POST /transactions - Fail test", () => {
@@ -475,7 +474,7 @@ describe("POST /transactions - Fail test", () => {
 		expect(response.status).toBe(404);
 		expect(response.body).toBeInstanceOf(Object);
 		expect(response.body).toHaveProperty("message");
-	}, 30000);
+	}, 100000);
 });
 
 describe("POST /transactions error input field not exist or empty string", () => {
@@ -490,7 +489,7 @@ describe("POST /transactions error input field not exist or empty string", () =>
 				expect(response.body).toHaveProperty("message");
 				expect(response.body).toHaveProperty("message", expect.any(Object));
 			});
-	}, 30000);
+	}, 100000);
 });
 
 
@@ -511,7 +510,7 @@ describe("POST /transactions success", () => {
 				expect(response.body).toHaveProperty("Transaction");
 				expect(response.body).toHaveProperty("Transaction", expect.any(Object));
 			});
-	}, 30000);
+	}, 100000);
 });
 
 describe("GET /transactions/transactionId - Success", () => {
@@ -532,7 +531,7 @@ describe("GET /transactions/transactionId - Success", () => {
 				expect(response.body).toHaveProperty("CategoryId", expect.any(Number));
 				expect(response.body).toHaveProperty("WalletId", expect.any(Number));
 			});
-	}, 30000);
+	}, 100000);
 });
 
 describe("GET /transactions/transactionId - Fail because forbidden", () => {
@@ -551,7 +550,7 @@ describe("GET /transactions/transactionId - Fail because forbidden", () => {
 				expect(response.body).toHaveProperty("message");
 				expect(response.body.message).toBe("Forbidden");
 			});
-	}, 30000);
+	}, 100000);
 });
 
 describe("GET /transactions/transactionId - Fail because not logged in yet", () => {
@@ -566,7 +565,7 @@ describe("GET /transactions/transactionId - Fail because not logged in yet", () 
 				expect(response.body).toHaveProperty("message");
 				expect(response.body.message).toBe("Invalid token");
 			});
-	} , 30000);
+	}, 100000);
 });
 
 describe("GET /transactions/transactionId - Fail because give fake access_token", () => {
@@ -582,7 +581,7 @@ describe("GET /transactions/transactionId - Fail because give fake access_token"
 				expect(response.body).toHaveProperty("message");
 				expect(response.body.message).toBe("Invalid token");
 			});
-	}, 30000);
+	}, 100000);
 });
 
 describe("GET /transactions/transactionId - Fail because transaction not found", () => {
@@ -601,7 +600,7 @@ describe("GET /transactions/transactionId - Fail because transaction not found",
 				expect(response.body).toHaveProperty("message");
 				expect(response.body.message).toBe("Transaction cannot be found");
 			});
-	} , 30000);
+	}, 100000);
 });
 
 describe("GET /transactions/transactionId - Fail request params transactionId is not number", () => {
@@ -621,7 +620,7 @@ describe("GET /transactions/transactionId - Fail request params transactionId is
 				expect(response.body).toHaveProperty("message");
 				expect(response.body.message).toBe("Invalid id");
 			});
-	}, 30000);
+	}, 100000);
 });
 
 
@@ -639,7 +638,7 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Success delete Transaction with Id " + id);
-		}, 30000);
+		}, 100000);
 	});
 
 	describe("Delete /transactions/:id - Succes test", () => {
@@ -653,7 +652,7 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Success delete Transaction with Id " + id);
-		}, 30000);
+		}, 100000);
 	});
 
 	describe("Delete /transactions/:id - Fail because forbidden", () => {
@@ -666,7 +665,7 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Forbidden");
-		}, 30000);
+		}, 100000);
 	});
 
 	describe("Delete /transactions/:id - Fail because Id is not number", () => {
@@ -679,7 +678,7 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Invalid id");
-		}, 30000);
+		}, 100000);
 	});
 
 	describe("Delete /transactions/:id - Succes test", () => {
@@ -692,7 +691,7 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Success delete Transaction with Id " + id);
-		}, 30000);
+		}, 100000);
 	});
 
 	describe("Delete /transactions/:id - Transactions not found", () => {
@@ -706,7 +705,7 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Transaction cannot be found");
-		}, 30000);
+		}, 100000);
 	});
 
 	describe("Delete /transactions/:id - Transactions not found", () => {
@@ -720,7 +719,7 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Invalid id");
-		}, 30000);
+		}, 100000);
 	});
 });
 

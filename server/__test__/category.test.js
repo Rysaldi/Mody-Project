@@ -57,7 +57,7 @@ describe("GET /categories", () => {
 				expect(response.body).toBeInstanceOf(Array);
 				expect(response.body[0]).toBeInstanceOf(Object);
 			} catch (error) { }
-		},30000);
+		}, 100000);
 	});
 
 	describe("401 unauthorized - failed get categories because access token is not provided", () => {
@@ -69,7 +69,7 @@ describe("GET /categories", () => {
 					expect(response.body).toBeInstanceOf(Object);
 					expect(response.body).toHaveProperty("message", expect.any(String));
 				});
-		}, 30000);
+		}, 100000);
 	});
 });
 
@@ -89,7 +89,7 @@ describe("POST /categories", () => {
 					expect(response.body).toBeInstanceOf(Object);
 					expect(response.body).toHaveProperty("message");
 				});
-		},30000);
+		}, 100000);
 	});
 
 	describe("POST /categories - failed post category", () => {
@@ -106,7 +106,7 @@ describe("POST /categories", () => {
 					expect(response.status).toBe(400);
 					expect(response.body).toBeInstanceOf(Object);
 				});
-		}, 30000);
+		}, 100000);
 		it("Should be return an status 400 and object with message error", async () => {
 			const payload = {
 				name: "test",
@@ -120,7 +120,7 @@ describe("POST /categories", () => {
 					expect(response.status).toBe(400);
 					expect(response.body).toBeInstanceOf(Object);
 				});
-		}, 30000);
+		}, 100000);
 	});
 });
 
@@ -140,7 +140,7 @@ describe("PUT /categories/:id", () => {
 					expect(response.body).toBeInstanceOf(Object);
 					expect(response.body).toHaveProperty("message");
 				});
-		}, 30000);
+		}, 100000);
 	});
 
 	describe("PUT /categories/:id - failed post category", () => {
@@ -157,7 +157,7 @@ describe("PUT /categories/:id", () => {
 					expect(response.status).toBe(400);
 					expect(response.body).toBeInstanceOf(Object);
 				});
-		}, 30000);
+		}, 100000);
 		it("Should be return an status 400 and object with message error", async () => {
 			jest.setTimeout(10000);
 			const payload = {
@@ -172,7 +172,7 @@ describe("PUT /categories/:id", () => {
 					expect(response.status).toBe(400);
 					expect(response.body).toBeInstanceOf(Object);
 				});
-		}, 30000);
+		}, 100000);
 
 		it("Should be return an status 404 and object with message error", async () => {
 			jest.setTimeout(10000);
@@ -188,7 +188,7 @@ describe("PUT /categories/:id", () => {
 					expect(response.status).toBe(404);
 					expect(response.body).toBeInstanceOf(Object);
 				});
-		}, 30000);
+		}, 100000);
 	});
 });
 
@@ -200,7 +200,7 @@ describe("DELETE /categories:id", () => {
 				expect(response.status).toBe(200);
 				expect(response.body).toBeInstanceOf(Object);
 			} catch (error) { }
-		}, 30000);
+		}, 100000);
 	});
 
 	describe("DELETE /categories:id - failed delete category", () => {
@@ -210,13 +210,12 @@ describe("DELETE /categories:id", () => {
 				expect(response.status).toBe(404);
 				expect(response.body).toBeInstanceOf(Object);
 			} catch (error) { }
-		}, 30000);
+		}, 100000);
 	});
 });
 
 describe("GET /categories - when category data is empty", () => {
 	it("Should be return an status 200 and emppty array", async () => {
-		jest.setTimeout(10000);
 		try {
 			await queryInterface.bulkDelete("Categories", null, {
 				truncate: true,
@@ -228,5 +227,5 @@ describe("GET /categories - when category data is empty", () => {
 			expect(response.body).toBeInstanceOf(Array);
 			expect(response.body[0]).toBeInstanceOf(Object);
 		} catch (error) { }
-	})
+	}, 100000);
 });

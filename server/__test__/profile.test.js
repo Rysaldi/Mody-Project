@@ -61,21 +61,19 @@ describe("Profiles Routes Test", () => {
 			expect(response.body).toHaveProperty("profilePicture", expect.any(String));
 			expect(response.body).toHaveProperty("phone", expect.any(String));
 			expect(response.body).toHaveProperty("UserId", expect.any(Number));
-		}, 30000);
+		}, 100000);
 	});
 
 	describe("GET /profiles - failed because access token is not provided", () => {
-		jest.setTimeout(10000);
 		test("401 unauthorized - should return object of error message", async () => {
 			const response = await request(app).get("/profiles");
 			expect(response.status).toBe(401);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
-		}, 30000);
+		}, 100000);
 	});
 
 	describe("PUT /profiles - Succes edit profile", () => {
-		jest.setTimeout(10000);
 		it("200 - should return object message succes", async () => {
 			const response = await request(app)
 				.put("/profiles/update")
@@ -84,12 +82,11 @@ describe("Profiles Routes Test", () => {
 			expect(response.status).toBe(200);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
-		},30000);
+		}, 100000);
 	});
 
 
 	describe("PUT /profiles - Succes edit photo profile", () => {
-		jest.setTimeout(10000);
 		it("200 - should return object message succes", async () => {
 			const response = await request(app)
 				.put("/profiles/update")
@@ -98,11 +95,10 @@ describe("Profiles Routes Test", () => {
 			expect(response.status).toBe(200);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
-		});
+		}, 100000);
 	});
 
 	describe("PUT /profiles - fail edit photo profile", () => {
-		jest.setTimeout(10000);
 		it("200 - should return object message succes", async () => {
 			const response = await request(app)
 				.put("/profiles/update")
@@ -111,7 +107,7 @@ describe("Profiles Routes Test", () => {
 			expect(response.status).toBe(400);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
-		});
+		}, 100000);
 	});
 
 
@@ -122,6 +118,6 @@ describe("Profiles Routes Test", () => {
 			expect(response.status).toBe(401);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
-		});
+		}, 100000);
 	});
 });
