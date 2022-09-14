@@ -6,6 +6,7 @@ import {
   Dimensions,
   TextInput,
   Image,
+  ScrollView,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -16,6 +17,7 @@ import {
   setLoadingCategories,
 } from "../store/actionCreator/category";
 import { addTransaction } from "../store/actionCreator/transaction";
+import LoadingScreen from "../components/LoadingScreen";
 
 export default function TransactionScreen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -27,25 +29,46 @@ export default function TransactionScreen({ navigation, route }) {
     description: "",
     // photo: "",
   });
-  const { categories } = useSelector((state) => state.categoryReducer);
+  const { loadingCategories, categories } = useSelector(
+    (state) => state.categoryReducer
+  );
+
   const [date, setDate] = React.useState(new Date(Date.now()));
   const [isPickerShow, setIsPickerShow] = React.useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([]);
+  const [openType, setOpenType] = useState(false);
+  const [valueType, setValueType] = useState("Income");
+  const [itemsType, setItemsType] = useState([
+    { label: "Income", value: "Income" },
+    { label: "Expense", value: "Expense" },
+  ]);
 
   useEffect(() => {
-    dispatch(fetchCategories()).then(() =>
-      dispatch(setLoadingCategories(false))
-    );
+    dispatch(fetchCategories())
+      .then((categories) => {
+        const showCategory = categories.map((category) => {
+          return { label: category.name, value: category.id };
+        });
+        setItems(showCategory);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => dispatch(setLoadingCategories(false)));
   }, []);
 
   useEffect(() => {
-    const showCategory = categories.map((category) => {
-      return { label: category.name, value: category.id };
+    let newCategory = [];
+    categories.forEach((category) => {
+      if (valueType === category.type) {
+        newCategory.push({ label: category.name, value: category.id });
+      }
     });
-    setItems(showCategory);
-  }, []);
+
+    setItems(newCategory);
+  }, [valueType]);
 
   const handleChange = (e) => {
     const keys = Object.keys(e)[0];
@@ -86,104 +109,122 @@ export default function TransactionScreen({ navigation, route }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.formAddTransaction}>
-        <View style={styles.formInput}>
-          <Text style={styles.inputNameForm}>Name</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) =>
-              handleChange({
-                name: text,
-              })
-            }
-            value={formAddTransaction.name}
-            placeholder="Transaction Name"
-          />
-        </View>
-        <View style={styles.formInput}>
-          <Text style={styles.inputNameForm}>Amount</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            onChangeText={(text) =>
-              handleChange({
-                amount: text,
-              })
-            }
-            value={formAddTransaction.amount}
-            placeholder="Transaction Amount"
-          />
-        </View>
-        <View style={styles.formInput}>
-          <Text style={styles.inputName}>Date</Text>
-          <Pressable onPress={showPicker}>
-            <View
-              style={{
-                borderColor: "#ddd",
-                borderWidth: 1,
-                padding: 12,
-                backgroundColor: "white",
-                borderRadius: 7,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text>{date.toLocaleString()}</Text>
-              <Image
-                style={{ width: 14, height: 14 }}
-                source={require("../../assets/icons/arrowBottom.png")}
+    <>
+      {loadingCategories ? (
+        <LoadingScreen />
+      ) : (
+        <ScrollView style={styles.container}>
+          <View style={styles.formAddTransaction}>
+            <View style={styles.formInput}>
+              <Text style={styles.inputNameForm}>Name</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={(text) =>
+                  handleChange({
+                    name: text,
+                  })
+                }
+                value={formAddTransaction.name}
+                placeholder="Transaction Name"
               />
             </View>
-          </Pressable>
-          <>
-            {isPickerShow && (
-              <DateTimePicker
-                value={date}
-                mode="date"
-                positiveButtonLabel="Confirm"
-                display="default"
-                onChange={onChange}
+            <View style={styles.formInput}>
+              <Text style={styles.inputNameForm}>Amount</Text>
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                onChangeText={(text) =>
+                  handleChange({
+                    amount: text,
+                  })
+                }
+                value={formAddTransaction.amount}
+                placeholder="Transaction Amount"
               />
-            )}
-          </>
-        </View>
-        <View style={styles.formInput}>
-          <Text style={styles.inputName}>Category</Text>
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            style={{ borderColor: "#ddd" }}
-          />
-        </View>
-        <View style={styles.formInput}>
-          <Text style={styles.inputName}>Description</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) =>
-              handleChange({
-                description: text,
-              })
-            }
-            value={formAddTransaction.description}
-            placeholder="Transaction Description"
-          />
-        </View>
-        <View style={styles.buttonToAdd}>
-          <Pressable style={styles.buttonAdd}>
-            <Text style={styles.buttonText} onPress={submitNewTransaction}>
-              Submit
-            </Text>
-          </Pressable>
-        </View>
-      </View>
-    </View>
+            </View>
+            <View style={styles.formInput}>
+              <Text style={styles.inputName}>Category type</Text>
+              <DropDownPicker
+                open={openType}
+                value={valueType}
+                items={itemsType}
+                setOpen={setOpenType}
+                setValue={setValueType}
+                setItems={setItemsType}
+                style={{ borderColor: "#ddd", marginBottom: 15 }}
+              />
+            </View>
+            <View style={styles.formInput}>
+              <Text style={styles.inputName}>Date</Text>
+              <Pressable onPress={showPicker}>
+                <View
+                  style={{
+                    borderColor: "#ddd",
+                    borderWidth: 1,
+                    padding: 12,
+                    backgroundColor: "white",
+                    borderRadius: 7,
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text>{date.toLocaleString()}</Text>
+                  <Image
+                    style={{ width: 14, height: 14 }}
+                    source={require("../../assets/icons/arrowBottom.png")}
+                  />
+                </View>
+              </Pressable>
+              <>
+                {isPickerShow && (
+                  <DateTimePicker
+                    value={date}
+                    mode="date"
+                    positiveButtonLabel="Confirm"
+                    display="default"
+                    onChange={onChange}
+                  />
+                )}
+              </>
+            </View>
+            <View style={styles.formInput}>
+              <Text style={styles.inputName}>Category</Text>
+              <DropDownPicker
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+                style={{ borderColor: "#ddd", marginBottom: 15 }}
+              />
+            </View>
+            <View style={styles.formInput}>
+              <Text style={styles.inputName}>Description</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={(text) =>
+                  handleChange({
+                    description: text,
+                  })
+                }
+                value={formAddTransaction.description}
+                placeholder="Transaction Description"
+              />
+            </View>
+            <View style={styles.buttonToAdd}>
+              <Pressable style={styles.buttonAdd}>
+                <Text style={styles.buttonText} onPress={submitNewTransaction}>
+                  Submit
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </ScrollView>
+      )}
+    </>
   );
 }
 

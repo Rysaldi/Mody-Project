@@ -50,6 +50,7 @@ export const fetchCategories = () => {
       .then((categories) => {
         // console.log(categories);
         dispatch(setCategories(categories));
+        return categories;
       });
     // .finally(() => {
     //   dispatch(setLoading(false));
