@@ -110,6 +110,7 @@ afterAll(() => {
 
 describe("POST /login - user login", () => {
 	test("200 Success login - should return access_token", (done) => {
+		jest.setTimeout(10000);
 		request(app)
 			.post("/users/login")
 			.send({ email: "admin@mail.com", password: "admin" })
@@ -129,6 +130,7 @@ describe("POST /login - user login", () => {
 describe("UserWallets routes test", () => {
 	describe("GET /userWallets - success get all userwallets", () => {
 		test("200 Success get - should return an array of object contain list of userwallet", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.get("/userWallets")
 				.set("access_token", access_token)
@@ -149,6 +151,7 @@ describe("UserWallets routes test", () => {
 
 	describe("GET /userWallets - failed get all userwallets", () => {
 		test("401 Unauthorized - should return an error if access token is not provided", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.get("/userWallets")
 				.end((err, res) => {
@@ -165,6 +168,7 @@ describe("UserWallets routes test", () => {
 
 	describe("POST /userWallets - success create new userwallets", () => {
 		test("201 OK - should return an error if access token is not provided", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/userWallets")
 				.send({ UserId: 2, WalletId: 1, role: "Member", email: "user1@mail.com" })
@@ -185,6 +189,7 @@ describe("UserWallets routes test", () => {
 
 	describe("POST /userWallets - failed create new userwallets", () => {
 		test("404 Not Found - should return an error if wallet is not found", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/userWallets")
 				.send({ role: "Manager", WalletId: 10, UserId: 2, email: "sahedTamvan@mail.com" })
@@ -203,6 +208,7 @@ describe("UserWallets routes test", () => {
 
 	describe("POST /userWallets - failed create new userwallets", () => {
 		test("400 Bad Request - should return an error if email is not provided", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/userWallets")
 				.send({ WalletId: 1, role: "Member" })
@@ -221,6 +227,7 @@ describe("UserWallets routes test", () => {
 
 	describe("POST /userWallets - failed create new userwallets", () => {
 		test("400 Bad Request - should return an error if role is not provided", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/userWallets")
 				.send({ WalletId: 1, email: "user1@mail.com" })
@@ -239,6 +246,7 @@ describe("UserWallets routes test", () => {
 
 	describe("POST /userWallets - failed create new userwallets", () => {
 		test("400 Bad Request - should return an error if wallet is not provided", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.post("/userWallets")
 				.send({ role: "Member", email : "user1@mail.com" })
@@ -257,6 +265,7 @@ describe("UserWallets routes test", () => {
 
 	describe("PUT /userWallets - success edit userwallets", () => {
 		test("200 OK - should return an object of success message", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.put("/userWallets/2")
 				.send({ UserId: 2, role: "Member" })
@@ -275,6 +284,7 @@ describe("UserWallets routes test", () => {
 
 	describe("PUT /userWallets - failed edit userwallets", () => {
 		test("400 Bad request - should return an error if user id is not provided", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.put("/userWallets/2")
 				.send({ role: "Member" })
@@ -293,6 +303,7 @@ describe("UserWallets routes test", () => {
 
 	describe("PUT /userWallets - failed edit userwallets", () => {
 		test("400 Bad request - should return an error if role is not provided", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.put("/userWallets/2")
 				.send({ UserId: 2 })
@@ -311,6 +322,7 @@ describe("UserWallets routes test", () => {
 
 	describe("PUT /userWallets - failed edit userwallets", () => {
 		test("401 Unauthorized - should return an error if access token not provided", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.put("/userWallets/2")
 				.send({ role: "Member", UserId: 2 })
@@ -328,6 +340,7 @@ describe("UserWallets routes test", () => {
 
 	describe("PUT /userWallets - failed edit userwallets", () => {
 		test("404 Not Found - should return an error if data is not found", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.put("/userWallets/100")
 				.send({ role: "Manager", UserId: 2 })
@@ -346,6 +359,7 @@ describe("UserWallets routes test", () => {
 
 	describe("DELETE /userWallets - success delete userwallets", () => {
 		test("200 OK - should return success message", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.delete("/userWallets/1")
 				.set("access_token", access_token)
@@ -363,6 +377,7 @@ describe("UserWallets routes test", () => {
 
 	describe("DELETE /userWallets - failed delete userwallets", () => {
 		test("404 Not Found - should return error message", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.delete("/userWallets/10")
 				.set("access_token", access_token)
@@ -380,6 +395,7 @@ describe("UserWallets routes test", () => {
 
 	describe("DELETE /userWallets - failed delete userwallets", () => {
 		test("401 Unauthorized - should return error message", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.delete("/userWallets/10")
 				.end((err, res) => {
@@ -396,6 +412,7 @@ describe("UserWallets routes test", () => {
 
 	describe("DELETE /userWallets - failed delete userwallets", () => {
 		test("400 Bad Request - should return error message", (done) => {
+			jest.setTimeout(10000);
 			request(app)
 				.delete("/userWallets/asd")
 				.set("access_token", access_token)

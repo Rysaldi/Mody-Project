@@ -111,6 +111,7 @@ afterAll(() => {
 describe("PUT /transactions/:id", () => {
 	describe("PUT /transactions/:id - Succes test", () => {
 		it("should be return an object message success", async () => {
+			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "updateTest",
@@ -138,6 +139,7 @@ describe("PUT /transactions/:id", () => {
 
 	describe("PUT /transactions/:id - Succes test", () => {
 		it("should be return an object message success", async () => {
+			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "updateTest",
@@ -165,6 +167,7 @@ describe("PUT /transactions/:id", () => {
 
 	describe("PUT /transactions/:id - Succes tes", () => {
 		it("should be return an object message success", async () => {
+			jest.setTimeout(10000);
 			const id = 12;
 			const data = {
 				name: "updateTest",
@@ -192,6 +195,7 @@ describe("PUT /transactions/:id", () => {
 
 	describe("PUT /transactions/:id - Succes test", () => {
 		it("should be return an object message success", async () => {
+			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "updateTest",
@@ -218,6 +222,7 @@ describe("PUT /transactions/:id", () => {
 	});
 	describe("PUT /transactions/:id - Transactions not found", () => {
 		it("should be return an object message", async () => {
+			jest.setTimeout(10000);
 			const id = 100;
 			const data = {
 				name: "updateTest",
@@ -237,6 +242,7 @@ describe("PUT /transactions/:id", () => {
 	});
 	describe("PUT /transactions/:id - invalid access token", () => {
 		it("should be return an object message", async () => {
+			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "updateTest",
@@ -256,6 +262,7 @@ describe("PUT /transactions/:id", () => {
 	});
 	describe("PUT /transactions/:id - User Wallet not found", () => {
 		it("should be return an object message", async () => {
+			jest.setTimeout(10000);
 			const id = 1;
 			const data = {
 				name: "updateTest",
@@ -275,6 +282,7 @@ describe("PUT /transactions/:id", () => {
 	});
 	describe("PUT /transactions/:id - unauthorized", () => {
 		it("should be return an object message", async () => {
+			jest.setTimeout(10000);
 			const id = 1;
 			const data = {
 				name: "updateTest",
@@ -295,6 +303,7 @@ describe("PUT /transactions/:id", () => {
 	});
 	describe("PUT /transactions/:id - not provide input name", () => {
 		it("should be return an object message", async () => {
+			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "",
@@ -317,6 +326,7 @@ describe("PUT /transactions/:id", () => {
 	});
 	describe("PUT /transactions/:id - not provide input amount", () => {
 		it("should be return an object message", async () => {
+			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "updateTest",
@@ -339,6 +349,7 @@ describe("PUT /transactions/:id", () => {
 	});
 	describe("PUT /transactions/:id - not provide input date", () => {
 		it("should be return an object message", async () => {
+			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "updateTest",
@@ -367,6 +378,7 @@ describe("PUT /transactions/:id", () => {
 
 describe("GET /transactions success", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		return request(app)
 			.get("/transactions")
 			.set("access_token", access_token)
@@ -380,6 +392,7 @@ describe("GET /transactions success", () => {
 
 describe("GET /transactions Succues but There are no transactions in the wallet", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		const createWallet = await request(app).post("/wallets").set("access_token", access_token).send({ name: "Wallet10" });
 		return request(app)
 			.get("/transactions")
@@ -395,6 +408,7 @@ describe("GET /transactions Succues but There are no transactions in the wallet"
 
 describe("GET /transactions success", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		return request(app)
 			.get("/transactions?search=a")
 			.set("access_token", access_token)
@@ -408,6 +422,7 @@ describe("GET /transactions success", () => {
 
 describe("GET /transactions success", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		const login = await request(app).post("/users/login").send({ email: "user2@mail.com", password: "user2" });
 		return request(app)
 			.get("/transactions")
@@ -423,6 +438,7 @@ describe("GET /transactions success", () => {
 
 describe("GET /transactions fail because wallet not found", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		return request(app)
 			.get("/transactions?search=a")
 			.set("access_token", access_token)
@@ -436,6 +452,7 @@ describe("GET /transactions fail because wallet not found", () => {
 
 describe("POST /transactions success", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		const login = await request(app)
 			.post("/users/login")
 			.send({ email: "admin@mail.com", password: "admin" });
@@ -456,6 +473,7 @@ describe("POST /transactions success", () => {
 
 describe("POST /transactions - Fail test", () => {
 	it("should be return an object message", async () => {
+		jest.setTimeout(10000);
 		const data = {
 			name: "uploadTest",
 			amount: 2000,
@@ -481,6 +499,7 @@ describe("POST /transactions - Fail test", () => {
 
 describe("POST /transactions error input field not exist or empty string", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		return request(app)
 			.post("/transactions")
 			.set("access_token", access_token)
@@ -497,6 +516,7 @@ describe("POST /transactions error input field not exist or empty string", () =>
 
 describe("POST /transactions success", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		const login = await request(app)
 			.post("/users/login")
 			.send({ email: "admin@mail.com", password: "admin" });
@@ -517,6 +537,7 @@ describe("POST /transactions success", () => {
 
 describe("GET /transactions/transactionId - Success", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		const id = 6;
 		return request(app)
 			.get("/transactions/" + id)
@@ -538,6 +559,7 @@ describe("GET /transactions/transactionId - Success", () => {
 
 describe("GET /transactions/transactionId - Fail because forbidden", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		const id = 6;
 		const login = await request(app)
 			.post("/users/login")
@@ -557,6 +579,7 @@ describe("GET /transactions/transactionId - Fail because forbidden", () => {
 
 describe("GET /transactions/transactionId - Fail because not logged in yet", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		const id = 6;
 		return request(app)
 			.get("/transactions/" + id)
@@ -572,6 +595,7 @@ describe("GET /transactions/transactionId - Fail because not logged in yet", () 
 
 describe("GET /transactions/transactionId - Fail because give fake access_token", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		const id = 6;
 		return request(app)
 			.get("/transactions/" + id)
@@ -588,6 +612,7 @@ describe("GET /transactions/transactionId - Fail because give fake access_token"
 
 describe("GET /transactions/transactionId - Fail because transaction not found", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		const id = 1000;
 		const login = await request(app)
 			.post("/users/login")
@@ -608,6 +633,7 @@ describe("GET /transactions/transactionId - Fail because transaction not found",
 
 describe("GET /transactions/transactionId - Fail request params transactionId is not number", () => {
 	it("Should be return an object", async () => {
+		jest.setTimeout(10000);
 		const id = "Ini bukan angka";
 		const login = await request(app)
 			.post("/users/login")
@@ -632,6 +658,7 @@ describe("GET /transactions/transactionId - Fail request params transactionId is
 describe("Delete /transactions/:id", () => {
 	describe("Delete /transactions/:id - Succes test", () => {
 		it("should return a success message", async () => {
+			jest.setTimeout(10000);
 			const id = 7;
 			const login = await request(app).post("/users/login").send({ email: "user2@mail.com", password: "user2" });
 			const response = await request(app)
@@ -646,6 +673,7 @@ describe("Delete /transactions/:id", () => {
 
 	describe("Delete /transactions/:id - Succes test", () => {
 		it("should return a success message", async () => {
+			jest.setTimeout(10000);
 			const id = 18;
 			const login = await request(app).post("/users/login").send({ email: "user2@mail.com", password: "user2" });
 			const response = await request(app)
@@ -660,6 +688,7 @@ describe("Delete /transactions/:id", () => {
 
 	describe("Delete /transactions/:id - Fail because forbidden", () => {
 		it("should return a forbidden message", async () => {
+			jest.setTimeout(10000);
 			const id = 1;
 			const response = await request(app)
 				.delete("/transactions/" + id)
@@ -673,6 +702,7 @@ describe("Delete /transactions/:id", () => {
 
 	describe("Delete /transactions/:id - Fail because Id is not number", () => {
 		it("should return a message", async () => {
+			jest.setTimeout(10000);
 			const id = "ini salah input";
 			const response = await request(app)
 				.delete("/transactions/" + id)
@@ -686,6 +716,7 @@ describe("Delete /transactions/:id", () => {
 
 	describe("Delete /transactions/:id - Succes test", () => {
 		it("should return a success message", async () => {
+			jest.setTimeout(10000);
 			const id = 6;
 			const response = await request(app)
 				.delete("/transactions/" + id)
@@ -699,6 +730,7 @@ describe("Delete /transactions/:id", () => {
 
 	describe("Delete /transactions/:id - Transactions not found", () => {
 		it("should return error message", async () => {
+			jest.setTimeout(10000);
 			const id = 1000;
 			const response = await request(app)
 				.delete("/transactions/" + id)
@@ -712,6 +744,7 @@ describe("Delete /transactions/:id", () => {
 
 	describe("Delete /transactions/:id - Transactions not found", () => {
 		it("should return error message", async () => {
+			jest.setTimeout(10000);
 			const id = null;
 			const response = await request(app)
 				.delete("/transactions/" + id)
