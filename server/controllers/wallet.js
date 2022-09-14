@@ -40,7 +40,6 @@ class Controller {
 
   static async getDetailWallet(req, res, next) {
     try {
-      console.log("MASUK READ DETAIL WALLET");
       const { walletId } = req.params;
       const { search } = req.query;
       if (isNaN(+walletId)) {
