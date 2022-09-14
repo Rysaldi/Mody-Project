@@ -5,7 +5,7 @@ import {
   Text,
   ScrollView,
   StyleSheet,
-  FlatList
+  FlatList,
 } from "react-native";
 import CardLatesHistory from "../components/CardLatesHistory";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,29 +33,48 @@ export default function DashboardScreen() {
       });
   }, []);
 
+  console.log(userDetail);
+
   const renderItemUserWallets = ({ item }) => {
     return (
       <View style={{ paddingHorizontal: 20, paddingTop: 15 }}>
-      <View style={styles.mainCard}>
-        <View style={styles.contentMainCard}>
-          <View style={styles.frameMainLogo}>
-            <Image
-              style={styles.mainLogo}
-              source={require("../../assets/icons/wallet_new.png")}
-            />
+        <View style={styles.mainCard}>
+          <View style={styles.contentMainCard}>
+            <View style={styles.frameMainLogo}>
+              <Image
+                style={styles.mainLogo}
+                source={require("../../assets/icons/wallet_new.png")}
+              />
+            </View>
+            <View>
+              <Text style={styles.textCard}>{item.Wallet.name}</Text>
+              <Text style={styles.textName}>role: {item.role}</Text>
+            </View>
           </View>
-          <View>
-            <Text style={styles.textCard}>{item.Wallet.name}</Text>
-            <Text style={styles.textName}>role: {item.role}</Text>
+          <View style={styles.amountDetail}>
+            {item.Wallet.balance < 0 ? (
+              <Text style={styles.minusNumber}>
+                {
+                  formatCurrency({
+                    amount: item.Wallet.balance,
+                    code: "IDR",
+                  })[0]
+                }
+              </Text>
+            ) : (
+              <Text style={styles.plusNumber}>
+                {
+                  formatCurrency({
+                    amount: item.Wallet.balance,
+                    code: "IDR",
+                  })[0]
+                }
+              </Text>
+            )}
           </View>
-        
         </View>
-        <View style={styles.amountDetail}>
-        {item.Wallet.balance < 0 ? <Text style={styles.minusNumber}>{formatCurrency({ amount: 10000, code: "IDR" })[0]}</Text> : <Text style={styles.plusNumber}>{formatCurrency({ amount: item.Wallet.balance, code: "IDR" })}</Text>}
-       </View>
       </View>
-    </View>
-    )
+    );
   };
 
   return (
@@ -101,14 +120,17 @@ export default function DashboardScreen() {
               />
             </View>
 
-            <View style={{ flex: 2, paddingTop: 20 }}>
-              <View>
-                <Text style={styles.textHeaderTran}>
-                  Your transactions history
-                </Text>
-                <CardLatesHistory />
-                <CardLatesHistory />
-              </View>
+            <View
+              style={{
+                flex: 2,
+                paddingTop: 20,
+                marginBottom: 10,
+              }}
+            >
+              <Text style={styles.textHeaderTran}>
+                Your transactions history
+              </Text>
+              <CardLatesHistory />
             </View>
           </View>
         </>
@@ -121,13 +143,13 @@ const styles = StyleSheet.create({
   textHeader: {
     fontWeight: "bold",
     fontSize: 16,
-    color: "#242525",
+    color: "#424242",
     marginBottom: 5,
   },
   textHeaderTran: {
     fontWeight: "bold",
     fontSize: 16,
-    color: "#242525",
+    color: "#424242",
     // marginBottom: 20,
     marginStart: 20,
   },
@@ -170,7 +192,7 @@ const styles = StyleSheet.create({
   textHeaderDash: {
     fontSize: 30,
     fontWeight: "bold",
-    color: "#242525",
+    color: "#424242",
   },
   textHeaderBoard: {
     fontSize: 30,
@@ -204,18 +226,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   mainCard: {
-
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
 
+    width: Dimensions.get("window").width * 0.9,
+    height: Dimensions.get("window").height * 0.1,
 
-   width: Dimensions.get("window").width * 0.9,
-   height: Dimensions.get("window").height * 0.1,
-
-   backgroundColor: "white",
+    backgroundColor: "white",
     borderRadius: 10,
-    elevation:5
   },
   frameMainLogo: {
     width: 50,
@@ -223,45 +242,47 @@ const styles = StyleSheet.create({
     marginRight: 15,
     overflow: "hidden",
     justifyContent: "center",
-    marginLeft:15
- 
-  
-    
+    marginLeft: 15,
   },
   mainLogo: {
     width: 30,
     height: 30,
   },
   contentMainCard: {
-
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-
   },
   textCard: {
     fontSize: 18,
+    color: "#424242",
+    fontWeight: "400",
   },
   minusNumber: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 10,
+    fontSize: 12,
+    width: Dimensions.get("window").width * 0.3,
     padding: 5,
     borderRadius: 5,
     backgroundColor: "#a21a1a",
+    textAlign: "center",
   },
   plusNumber: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 10,
+    fontSize: 12,
     padding: 5,
+    width: Dimensions.get("window").width * 0.3,
     borderRadius: 5,
     backgroundColor: "#388c12",
+    textAlign: "center",
   },
   textName: {
     color: "#808080",
     fontSize: 12,
-  },amountDetail:{
-    marginRight:15
-  }
+  },
+  amountDetail: {
+    marginRight: 15,
+  },
 });

@@ -10,7 +10,6 @@ import RegisterUser from "./src/screens/RegisterUser";
 import WalletScreen from "./src/screens/WalletScreen";
 import TransactionScreen from "./src/screens/TransactionScreen";
 import ReportScreen from "./src/screens/ReportScreen";
-import HistoryScreen from "./src/screens/HistoryScreen";
 import AddUserToWallet from "./src/screens/AddUserToWallet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState, useEffect } from "react";
@@ -56,8 +55,7 @@ export default function index() {
       />
       <Stack.Screen name="Add Transaction" component={TransactionScreen} />
       <Stack.Screen name="Report Detail" component={ReportScreen} />
-      {/* <Stack.Screen name="HistoryApp" component={HistoryScreen} /> */}
-      <Stack.Screen name="AddToWallet" component={AddUserToWallet} />
+      <Stack.Screen name="Add Collaborator" component={AddUserToWallet} />
     </Stack.Navigator>
   );
 

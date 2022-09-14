@@ -18,10 +18,12 @@ import { VictoryPie, VictoryLabel } from "victory-native";
 export default function ReportScreen({ route }) {
   const { id } = route.params;
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const { detailWallet } = useSelector((state) => {
     return state.walletReducer;
   });
-  const [loading, setLoading] = useState(true);
+
+  const defaultGraphicData = [{ x: "Empty", y: 100 }];
 
   const setTotalIncome = (transactions) => {
     if (!transactions || transactions.length === 0) {
@@ -49,10 +51,75 @@ export default function ReportScreen({ route }) {
     return totalExpense;
   };
 
+  const percentageIncome = (amount) => {
+    return (
+      (setTotalIncome(amount) /
+        (setTotalIncome(amount) + setTotalExpense(amount))) *
+      100
+    );
+  };
+
+  const percentageExpenses = (amount) => {
+    return (
+      (setTotalExpense(amount) /
+        (setTotalIncome(amount) + setTotalExpense(amount))) *
+      100
+    );
+  };
+
+  const wantedGraphicData = (transaction) => {
+    return [
+      {
+        x: " ",
+        y: percentageExpenses(transaction),
+      },
+      {
+        x: " ",
+        y: percentageIncome(transaction),
+      },
+    ];
+  };
+
   const hapusTransaction = (transactionId) => {
     dispatch(deleteTransaction(transactionId))
       .then(() => dispatch(fetchDetail(id)))
       .catch((err) => console.log(err));
+  };
+
+  const makeNewLine = (string) => {
+    const before = string.split(" ");
+    const after = before.join("\n");
+    return after;
+  };
+  const setCategoryName = (transaction) => {
+    const categoryName = transaction.map((el) => {
+      return { name: makeNewLine(el.Category.name), amount: el.amount };
+    });
+    return categoryName;
+  };
+
+  const wantedGraphicDataByCategory = (categoryName) => {
+    const wantedGraphicDataByCategories = categoryName.map((el) => {
+      return {
+        x: el.name,
+        y: (el.amount / setTotalIncome(detailWallet.Transactions)) * 100,
+      };
+    });
+    return wantedGraphicDataByCategories;
+  };
+
+  const renderUserWallets = ({ item }) => {
+    return (
+      <View style={styles.walletCard}>
+        <View style={styles.cardDetail}>
+          <Text style={styles.incomeName}>Joined</Text>
+          {/* <Text style={styles.semiColon}>:</Text> */}
+          <Text style={styles.incomeDetails}>
+            {item.User.email} as {item.role}
+          </Text>
+        </View>
+      </View>
+    );
   };
 
   const renderItem = ({ item }) => {
@@ -114,49 +181,6 @@ export default function ReportScreen({ route }) {
     );
   };
 
-  const renderUserWallets = ({ item }) => {
-    return (
-      <View style={styles.walletCard}>
-        <View style={styles.cardDetail}>
-          <Text style={styles.incomeName}>Joined</Text>
-          {/* <Text style={styles.semiColon}>:</Text> */}
-          <Text style={styles.incomeDetails}>
-            {item.User.email} as {item.role}
-          </Text>
-        </View>
-      </View>
-    );
-  };
-
-  const percentageIncome = (amount) => {
-    return (
-      (setTotalIncome(amount) /
-        (setTotalIncome(amount) + setTotalExpense(amount))) *
-      100
-    );
-  };
-
-  const percentageExpenses = (amount) => {
-    return (
-      (setTotalExpense(amount) /
-        (setTotalIncome(amount) + setTotalExpense(amount))) *
-      100
-    );
-  };
-
-  const wantedGraphicData = (transaction) => {
-    return [
-      {
-        x: " ",
-        y: percentageExpenses(transaction),
-      },
-      {
-        x: " ",
-        y: percentageIncome(transaction),
-      },
-    ];
-  };
-
   const graphicColor = [
     "#FFE9A0",
     "#367E18",
@@ -177,37 +201,12 @@ export default function ReportScreen({ route }) {
     "#7DCE13",
     "#EAE509",
   ];
-  const defaultGraphicData = [{ x: "Empty", y: 100 }];
 
   useEffect(() => {
     dispatch(fetchDetail(id)).finally(() => {
       setLoading(false);
     });
   }, []);
-
-  const makeNewLine = (string) => {
-    const before = string.split(" ");
-    const after = before.join("\n");
-    return after;
-  };
-  const setCategoryName = (transaction) => {
-    const categoryName = transaction.map((el) => {
-      return { name: makeNewLine(el.Category.name), amount: el.amount };
-    });
-    return categoryName;
-  };
-
-  const wantedGraphicDataByCategory = (categoryName) => {
-    const wantedGraphicDataByCategories = categoryName.map((el) => {
-      return {
-        x: el.name,
-        y: (el.amount / setTotalIncome(detailWallet.Transactions)) * 100,
-      };
-    });
-    return wantedGraphicDataByCategories;
-  };
-
-  const itemRender = () => {};
 
   //<Flatlist data={detailWallet} renderItem={renderUserWallets} keyExtractor={(el) => el.id}/>
   return (
@@ -230,8 +229,8 @@ export default function ReportScreen({ route }) {
                   animate={{ easing: "exp", duration: 3000 }}
                   data={wantedGraphicData(detailWallet.Transactions)}
                   innerRadius={20}
-                  width={350}
-                  height={250}
+                  width={400}
+                  height={300}
                   style={{
                     data: {
                       stroke: "#fff",
@@ -282,10 +281,10 @@ export default function ReportScreen({ route }) {
                   data={wantedGraphicDataByCategory(
                     setCategoryName(detailWallet.Transactions)
                   )}
-                  labelRadius={({ innerRadius }) => innerRadius + 100}
+                  labelRadius={({ innerRadius }) => innerRadius + 115}
                   padAngle={({ datum }) => datum.x}
-                  width={500}
-                  height={260}
+                  width={540}
+                  height={300}
                   style={{
                     data: {
                       stroke: "#fff",
@@ -438,8 +437,8 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   buttonDelete: {
-    width: Dimensions.get("window").width * 0.075,
-    height: Dimensions.get("window").height * 0.045,
+    width: Dimensions.get("window").width * 0.06,
+    height: Dimensions.get("window").height * 0.035,
   },
   trashPosition: {
     position: "absolute",

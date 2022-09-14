@@ -11,6 +11,7 @@ import {
   Pressable,
   ImageBackground,
   ToastAndroid,
+  Alert,
 } from "react-native";
 import { userRegister } from "../store/actionCreator/user";
 import { useDispatch } from "react-redux";
@@ -33,14 +34,18 @@ export default function RegisterUser() {
   const onSubmit = () => {
     dispatch(userRegister(registerForm))
       .then(() => {
+        showToast();
         navigation.navigate("SignIn");
-        showToast()
       })
-      .catch((error) => console.log(error));
+      .catch((error) => errorAlert(error.message));
+  };
+
+  const errorAlert = (msg) => {
+    return Alert.alert("", `${msg}`, [{ text: "OK" }]);
   };
 
   function showToast() {
-    ToastAndroid.show('Successfully register new account!', ToastAndroid.SHORT);
+    ToastAndroid.show("Successfully register new account!", ToastAndroid.SHORT);
   }
 
   return (
@@ -100,15 +105,13 @@ export default function RegisterUser() {
               <Text style={styles.buttonText}>Submit</Text>
             </Pressable>
             <View style={styles.registerAccount}>
-              <Text style={styles.textDetail}>
-                Already have an account? click{" "}
-              </Text>
+              <Text style={styles.textDetail}>Already have an account? </Text>
               <Pressable>
                 <Text
                   style={styles.toLogin}
                   onPress={() => navigation.navigate("SignIn")}
                 >
-                  here
+                  Sign in
                 </Text>
               </Pressable>
             </View>
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
 
   form: {
     width: Dimensions.get("window").width * 0.8,
-    height: Dimensions.get("window").height * 0.45,
+    height: Dimensions.get("window").height * 0.5,
     padding: 25,
     backgroundColor: "#fff",
     borderRadius: 10,
@@ -147,8 +150,9 @@ const styles = StyleSheet.create({
   formInputEmail: {
     flexDirection: "row",
     alignItems: "center",
-
+    marginTop: 15,
     height: Dimensions.get("window").height * 0.05,
+    marginBottom: 15,
   },
   emailIcon: {
     width: Dimensions.get("window").width * 0.05,
@@ -159,6 +163,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
     height: Dimensions.get("window").height * 0.05,
+    marginBottom: 15,
   },
   accountIcon: {
     width: Dimensions.get("window").width * 0.045,
@@ -175,13 +180,12 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height * 0.5,
   },
   input: {
-    height: Dimensions.get("window").height * 0.03,
+    height: Dimensions.get("window").height * 0.04,
     width: Dimensions.get("window").width * 0.55,
     marginLeft: 20,
     paddingRight: 10,
     paddingLeft: 5,
-    borderBottomWidth: 2,
-    borderColor: "#d9d9d9",
+    borderBottomWidth: 1,
     fontSize: 17,
   },
 
@@ -208,5 +212,14 @@ const styles = StyleSheet.create({
   },
   toLogin: {
     color: "#2F6FFF",
+  },
+  fontInter: {
+    fontWeight: "bold",
+    fontSize: 30,
+    textAlign: "left",
+    color: "#424242",
+  },
+  textDetail: {
+    color: "#424242",
   },
 });

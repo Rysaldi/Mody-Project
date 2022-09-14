@@ -7,6 +7,8 @@ import {
   TextInput,
   Image,
   ScrollView,
+  ToastAndroid,
+  Alert,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -93,6 +95,14 @@ export default function TransactionScreen({ navigation, route }) {
     setDate(value);
   };
 
+  function showToast() {
+    ToastAndroid.show("Successfully add new transaction!", ToastAndroid.SHORT);
+  }
+
+  const errorAlert = (msg) => {
+    return Alert.alert("", `${msg}`, [{ text: "OK" }]);
+  };
+
   const submitNewTransaction = () => {
     dispatch(
       addTransaction({
@@ -103,9 +113,10 @@ export default function TransactionScreen({ navigation, route }) {
       })
     )
       .then(() => {
+        showToast();
         navigation.navigate("WalletApp");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => errorAlert(err.message));
   };
 
   return (
@@ -247,14 +258,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   input: {
-		height: Dimensions.get("window").height * 0.05,
-		borderWidth: 2,
-		borderRadius:5,
-		paddingHorizontal:10,
-		borderColor: "#d9d9d9",
-		color: "#000",
-		backgroundColor:"#fff"
-	},
+    height: Dimensions.get("window").height * 0.05,
+    borderWidth: 2,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    borderColor: "#d9d9d9",
+    color: "#000",
+    backgroundColor: "#fff",
+  },
   formInput: {
     marginTop: 15,
   },

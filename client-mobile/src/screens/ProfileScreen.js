@@ -8,6 +8,7 @@ import {
   Button,
   ScrollView,
   Pressable,
+  ToastAndroid,
 } from "react-native";
 import React, { useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
@@ -62,6 +63,10 @@ export default function ProfileScreen({ navigation }) {
       setHashGalleryPermission(galleryStatus.status === "granted");
     })();
   }, []);
+
+  function showToast() {
+    ToastAndroid.show("Successfully edit your profile!", ToastAndroid.SHORT);
+  }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -134,6 +139,7 @@ export default function ProfileScreen({ navigation }) {
       })
     )
       .then(() => {
+        showToast();
         dispatch(userHistory());
       })
       .catch((error) => {
@@ -174,12 +180,18 @@ export default function ProfileScreen({ navigation }) {
           <View style={styles.containerHeader}>
             <View style={styles.outlineFrame}>
               <View style={styles.frame}>
-                {image ? (
+                {/* {image ? (
                   <Image
                     style={styles.profilePicture}
                     source={{ uri: inputProfile.profilePicture }}
                   />
                 ) : (
+                  <Image
+                    style={styles.profilePicture}
+                    source={{ uri: image.uri }}
+                  />
+                )} */}
+                {image && (
                   <Image
                     style={styles.profilePicture}
                     source={{ uri: image.uri }}

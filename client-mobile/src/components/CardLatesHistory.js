@@ -23,11 +23,10 @@ export default function CardLatesHistory() {
   const [latestTransaction, setLatestTransaction] = useState([]);
 
   useState(() => {
-    setLatestTransaction(userDetail.Transactions)
-  }, [])
+    setLatestTransaction(userDetail.Transactions);
+  }, []);
 
   const renderItemHistory = ({ item }) => {
-    // console.log(item)
     return (
       <SafeAreaView>
         <View
@@ -37,7 +36,7 @@ export default function CardLatesHistory() {
             marginTop: 15,
             justifyContent: "space-between",
             alignItems: "center",
-            paddingHorizontal:20
+            paddingHorizontal: 20,
           }}
         >
           <View
@@ -72,9 +71,13 @@ export default function CardLatesHistory() {
           </Text>
           </View> */}
           {item.Category.type === "Income" ? (
-            <Text style={styles.plusNumber}>{formatCurrency({ amount: item.amount, code: "IDR"})[0]}</Text>
+            <Text style={styles.plusNumber}>
+              {formatCurrency({ amount: item.amount, code: "IDR" })[0]}
+            </Text>
           ) : (
-            <Text style={styles.minusNumber}>{formatCurrency({ amount: item.amount, code: "IDR"})[0]}</Text>
+            <Text style={styles.minusNumber}>
+              {formatCurrency({ amount: item.amount, code: "IDR" })[0]}
+            </Text>
           )}
         </View>
       </SafeAreaView>
@@ -90,7 +93,7 @@ export default function CardLatesHistory() {
           data={latestTransaction}
           renderItem={renderItemHistory}
           keyExtractor={(item, index) => {
-            return index
+            return index;
           }}
         />
       )}
@@ -116,23 +119,23 @@ const styles = StyleSheet.create({
     color: "#242525",
   },
   minusNumber: {
-    color:"#fff",
-    fontWeight:"bold",
-    fontSize:12,
-    padding:5,
-    borderRadius:5,
-    backgroundColor:"#a21a1a",
-    width : Dimensions.get("window").width * 0.3,
-    textAlign:"center"
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 12,
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: "#a21a1a",
+    width: Dimensions.get("window").width * 0.3,
+    textAlign: "center",
   },
   plusNumber: {
     color: "#fff",
     fontWeight: "bold",
     fontSize: 12,
-    padding:5,
-    borderRadius:5,
-    backgroundColor:"#388c12",
-    width : Dimensions.get("window").width * 0.3,
-    textAlign:"center"
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: "#388c12",
+    width: Dimensions.get("window").width * 0.3,
+    textAlign: "center",
   },
 });

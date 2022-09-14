@@ -6,9 +6,8 @@ import {
   View,
   Image,
   TextInput,
-  Button,
-  ImageBackground,
   Pressable,
+  Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewUserWallet } from "../store/actionCreator/userWallet";
@@ -28,18 +27,28 @@ export default function AddUserToWallet({ navigation, route }) {
     { label: "Member", value: "Member" },
   ]);
 
+  const errorAlert = () => {
+    return Alert.alert(
+      "",
+      "Uh oh... \nwe can't find the user you're looking for.",
+      [{ text: "OK" }]
+    );
+  };
+
   const submitAddToWallet = () => {
     dispatch(
       addNewUserWallet({
         email: addToWalletEmail,
         WalletId: id,
         role: value,
-        UserId: 2,
       })
     )
       .then((_) => {
         setAddToWalletEmail("");
         navigation.navigate("WalletApp");
+      })
+      .catch(() => {
+        errorAlert();
       })
       .finally(() => dispatch(setLoadingAddUserToWallet(false)));
   };
@@ -47,32 +56,49 @@ export default function AddUserToWallet({ navigation, route }) {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.formAddWallet}>
-          <Text style={styles.textAdd}>Email</Text>
-          <TextInput
-            value={addToWalletEmail}
-            onChangeText={setAddToWalletEmail}
-            style={styles.input}
-          />
+        <View style={styles.bannerColor}>
+          <View style={styles.banner}>
+            <View style={styles.textAsking}>
+              <Text style={styles.invitingText}>
+                Who do you want to invite <Text style={styles.askIcon}>?</Text>
+              </Text>
+            </View>
+            <Image
+              style={styles.imageBanner}
+              source={require("../../assets/icons/Animation-PNG-HD.png")}
+            />
+          </View>
         </View>
-        <View style={styles.formAddWallet}>
-          <Text style={styles.textAdd}>Role</Text>
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={role}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setRole}
-            style={{ marginTop: 10, borderColor: "#ddd" }}
-          />
-        </View>
-        <View style={styles.buttonToAdd}>
-          <Pressable style={styles.buttonAdd}>
-            <Text style={styles.buttonText} onPress={submitAddToWallet}>
-              Add collaborator
-            </Text>
-          </Pressable>
+
+        <View style={styles.formBannerAdd}>
+          <View style={styles.formAddWallet}>
+            <Text style={styles.textAdd}>Email</Text>
+            <TextInput
+              value={addToWalletEmail}
+              onChangeText={setAddToWalletEmail}
+              style={styles.input}
+              placeholder="input collaborator's email"
+            />
+          </View>
+          <View style={styles.formAddWallet}>
+            <Text style={styles.textAdd}>Role</Text>
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={role}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setRole}
+              style={{ marginTop: 10, borderColor: "#ddd" }}
+            />
+          </View>
+          <View style={styles.buttonToAdd}>
+            <Pressable style={styles.buttonAdd}>
+              <Text style={styles.buttonText} onPress={submitAddToWallet}>
+                Add collaborator
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </>
@@ -81,7 +107,6 @@ export default function AddUserToWallet({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   formAdd: {
     width: Dimensions.get("window").width,
@@ -96,27 +121,24 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 25,
-    color: "#242525",
+    color: "#424242",
   },
   textAdd: {
-    fontWeight: "bold",
-    fontSize: 18,
-    color: "#171717",
-    marginTop: 10,
+    tWeight: "boldnTop: 10",
   },
   formAddWallet: {
     justifyContent: "space-between",
     marginTop: 15,
   },
   input: {
-    height: Dimensions.get("window").height * 0.03,
-    width: Dimensions.get("window").width * 0.9,
-
-    paddingRight: 10,
-    borderBottomWidth: 2,
-    borderColor: "#ddd",
-    color: "#171717",
     marginTop: 10,
+    height: Dimensions.get("window").height * 0.05,
+    borderWidth: 2,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    borderColor: "#d9d9d9",
+    color: "#424242",
+    backgroundColor: "#fff",
   },
   buttonToAdd: {
     alignItems: "center",
@@ -132,7 +154,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   buttonText: {
-    color: "white",
+    color: "#F4F6FB",
     fontSize: 14,
     textAlign: "center",
     fontWeight: "bold",
@@ -161,7 +183,7 @@ const styles = StyleSheet.create({
   },
   walletName: {
     fontSize: 18,
-    color: "#000",
+    color: "#424242",
     marginLeft: 25,
     marginBottom: 5,
     width: Dimensions.get("window").width * 0.8,
@@ -194,5 +216,42 @@ const styles = StyleSheet.create({
   imageIcon: {
     height: Dimensions.get("window").height * 0.035,
     width: Dimensions.get("window").width * 0.05,
+  },
+  banner: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: Dimensions.get("window").height * 0.35,
+    width: Dimensions.get("window").width * 0.7,
+  },
+  imageBanner: {
+    height: Dimensions.get("window").height * 0.35,
+    width: Dimensions.get("window").width * 0.27,
+  },
+  textAsking: {
+    width: Dimensions.get("window").width * 0.55,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  invitingText: {
+    fontSize: 24,
+    color: "#F4F6FB",
+  },
+  askIcon: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "red",
+  },
+  bannerColor: {
+    backgroundColor: "#2F6FFF",
+    width: Dimensions.get("window").width,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 15,
+
+    borderBottomRightRadius: 50,
+  },
+  formBannerAdd: {
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 });

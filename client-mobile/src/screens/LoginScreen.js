@@ -10,6 +10,7 @@ import {
   Button,
   ImageBackground,
   Pressable,
+  Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingScreen from "../components/LoadingScreen";
@@ -34,10 +35,15 @@ export default function LoginScreen() {
     });
   };
 
+  const errorAlert = (msg) => {
+    return Alert.alert("", `${msg}`, [{ text: "OK" }]);
+  };
+
   const onSubmit = () => {
     dispatch(userLogin(formAdd))
       .catch((error) => {
-        console.log(error);
+        console.log(error.message, "erorr");
+        errorAlert(error.message);
       })
       .finally(() => {
         dispatch(loadingUserLogin(false));
@@ -105,7 +111,7 @@ export default function LoginScreen() {
                   marginTop: 20,
                 }}
               >
-                <Text>Don't have account ? </Text>
+                <Text style={styles.detailText}>Don't have account ? </Text>
                 <Text
                   style={{ color: "#2F6FFF" }}
                   onPress={() => navigation.navigate("SignUp")}
@@ -146,6 +152,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     textAlign: "left",
+    color: "#424242",
   },
   containerInput: {
     flexDirection: "row",
@@ -166,5 +173,8 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginTop: 20,
     fontSize: 18,
+  },
+  detailText: {
+    color: "#424242",
   },
 });

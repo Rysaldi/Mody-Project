@@ -78,7 +78,9 @@ export default function WalletScreen({ navigation, route }) {
           </Pressable>
           <Pressable
             style={styles.buttonToReport}
-            onPress={() => navigation.navigate("AddToWallet", { id: item.id })}
+            onPress={() =>
+              navigation.navigate("Add Collaborator", { id: item.id })
+            }
           >
             <Image
               style={styles.imageIcon}
@@ -224,7 +226,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "white",
     marginTop: 15,
-    elevation: 5,
   },
   buttonText: {
     color: "#1a1a1a",
@@ -243,7 +244,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingVertical: 20,
     borderRadius: 5,
-    elevation: 5,
+
     flexDirection: "column",
     paddingLeft: 15,
     paddingRight: 15,
@@ -291,7 +292,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F5EDDC",
-    elevation: 5,
   },
   featuresSymbol: {
     flexDirection: "row",
