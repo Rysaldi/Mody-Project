@@ -172,7 +172,7 @@ export default function TransactionScreen({ navigation, route }) {
                   style={{
                     borderColor: "#ddd",
                     borderWidth: 1,
-                    padding: 12,
+                    padding: 15,
                     backgroundColor: "white",
                     borderRadius: 7,
                     display: "flex",
@@ -252,13 +252,14 @@ const styles = StyleSheet.create({
   },
   inputName: {
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 12,
   },
   inputNameForm: {
     fontWeight: "bold",
+    marginBottom: 12,
   },
   input: {
-    height: Dimensions.get("window").height * 0.08,
+    height: Dimensions.get("window").height * 0.065,
     borderWidth: 2,
     borderRadius: 8,
     paddingHorizontal: 10,
@@ -282,7 +283,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     height: Dimensions.get("window").height * 0.06,
     width: Dimensions.get("window").width * 0.4,
-    borderRadius: 20,
+    borderRadius: 10,
     backgroundColor: "#2F6FFF",
     marginTop: 25,
   },

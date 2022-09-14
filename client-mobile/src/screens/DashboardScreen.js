@@ -33,7 +33,7 @@ export default function DashboardScreen() {
       });
   }, []);
 
-  console.log(JSON.stringify(userDetail, null, 2));
+  // console.log(JSON.stringify(userDetail, null, 2));
 
   const renderItemUserWallets = ({ item }) => {
     return (
@@ -249,10 +249,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-
+    elevation:3,
     width: Dimensions.get("window").width * 0.9,
     height: Dimensions.get("window").height * 0.1,
-
+    marginBottom:5,
     backgroundColor: "white",
     borderRadius: 10,
   },

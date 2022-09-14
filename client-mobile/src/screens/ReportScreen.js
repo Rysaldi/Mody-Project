@@ -91,13 +91,14 @@ export default function ReportScreen({ route }) {
     const after = before.join("\n");
     return after;
   };
+  
   const setCategoryName = (transaction) => {
     let obj = {};
     const newArr = [];
     const categoryName = transaction.map((el) => {
-      return { name: makeNewLine(el.Category.name), amount: el.amount };
+      return { name: el.Category.name, amount: el.amount };
     });
-    categoryName.forEach((el) => {
+    categoryName.forEach(el => {
       if (!obj[el.name]) {
         obj[el.name] = el.amount;
       } else {
@@ -107,13 +108,67 @@ export default function ReportScreen({ route }) {
     for (const key in obj) {
       newArr.push({ name: key, amount: obj[key] });
     }
+    const colorOption = [
+      "#FFE9A0",
+      "#367E18",
+      "#F57328",
+      "#CC3636",
+      "#CDF0EA",
+      "#25316D",
+      "#5F6F94",
+      "#97D2EC",
+      "#FEF5AC",
+      "#FDEEDC",
+      "#FFD8A9",
+      "#F1A661",
+      "#E38B29",
+      "#76BA99",
+      "#876445",
+      "#5BB318",
+      "#7DCE13",
+      "#EAE509",
+    ];
+    for (let i = 0; i < newArr.length; i++) {
+      newArr[i].color = colorOption[i];
+    }
     return newArr;
   };
+
+  const sameColorCategory = (categories) => {
+    const color = [];
+    categories.forEach(el => {
+      color.push(el.color);
+    });
+    return color;
+  };
+
+  const renderListWalletWithColor = ({ item }) => {
+    return (
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          marginRight: 25,
+        }}
+      >
+        <View
+          style={{
+            width: 20,
+            height: 20,
+            backgroundColor: item.color,
+          }}
+        />
+        <Text> {item.name}</Text>
+      </View>
+    );
+  };
+
+  
 
   const wantedGraphicDataByCategory = (categoryName) => {
     const wantedGraphicDataByCategories = categoryName.map((el) => {
       return {
-        x: el.name,
+        x: " ",
         y: (el.amount / setTotalIncome(detailWallet.Transactions)) * 100,
       };
     });
@@ -191,27 +246,6 @@ export default function ReportScreen({ route }) {
     );
   };
 
-  const graphicColor = [
-    "#FFE9A0",
-    "#367E18",
-    "#F57328",
-    "#CC3636",
-    "#CDF0EA",
-    "#25316D",
-    "#5F6F94",
-    "#97D2EC",
-    "#FEF5AC",
-    "#FDEEDC",
-    "#FFD8A9",
-    "#F1A661",
-    "#E38B29",
-    "#76BA99",
-    "#876445",
-    "#5BB318",
-    "#7DCE13",
-    "#EAE509",
-  ];
-
   useEffect(() => {
     dispatch(fetchDetail(id)).finally(() => {
       setLoading(false);
@@ -267,47 +301,36 @@ export default function ReportScreen({ route }) {
 
               <View style={styles.pieChartbyCategory}>
                 <VictoryPie
-                  colorScale={[
-                    "#FFE9A0",
-                    "#367E18",
-                    "#F57328",
-                    "#CC3636",
-                    "#CDF0EA",
-                    "#25316D",
-                    "#5F6F94",
-                    "#97D2EC",
-                    "#FEF5AC",
-                    "#FDEEDC",
-                    "#FFD8A9",
-                    "#F1A661",
-                    "#E38B29",
-                    "#76BA99",
-                    "#876445",
-                    "#5BB318",
-                    "#7DCE13",
-                    "#EAE509",
-                  ]}
+                  colorScale={sameColorCategory(
+                    setCategoryName(detailWallet.Transactions)
+                  )}
                   animate={{ easing: "exp", duration: 3000 }}
                   data={wantedGraphicDataByCategory(
                     setCategoryName(detailWallet.Transactions)
                   )}
-                  labelRadius={({ innerRadius }) => innerRadius + 115}
                   padAngle={({ datum }) => datum.x}
                   width={540}
                   height={300}
                   style={{
                     data: {
                       stroke: "#fff",
-                      strokeWidth: 2,
-                    },
-                    labels: {
-                      fontSize: 12,
+                      strokeWidth: 0.5,
                     },
                   }}
                 />
               </View>
             </>
           )}
+             <View style={styles.categoryList}>
+            <FlatList
+              data={setCategoryName(detailWallet.Transactions)}
+              renderItem={renderListWalletWithColor}
+              keyExtractor={(index) => index}
+              horizontal={true}
+              persistentScrollbar={true}
+              style={{ height: 30 }}
+            />
+          </View>
           <View style={styles.walletList}>
             <View style={styles.collaborator}>
               <Text style={styles.textCollaborator}>Collaborator</Text>
@@ -475,4 +498,10 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.2,
   },
   emailText: {},
+  categoryList: {
+    marginBottom: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    width: Dimensions.get("window").width,
+  }
 });

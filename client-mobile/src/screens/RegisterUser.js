@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     borderBottomWidth: 1,
     fontSize: 17,
+    color:"black"
   },
 
   buttonTemp: {
