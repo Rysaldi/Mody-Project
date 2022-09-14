@@ -1,6 +1,6 @@
 const { comparePassword } = require("../helpers/bcrypt");
 const { createToken } = require("../helpers/jwt");
-const { User, Profile, Transaction, Category, Wallet } = require("../models");
+const { User, Profile, Transaction, Category, Wallet, UserWallet } = require("../models");
 
 class userController {
   static async register(req, res, next) {
@@ -42,7 +42,6 @@ class userController {
 
   static async findById(req, res, next) {
     try {
-      console.log("INI MASUK USER DETAIL WOI");
       const { id } = req.user;
       const findUser = await User.findByPk(id, {
         attributes: {
@@ -51,18 +50,26 @@ class userController {
         include: [
           {
             model: Transaction,
-            attributes: ["name", "amount", "date", "id"],
+            attributes: ["id", "name", "amount", "date"],
             include: [
               {
                 model: Category,
                 attributes: ["name", "type"],
-              },
-              {
-                model: Wallet,
-              },
+              }
             ],
           },
+          {
+            model: UserWallet,
+            attributes: ["id", "WalletId"],
+            include: {
+              model: Wallet,
+              attributes: {
+                exclude: ["password", "createdAt", "updatedAt"],
+              },
+            }
+          }
         ],
+        order: [[Transaction, "date", "DESC"]],
       });
       if (!findUser) {
         throw { name: "NotFound" };
