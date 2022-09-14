@@ -48,7 +48,6 @@ export const fetchCategories = () => {
         return response.json();
       })
       .then((categories) => {
-        // console.log(categories);
         dispatch(setCategories(categories));
         return categories;
       });

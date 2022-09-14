@@ -5,6 +5,7 @@ import {
   Text,
   SafeAreaView,
   FlatList,
+  Dimensions,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
@@ -13,29 +14,20 @@ import {
   loadingUserHistoryDispatch,
 } from "../store/actionCreator/user";
 import LoadingScreen from "./LoadingScreen";
+import { formatCurrency } from "react-native-format-currency";
 
 export default function CardLatesHistory() {
-  const dispatch = useDispatch();
   const { userDetail, loadingUserHistory } = useSelector(
     (state) => state.userReducer
   );
   const [latestTransaction, setLatestTransaction] = useState([]);
 
-  useEffect(() => {
-    dispatch(userHistory())
-      .then(async (data) => {
-        setLatestTransaction(data.Transactions.slice(0, 1));
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        console.log(loadingUserHistory);
-        dispatch(loadingUserHistoryDispatch(false));
-      });
-  }, []);
+  useState(() => {
+    setLatestTransaction(userDetail.Transactions)
+  }, [])
 
   const renderItemHistory = ({ item }) => {
+    // console.log(item)
     return (
       <SafeAreaView>
         <View
@@ -45,6 +37,7 @@ export default function CardLatesHistory() {
             marginTop: 15,
             justifyContent: "space-between",
             alignItems: "center",
+            paddingHorizontal:20
           }}
         >
           <View
@@ -55,29 +48,33 @@ export default function CardLatesHistory() {
             }}
           >
             <View>
-              <Text style={styles.textHeader}>{item.Wallet.name}</Text>
+              <Text style={styles.textHeader}>{item.name}</Text>
 
               <Text style={{ fontSize: 12, color: "#808080" }}>
                 {new Date(item.date).toLocaleString()}
               </Text>
             </View>
           </View>
+          {/* <View style={{position:"absolute", right:100}}>
           <Text
             style={{
-              backgroundColor: "#ccf0bb",
-              color: "#7eb764",
+              backgroundColor: "#797b80",
+              color: "#fff",
               padding: 5,
               borderRadius: 5,
               fontSize: 12,
               fontWeight: "bold",
+              width:Dimensions.get("window").width * 0.3,
+              textAlign:"center",
             }}
           >
             {item.Category.name}
           </Text>
+          </View> */}
           {item.Category.type === "Income" ? (
-            <Text style={styles.plusNumber}>Rp. {item.amount}</Text>
+            <Text style={styles.plusNumber}>{formatCurrency({ amount: item.amount, code: "IDR"})[0]}</Text>
           ) : (
-            <Text style={styles.minusNumber}>Rp. {item.amount}</Text>
+            <Text style={styles.minusNumber}>{formatCurrency({ amount: item.amount, code: "IDR"})[0]}</Text>
           )}
         </View>
       </SafeAreaView>
@@ -92,7 +89,9 @@ export default function CardLatesHistory() {
         <FlatList
           data={latestTransaction}
           renderItem={renderItemHistory}
-          keyExtractor={(index) => index}
+          keyExtractor={(item, index) => {
+            return index
+          }}
         />
       )}
     </>
@@ -113,17 +112,27 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   textHeader: {
-    fontSize: 16,
+    fontSize: 15,
     color: "#242525",
   },
   minusNumber: {
-    color: "#cc5656",
-    fontWeight: "bold",
-    fontSize: 12,
+    color:"#fff",
+    fontWeight:"bold",
+    fontSize:12,
+    padding:5,
+    borderRadius:5,
+    backgroundColor:"#a21a1a",
+    width : Dimensions.get("window").width * 0.3,
+    textAlign:"center"
   },
   plusNumber: {
-    color: "#7eb764",
+    color: "#fff",
     fontWeight: "bold",
     fontSize: 12,
+    padding:5,
+    borderRadius:5,
+    backgroundColor:"#388c12",
+    width : Dimensions.get("window").width * 0.3,
+    textAlign:"center"
   },
 });

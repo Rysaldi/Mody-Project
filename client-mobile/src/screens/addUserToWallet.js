@@ -47,8 +47,6 @@ export default function AddUserToWallet({ navigation, route }) {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.headerText}>Add User To Wallet</Text>
-        <Text style={styles.textAdd}>Add New User</Text>
         <View style={styles.formAddWallet}>
           <Text style={styles.textAdd}>Email</Text>
           <TextInput
@@ -72,7 +70,7 @@ export default function AddUserToWallet({ navigation, route }) {
         <View style={styles.buttonToAdd}>
           <Pressable style={styles.buttonAdd}>
             <Text style={styles.buttonText} onPress={submitAddToWallet}>
-              Add User to Wallet
+              Add collaborator
             </Text>
           </Pressable>
         </View>

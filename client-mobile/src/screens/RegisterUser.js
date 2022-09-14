@@ -10,6 +10,7 @@ import {
   TextInput,
   Pressable,
   ImageBackground,
+  ToastAndroid,
 } from "react-native";
 import { userRegister } from "../store/actionCreator/user";
 import { useDispatch } from "react-redux";
@@ -33,9 +34,14 @@ export default function RegisterUser() {
     dispatch(userRegister(registerForm))
       .then(() => {
         navigation.navigate("SignIn");
+        showToast()
       })
       .catch((error) => console.log(error));
   };
+
+  function showToast() {
+    ToastAndroid.show('Successfully register new account!', ToastAndroid.SHORT);
+  }
 
   return (
     <View style={styles.container}>

@@ -91,7 +91,7 @@ export default function index() {
                 return <Ionicons name="settings" size={size} color={color} />;
               }
             },
-            tabBarActiveTintColor: "black",
+            tabBarActiveTintColor: "#2F6FFF",
             tabBarInactiveTintColor: "gray",
           })}
         >

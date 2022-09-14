@@ -622,7 +622,6 @@ describe("GET /transactions/transactionId - Fail because transaction not found",
 			.set("access_token", login.body.access_token)
 			.send({ WalletId: 1 })
 			.then((response) => {
-				console.log(response);
 				expect(response.status).toBe(404);
 				expect(response.body).toBeInstanceOf(Object);
 				expect(response.body).toHaveProperty("message");
@@ -643,7 +642,7 @@ describe("GET /transactions/transactionId - Fail request params transactionId is
 			.set("access_token", login.body.access_token)
 			.send({ WalletId: 1 })
 			.then((response) => {
-				console.log(response);
+
 				expect(response.status).toBe(400);
 				expect(response.body).toBeInstanceOf(Object);
 				expect(response.body).toHaveProperty("message");

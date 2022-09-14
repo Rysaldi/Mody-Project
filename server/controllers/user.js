@@ -1,6 +1,6 @@
 const { comparePassword } = require("../helpers/bcrypt");
 const { createToken } = require("../helpers/jwt");
-const { User, Profile, Transaction, Category, Wallet } = require("../models");
+const { User, Profile, Transaction, Wallet, Category, UserWallet } = require("../models");
 
 class userController {
   static async register(req, res, next) {
@@ -41,37 +41,47 @@ class userController {
   }
 
   static async findById(req, res, next) {
-    try {
-      console.log("INI MASUK USER DETAIL WOI");
-      const { id } = req.user;
-      const findUser = await User.findByPk(id, {
-        attributes: {
-          exclude: ["password", "createdAt", "updatedAt"],
-        },
-        include: [
+		try {
+			const { id } = req.user;
+			const findUser = await User.findByPk(id, {
+				attributes: {
+					exclude: ["password", "createdAt", "updatedAt"],
+				},
+				include: [
+					{
+						model: Transaction,
+						attributes: ["id", "name", "amount", "date"],
+						include: [
+							{
+								model: Category,
+								attributes: ["name", "type"],
+							}
+						],
+					},
+					{
+						model: UserWallet,
+						attributes: ["id", "WalletId"],
+						include: {
+							model: Wallet,
+							attributes: {
+								exclude: ["password", "createdAt", "updatedAt"],
+							},
+						}
+					},
           {
-            model: Transaction,
-            attributes: ["name", "amount", "date", "id"],
-            include: [
-              {
-                model: Category,
-                attributes: ["name", "type"],
-              },
-              {
-                model: Wallet,
-              },
-            ],
-          },
-        ],
-      });
-      if (!findUser) {
-        throw { name: "NotFound" };
-      }
-      res.status(200).json(findUser);
-    } catch (error) {
-      next(error);
-    }
-  }
+						model: Profile
+					}
+				],
+				order: [[Transaction, "date", "DESC"]],
+			});
+			if (!findUser) {
+				throw { name: "NotFound" };
+			}
+			res.status(200).json(findUser);
+		} catch (error) {
+			next(error);
+		}
+	}
 
   static async login(req, res, next) {
     try {

@@ -75,8 +75,10 @@ export const getAccessToken = async () => {
 
 const clearAccessToken = async () => {
   try {
-    return AsyncStorage.clear();
-  } catch (error) {}
+    await AsyncStorage.clear();
+  } catch (error) {
+    console.log(error)
+  }
 };
 
 export const userRegister = (registerUserForm) => {
@@ -125,9 +127,8 @@ export const userLogin = (loginUserForm) => {
 
 export const userLogout = () => {
   return (dispatch) => {
-    clearAccessToken().then((_) => {
-      dispatch(userLogoutDispatch(false));
-    });
+    clearAccessToken()
+    dispatch(userLogoutDispatch(false));
   };
 };
 

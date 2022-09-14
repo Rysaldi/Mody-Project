@@ -233,7 +233,6 @@ describe("GET /categories - when category data is empty", () => {
 				restartIdentity: true,
 			});
 			const response = await request(app).get("/categories").set("access_token", access_token);
-			console.log(response);
 			expect(response.status).toBe(200);
 			expect(response.body).toBeInstanceOf(Array);
 			expect(response.body[0]).toBeInstanceOf(Object);

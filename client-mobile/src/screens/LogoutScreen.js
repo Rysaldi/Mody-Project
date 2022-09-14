@@ -20,10 +20,6 @@ export default function LogoutScreen() {
 
   const onTapLogout = () => {
     dispatch(userLogout())
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => dispatch(loadingUserLogout(false)));
   };
 
   return (

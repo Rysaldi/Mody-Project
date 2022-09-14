@@ -28,7 +28,7 @@ export default function ProfileScreen({ navigation }) {
     firstName: "",
     lastName: "",
     phone: "",
-    profilePicture: null,
+    profilePicture: "",
   });
 
   const dispatch = useDispatch();
@@ -46,6 +46,8 @@ export default function ProfileScreen({ navigation }) {
           phone: profile.phone,
           profilePicture: profile.profilePicture,
         });
+
+        setImage(profile.profilePicture);
       })
       .catch((error) => {
         console.log(error);
@@ -157,7 +159,7 @@ export default function ProfileScreen({ navigation }) {
         <LoadingScreen />
       ) : (
         <View style={styles.container}>
-          <View style={styles.containerHeader}>
+          {/* <View style={styles.containerHeader}>
             <View style={styles.outlineFrame}>
               <View style={styles.frame}>
                 <Image
@@ -168,6 +170,47 @@ export default function ProfileScreen({ navigation }) {
                 />
               </View>
             </View>
+          </View> */}
+          <View style={styles.containerHeader}>
+            <View style={styles.outlineFrame}>
+              <View style={styles.frame}>
+                {image ? (
+                  <Image
+                    style={styles.profilePicture}
+                    source={{ uri: inputProfile.profilePicture }}
+                  />
+                ) : (
+                  <Image
+                    style={styles.profilePicture}
+                    source={{ uri: image.uri }}
+                  />
+                )}
+              </View>
+            </View>
+            <Pressable
+              onPress={() => pickImage()}
+              style={{
+                backgroundColor: "#fff",
+                borderWidth: 2,
+                borderRadius: 30,
+                paddingHorizontal: 10,
+                alignItems: "center",
+                marginVertical: 10,
+                position: "absolute",
+                bottom: 40,
+                right: 150,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 25,
+                  fontWeight: "bold",
+                  color: "#ddd",
+                }}
+              >
+                +
+              </Text>
+            </Pressable>
           </View>
           <View style={{ flex: 2.5, height: 100 }}>
             <ScrollView style={{ padding: 30 }}>
@@ -189,30 +232,6 @@ export default function ProfileScreen({ navigation }) {
                 onChangeText={(text) => onChange({ phone: text })}
                 value={inputProfile.phone}
               />
-              <Text style={styles.textHeader}>Profile Picture</Text>
-              <Pressable
-                onPress={() => pickImage()}
-                style={{
-                  borderColor: "#ddd",
-                  borderWidth: 2,
-                  borderRadius: 7,
-                  padding: 5,
-                  alignItems: "center",
-                  marginVertical: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 25,
-                    fontWeight: "bold",
-                    color: "#ddd",
-                    borderColor: "#ddd",
-                  }}
-                >
-                  +
-                </Text>
-              </Pressable>
-              {image && displayImage()}
               <Pressable
                 style={{ display: "flex", alignItems: "center" }}
                 onPress={submitProfile}
@@ -237,18 +256,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 30,
+    backgroundColor: "#2F6FFF",
+    borderBottomRightRadius: 50,
   },
+
   profilePicture: {
-    width: 120,
-    height: 120,
+    width: 140,
+    height: 140,
   },
+
   outlineFrame: {
-    backgroundColor: "#d9d9d9",
+    backgroundColor: "white",
     padding: 10,
     justifyContent: "center",
     alignItems: "center",
-    width: 130,
-    height: 130,
+    width: 150,
+    height: 150,
     borderRadius: 70,
     elevation: 5,
   },
@@ -257,8 +280,8 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: "center",
     alignItems: "center",
-    width: 120,
-    height: 120,
+    width: 140,
+    height: 140,
     borderRadius: 70,
     overflow: "hidden",
   },
