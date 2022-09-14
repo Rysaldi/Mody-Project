@@ -162,7 +162,7 @@ export default function TransactionScreen({ navigation, route }) {
                 setOpen={setOpenType}
                 setValue={setValueType}
                 setItems={setItemsType}
-                style={{ borderColor: "#ddd", marginBottom: 15 }}
+                style={{ borderColor: "#ddd" }}
               />
             </View>
             <View style={styles.formInput}>
@@ -209,7 +209,7 @@ export default function TransactionScreen({ navigation, route }) {
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
-                style={{ borderColor: "#ddd", marginBottom: 15 }}
+                style={{ borderColor: "#ddd" }}
               />
             </View>
             <View style={styles.formInput}>
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   },
   formAddTransaction: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    height: Dimensions.get("window").height * 0.95,
     paddingTop: 20,
     paddingLeft: 25,
     paddingRight: 25,
@@ -258,12 +258,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   input: {
-    height: Dimensions.get("window").height * 0.05,
+    height: Dimensions.get("window").height * 0.08,
     borderWidth: 2,
-    borderRadius: 5,
+    borderRadius: 8,
     paddingHorizontal: 10,
     borderColor: "#d9d9d9",
-    color: "#000",
+    color: "#424242",
     backgroundColor: "#fff",
   },
   formInput: {
@@ -271,24 +271,17 @@ const styles = StyleSheet.create({
   },
   buttonToAdd: {
     flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  buttonCancel: {
-    alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 5,
-    height: Dimensions.get("window").height * 0.045,
-    width: Dimensions.get("window").width * 0.3,
-    borderRadius: 20,
-    backgroundColor: "#000",
-    marginTop: 25,
+    alignItems: "center",
+    width: Dimensions.get("window").width * 0.9,
+    height: Dimensions.get("window").height * 0.06,
   },
   buttonAdd: {
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 5,
-    height: Dimensions.get("window").height * 0.045,
-    width: Dimensions.get("window").width * 0.3,
+    height: Dimensions.get("window").height * 0.06,
+    width: Dimensions.get("window").width * 0.4,
     borderRadius: 20,
     backgroundColor: "#2F6FFF",
     marginTop: 25,

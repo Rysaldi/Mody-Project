@@ -58,14 +58,9 @@ export default function AddUserToWallet({ navigation, route }) {
       <View style={styles.container}>
         <View style={styles.bannerColor}>
           <View style={styles.banner}>
-            <View style={styles.textAsking}>
-              <Text style={styles.invitingText}>
-                Who do you want to invite <Text style={styles.askIcon}>?</Text>
-              </Text>
-            </View>
             <Image
               style={styles.imageBanner}
-              source={require("../../assets/icons/Animation-PNG-HD.png")}
+              source={require("../../assets/icons/banner_copy.png")}
             />
           </View>
         </View>
@@ -89,7 +84,11 @@ export default function AddUserToWallet({ navigation, route }) {
               setOpen={setOpen}
               setValue={setValue}
               setItems={setRole}
-              style={{ marginTop: 10, borderColor: "#ddd" }}
+              style={{
+                marginTop: 10,
+                borderColor: "#ddd",
+                height: Dimensions.get("window").height * 0.08,
+              }}
             />
           </View>
           <View style={styles.buttonToAdd}>
@@ -132,9 +131,9 @@ const styles = StyleSheet.create({
   },
   input: {
     marginTop: 10,
-    height: Dimensions.get("window").height * 0.05,
+    height: Dimensions.get("window").height * 0.08,
     borderWidth: 2,
-    borderRadius: 5,
+    borderRadius: 8,
     paddingHorizontal: 10,
     borderColor: "#d9d9d9",
     color: "#424242",
@@ -147,11 +146,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 5,
-    height: Dimensions.get("window").height * 0.045,
-    width: Dimensions.get("window").width * 0.3,
+    height: Dimensions.get("window").height * 0.06,
+    width: Dimensions.get("window").width * 0.4,
     borderRadius: 20,
     backgroundColor: "#2F6FFF",
-    marginTop: 15,
+    marginTop: 25,
   },
   buttonText: {
     color: "#F4F6FB",
@@ -218,14 +217,12 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.05,
   },
   banner: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    height: Dimensions.get("window").height * 0.35,
-    width: Dimensions.get("window").width * 0.7,
+    justifyContent: "center",
+    alignItems: "center",
   },
   imageBanner: {
-    height: Dimensions.get("window").height * 0.35,
-    width: Dimensions.get("window").width * 0.27,
+    height: Dimensions.get("window").height * 0.3,
+    width: Dimensions.get("window").width * 0.6,
   },
   textAsking: {
     width: Dimensions.get("window").width * 0.55,

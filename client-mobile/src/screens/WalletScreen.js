@@ -108,7 +108,6 @@ export default function WalletScreen({ navigation, route }) {
       <View style={styles.container}>
         <View style={styles.formAdd}>
           <Text style={styles.headerText}>Wallet</Text>
-          <Text style={styles.textAdd}>Add New Wallet</Text>
           <View style={styles.formAddWallet}>
             <Text style={styles.textAdd}>Name</Text>
             <TextInput

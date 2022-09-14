@@ -70,11 +70,11 @@ export default function ReportScreen({ route }) {
   const wantedGraphicData = (transaction) => {
     return [
       {
-        x: " ",
+        x: "Expense",
         y: percentageExpenses(transaction),
       },
       {
-        x: " ",
+        x: "Income",
         y: percentageIncome(transaction),
       },
     ];
@@ -92,10 +92,22 @@ export default function ReportScreen({ route }) {
     return after;
   };
   const setCategoryName = (transaction) => {
+    let obj = {};
+    const newArr = [];
     const categoryName = transaction.map((el) => {
       return { name: makeNewLine(el.Category.name), amount: el.amount };
     });
-    return categoryName;
+    categoryName.forEach((el) => {
+      if (!obj[el.name]) {
+        obj[el.name] = el.amount;
+      } else {
+        obj[el.name] = obj[el.name] + el.amount;
+      }
+    });
+    for (const key in obj) {
+      newArr.push({ name: key, amount: obj[key] });
+    }
+    return newArr;
   };
 
   const wantedGraphicDataByCategory = (categoryName) => {
@@ -112,11 +124,9 @@ export default function ReportScreen({ route }) {
     return (
       <View style={styles.walletCard}>
         <View style={styles.cardDetail}>
-          <Text style={styles.incomeName}>Joined</Text>
+          <Text style={styles.roleText}>{item.role}</Text>
           {/* <Text style={styles.semiColon}>:</Text> */}
-          <Text style={styles.incomeDetails}>
-            {item.User.email} as {item.role}
-          </Text>
+          <Text>{item.User.email}</Text>
         </View>
       </View>
     );
@@ -333,6 +343,8 @@ const styles = StyleSheet.create({
   },
   walletCard: {
     marginTop: 15,
+    marginBottom: 5,
+    marginHorizontal: 5,
     backgroundColor: "white",
     paddingVertical: 20,
     borderRadius: 10,
@@ -340,8 +352,8 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     width: Dimensions.get("window").width * 0.8,
-
     position: "relative",
+    elevation: 5,
   },
   walletList: {
     width: Dimensions.get("window").width,
@@ -371,9 +383,10 @@ const styles = StyleSheet.create({
     paddingLeft: 25,
     paddingRight: 25,
     height: Dimensions.get("window").height * 0.1,
-
     backgroundColor: "white",
     alignItems: "center",
+    borderRadius: 10,
+    elevation: 5,
   },
   incomeText: {
     fontWeight: "bold",
@@ -393,6 +406,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 50,
+    elevation: 10,
   },
   collaborator: {
     marginBottom: 25,
@@ -412,12 +426,11 @@ const styles = StyleSheet.create({
   },
   cardDetail: {
     flexDirection: "row",
-
     marginBottom: 5,
   },
   incomeDetails: {
     marginLeft: 15,
-
+    fontWeight: "bold",
     width: Dimensions.get("window").width * 0.42,
   },
   incomeName: {
@@ -456,4 +469,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
   },
+
+  roleText: {
+    fontWeight: "bold",
+    width: Dimensions.get("window").width * 0.2,
+  },
+  emailText: {},
 });

@@ -33,7 +33,7 @@ export default function DashboardScreen() {
       });
   }, []);
 
-  console.log(userDetail);
+  console.log(JSON.stringify(userDetail, null, 2));
 
   const renderItemUserWallets = ({ item }) => {
     return (
@@ -113,11 +113,21 @@ export default function DashboardScreen() {
               <View style={{ paddingHorizontal: 20 }}>
                 <Text style={styles.textHeader}>Your Wallets</Text>
               </View>
-              <FlatList
-                data={userDetail.UserWallets}
-                renderItem={renderItemUserWallets}
-                keyExtractor={(item) => item.id}
-              />
+              {!userDetail.UserWallets.length ? (
+                <View style={{ paddingHorizontal: 20 }}>
+                  <View style={styles.walletEmpty}>
+                    <Text style={styles.textHeaderEmpty}>
+                      Start your journey with creating your first wallet!
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <FlatList
+                  data={userDetail.UserWallets}
+                  renderItem={renderItemUserWallets}
+                  keyExtractor={(item) => item.id}
+                />
+              )}
             </View>
 
             <View
@@ -130,7 +140,17 @@ export default function DashboardScreen() {
               <Text style={styles.textHeaderTran}>
                 Your transactions history
               </Text>
-              <CardLatesHistory />
+              {!userDetail.Transactions.length ? (
+                <View style={{ paddingHorizontal: 20 }}>
+                  <View style={styles.walletEmpty}>
+                    <Text style={styles.textHeaderEmpty}>
+                      No transaction data available
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <CardLatesHistory />
+              )}
             </View>
           </View>
         </>
@@ -284,5 +304,20 @@ const styles = StyleSheet.create({
   },
   amountDetail: {
     marginRight: 15,
+  },
+  walletEmpty: {
+    alignItems: "center",
+    width: Dimensions.get("window").width * 0.9,
+    height: Dimensions.get("window").height * 0.2,
+
+    justifyContent: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    borderRadius: 20,
+    marginTop: 15,
+  },
+  textHeaderEmpty: {
+    fontSize: 16,
+    color: "#424242",
+    marginBottom: 5,
   },
 });
