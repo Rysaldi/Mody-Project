@@ -138,7 +138,6 @@ describe("PUT /transactions/:id", () => {
 
 	describe("PUT /transactions/:id - Succes test", () => {
 		it("should be return an object message success", async () => {
-			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "updateTest",
@@ -696,7 +695,6 @@ describe("Delete /transactions/:id", () => {
 
 	describe("Delete /transactions/:id - Transactions not found", () => {
 		it("should return error message", async () => {
-			jest.setTimeout(10000);
 			const id = 1000;
 			const response = await request(app)
 				.delete("/transactions/" + id)
@@ -710,7 +708,6 @@ describe("Delete /transactions/:id", () => {
 
 	describe("Delete /transactions/:id - Transactions not found", () => {
 		it("should return error message", async () => {
-			jest.setTimeout(10000);
 			const id = null;
 			const response = await request(app)
 				.delete("/transactions/" + id)
