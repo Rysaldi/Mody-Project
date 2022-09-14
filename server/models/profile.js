@@ -30,5 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Profile",
     }
   );
+  Profile.beforeCreate((profile, options) => {
+    profile.profilePicture =
+      "https://ik.imagekit.io/mody/96de62b2-0a6b-4ea5-871b-25e2b0a61052_kjQZ5lpnD.jpeg?ik-sdk-version=javascript-1.4.3&updatedAt=1663161960227";
+  });
   return Profile;
 };
