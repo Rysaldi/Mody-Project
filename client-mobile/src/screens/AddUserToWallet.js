@@ -87,7 +87,7 @@ export default function AddUserToWallet({ navigation, route }) {
               style={{
                 marginTop: 10,
                 borderColor: "#ddd",
-                height: Dimensions.get("window").height * 0.08,
+                height: Dimensions.get("window").height * 0.065,
               }}
             />
           </View>
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginTop: 10,
-    height: Dimensions.get("window").height * 0.08,
+    height: Dimensions.get("window").height * 0.065,
     borderWidth: 2,
     borderRadius: 8,
     paddingHorizontal: 10,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     height: Dimensions.get("window").height * 0.06,
     width: Dimensions.get("window").width * 0.4,
-    borderRadius: 20,
+    borderRadius: 10,
     backgroundColor: "#2F6FFF",
     marginTop: 25,
   },

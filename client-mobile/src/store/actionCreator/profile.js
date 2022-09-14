@@ -62,7 +62,6 @@ export const fetchProfile = () => {
 };
 export const updateProfile = (payload) => {
   return async (dispatch) => {
-    console.log(payload);
     if (!payload.firstName || !payload.lastName || !payload.phone) {
       if (!payload.firstName) {
         payload.firstName = "";
@@ -80,7 +79,7 @@ export const updateProfile = (payload) => {
     data.append("lastName", payload.lastName);
     data.append("phone", payload.phone);
     if (payload.profilePicture) {
-      let localUri = payload.profilePicture;
+      let localUri = payload.profilePicture.uri;
       let filename = localUri.split("/").pop();
       let match = /\.(\w+)$/.exec(filename);
       let type = match ? `profilePicture/${match[1]}` : `profilePicture`;

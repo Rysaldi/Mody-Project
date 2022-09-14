@@ -21,7 +21,6 @@ export default function LogoutScreen() {
   const onTapLogout = () => {
     dispatch(userLogout())
   };
-
   return (
     <>
       <View style={styles.container}>
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     width: Dimensions.get("window").width * 0.4,
     textAlign: "center",
-    borderRadius: 25,
+    borderRadius: 7,
     marginTop: 10,
   },
   textBotton: {

@@ -42,7 +42,6 @@ export default function LoginScreen() {
   const onSubmit = () => {
     dispatch(userLogin(formAdd))
       .catch((error) => {
-        console.log(error.message, "erorr");
         errorAlert(error.message);
       })
       .finally(() => {

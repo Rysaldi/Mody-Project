@@ -27,7 +27,7 @@ export default function WalletScreen({ navigation, route }) {
   });
 
   React.useEffect(() => {
-    dispatch(fetchWallets()).catch((err) => {
+    dispatch(fetchWallets()).catch((error) => {
       console.log(error);
     });
   }, []);
@@ -49,22 +49,26 @@ export default function WalletScreen({ navigation, route }) {
   const renderCategoryList = ({ item }) => {
     return (
       <View style={styles.walletCard}>
-        <View style={styles.walletTitle}>
-          <Text style={styles.walletName}>{item.name}</Text>
+        <View style={styles.walletName}>
+          <Text style={{ fontSize: 17, fontWeight: "bold", color: "#424242" }}>{item.name}</Text>
         </View>
         <View style={styles.features}>
-          <Pressable
-            style={styles.buttonToTransaction}
-            onPress={() =>
-              navigation.navigate("Add Transaction", { id: item.id })
-            }
-          >
-            <Image
-              style={styles.imageIcon}
-              source={require("../../assets/icons/TrancsactionGreen.png")}
-            />
-          </Pressable>
-
+          <View style={styles.iconGroup}>
+            <Pressable
+              style={styles.buttonToTransaction}
+              onPress={() =>
+                navigation.navigate("Add Transaction", { id: item.id })
+              }
+            >
+              <Image
+                style={styles.imageIcon}
+                source={require("../../assets/icons/TrancsactionGreen.png")}
+              />
+            </Pressable>
+            <Text style={ styles.iconText }>Add Transaction</Text>
+          </View>
+          
+          <View style={styles.iconGroup}>
           <Pressable
             style={styles.buttonToTransaction}
             onPress={() =>
@@ -76,8 +80,11 @@ export default function WalletScreen({ navigation, route }) {
               source={require("../../assets/icons/editGreen.png")}
             />
           </Pressable>
+          <Text style={ styles.iconText }>Report Detail</Text>
+          </View>
+          <View style={styles.iconGroup}>
           <Pressable
-            style={styles.buttonToReport}
+            style={styles.buttonToTransaction}
             onPress={() =>
               navigation.navigate("Add Collaborator", { id: item.id })
             }
@@ -87,6 +94,10 @@ export default function WalletScreen({ navigation, route }) {
               source={require("../../assets/icons/addContributorYellow.png")}
             />
           </Pressable>
+          <Text style={ styles.iconText }>Add Contact</Text>
+          </View>
+
+          <View style={styles.iconGroup}>
           <Pressable
             style={styles.buttonToTransaction}
             onPress={() => {
@@ -98,6 +109,8 @@ export default function WalletScreen({ navigation, route }) {
               source={require("../../assets/icons/red_trash.png")}
             />
           </Pressable>
+          <Text style={ styles.iconText }>Delete</Text>
+          </View>
         </View>
       </View>
     );
@@ -109,11 +122,11 @@ export default function WalletScreen({ navigation, route }) {
         <View style={styles.formAdd}>
           <Text style={styles.headerText}>Wallet</Text>
           <View style={styles.formAddWallet}>
-            <Text style={styles.textAdd}>Name</Text>
             <TextInput
               value={walletName}
               onChangeText={setWalletName}
               style={styles.input}
+              placeholder="Input New Wallet Name"
             />
           </View>
           <View style={styles.buttonToAdd}>
@@ -121,39 +134,6 @@ export default function WalletScreen({ navigation, route }) {
               <Text style={styles.buttonText} onPress={submitAddWallet}>
                 Add Wallet
               </Text>
-            </Pressable>
-          </View>
-        </View>
-        <View style={styles.showSymbol}>
-          <View style={styles.featuresSymbol}>
-            <Pressable style={styles.buttonSymbol}>
-              <Image
-                style={styles.imageIcon}
-                source={require("../../assets/icons/TrancsactionGreen.png")}
-              />
-              <Text style={styles.textLegend}>Add Transaction</Text>
-            </Pressable>
-
-            <Pressable style={styles.buttonSymbol}>
-              <Image
-                style={styles.imageIcon}
-                source={require("../../assets/icons/editGreen.png")}
-              />
-              <Text style={styles.textLegend}>Report Detail</Text>
-            </Pressable>
-            <Pressable style={styles.buttonSymbol}>
-              <Image
-                style={styles.imageIcon}
-                source={require("../../assets/icons/addContributorYellow.png")}
-              />
-              <Text style={styles.textLegend}>Add Contributor</Text>
-            </Pressable>
-            <Pressable style={styles.buttonSymbol}>
-              <Image
-                style={styles.imageIcon}
-                source={require("../../assets/icons/red_trash.png")}
-              />
-              <Text style={styles.textLegend}>Delete</Text>
             </Pressable>
           </View>
         </View>
@@ -202,16 +182,18 @@ const styles = StyleSheet.create({
   },
   formAddWallet: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     marginTop: 15,
   },
   input: {
-    height: Dimensions.get("window").height * 0.03,
-    width: Dimensions.get("window").width * 0.55,
-    paddingRight: 10,
-    borderBottomWidth: 2,
+    height: Dimensions.get("window").height * 0.05,
+    width: Dimensions.get("window").width * 0.8,
+    paddingLeft: 15,
+    borderWidth: 2,
     borderColor: "white",
-    color: "white",
+    backgroundColor:"#fff",
+    color: "#424242",
+    borderRadius:7
   },
   buttonToAdd: {
     alignItems: "center",
@@ -222,7 +204,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     height: Dimensions.get("window").height * 0.045,
     width: Dimensions.get("window").width * 0.3,
-    borderRadius: 20,
+    borderRadius: 7,
     backgroundColor: "white",
     marginTop: 15,
   },
@@ -239,76 +221,55 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   walletCard: {
-    marginTop: 15,
-    backgroundColor: "white",
-    paddingVertical: 20,
-    borderRadius: 5,
-
-    flexDirection: "column",
-    paddingLeft: 15,
-    paddingRight: 15,
-    width: Dimensions.get("window").width * 0.88,
-    height: Dimensions.get("window").height * 0.13,
+    display: "flex",
+    backgroundColor:"#fff",
+    borderRadius:7,
+    flexDirection: "row",
+    marginBottom: 10,
+    padding: 10,
     alignItems: "center",
+    justifyContent: "space-between",
+    elevation:2
   },
   walletIcon: {
     width: Dimensions.get("window").width * 0.1,
     height: Dimensions.get("window").height * 0.055,
   },
   walletName: {
-    fontSize: 18,
-    color: "#000",
-    marginLeft: 14,
-    marginBottom: 5,
-    width: Dimensions.get("window").width * 0.8,
-    fontWeight: "bold",
+    width: Dimensions.get("window").width * 0.25,
   },
   buttonToTransaction: {
+    width: 40,
     justifyContent: "center",
     alignItems: "center",
-    paddingLeft: 15,
-    paddingRight: 15,
+    borderColor: "#ddd",
+    borderWidth: 2,
+    padding: 5,
+    borderRadius: 5
   },
-  buttonToReport: {
-    justifyContent: "center",
-    alignItems: "center",
+  iconGroup: {
+    width: 70,
+    alignItems: "center"
+  },
+  iconText: {
+    fontSize: 10,
+    textAlign: "center"
   },
   features: {
     flexDirection: "row",
-
     justifyContent: "space-between",
-    width: Dimensions.get("window").width * 0.8,
+    width: Dimensions.get("window").width * 0.6,
   },
   walletTitle: {
     width: Dimensions.get("window").width * 0.8,
   },
   imageIcon: {
-    height: Dimensions.get("window").height * 0.04,
-    width: Dimensions.get("window").width * 0.077,
-  },
-  showSymbol: {
-    marginTop: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5EDDC",
-  },
-  featuresSymbol: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    height: Dimensions.get("window").height * 0.13,
-    width: Dimensions.get("window").width * 0.9,
-    backgroundColor: "#0000",
-    borderRadius: 5,
-    paddingLeft: 30,
-    paddingRight: 30,
-    opacity: 0.8,
+    height: Dimensions.get("window").height * 0.03,
+    width: Dimensions.get("window").width * 0.055,
   },
   buttonSymbol: {
     alignItems: "center",
-  },
-  textLegend: {
-    fontSize: 10,
-    marginTop: 5,
-  },
+    borderColor: "#ddd",
+    borderWidth: 1
+  }
 });

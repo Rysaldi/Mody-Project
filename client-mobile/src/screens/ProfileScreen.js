@@ -47,8 +47,6 @@ export default function ProfileScreen({ navigation }) {
           phone: profile.phone,
           profilePicture: profile.profilePicture,
         });
-
-        setImage(profile.profilePicture);
       })
       .catch((error) => {
         console.log(error);
@@ -83,49 +81,6 @@ export default function ProfileScreen({ navigation }) {
   if (hashGalleryPermission === false) {
     return <Text>No Access to internal Storage</Text>;
   }
-
-  const cancel = () => {
-    setImage(null);
-  };
-
-  const displayImage = () => {
-    return (
-      <>
-        <View
-          style={{
-            width: 150,
-            height: 150,
-            marginTop: 20,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Pressable
-            style={{
-              position: "absolute",
-              top: -10,
-              left: 135,
-              zIndex: 99,
-              backgroundColor: "#ffecec",
-              paddingHorizontal: 7,
-              borderRadius: 20,
-            }}
-            onPress={() => cancel()}
-          >
-            <Text
-              style={{ fontSize: 20, color: "#c80000", fontWeight: "bold" }}
-            >
-              X
-            </Text>
-          </Pressable>
-          <Image
-            source={{ uri: image.uri }}
-            style={{ width: 150, height: 150, borderRadius: 10 }}
-          />
-        </View>
-      </>
-    );
-  };
 
   const submitProfile = () => {
     if (!image) {
@@ -165,22 +120,12 @@ export default function ProfileScreen({ navigation }) {
         <LoadingScreen />
       ) : (
         <View style={styles.container}>
-          {/* <View style={styles.containerHeader}>
-            <View style={styles.outlineFrame}>
-              <View style={styles.frame}>
-                <Image
-                  style={styles.profilePicture}
-                  source={{
-                    uri: inputProfile.profilePicture,
-                  }}
-                />
-              </View>
-            </View>
-          </View> */}
           <View style={styles.containerHeader}>
-            <View style={styles.outlineFrame}>
+          <Pressable
+              onPress={() => pickImage()}
+            >
               <View style={styles.frame}>
-                {/* {image ? (
+                {!image ? (
                   <Image
                     style={styles.profilePicture}
                     source={{ uri: inputProfile.profilePicture }}
@@ -190,38 +135,30 @@ export default function ProfileScreen({ navigation }) {
                     style={styles.profilePicture}
                     source={{ uri: image.uri }}
                   />
-                )} */}
-                {image && (
-                  <Image
-                    style={styles.profilePicture}
-                    source={{ uri: image.uri }}
-                  />
                 )}
               </View>
-            </View>
-            <Pressable
-              onPress={() => pickImage()}
+             <View 
               style={{
-                backgroundColor: "#fff",
+                borderColor:"rgba(255, 255, 255, 0.5)",
                 borderWidth: 2,
                 borderRadius: 30,
                 paddingHorizontal: 10,
                 alignItems: "center",
                 marginVertical: 10,
                 position: "absolute",
-                bottom: 40,
-                right: 150,
-              }}
-            >
+                right: 10,
+                bottom:-12
+              }}>
               <Text
                 style={{
                   fontSize: 25,
                   fontWeight: "bold",
-                  color: "#ddd",
+                  color: "rgba(255, 255, 255, 0.5)",
                 }}
               >
                 +
               </Text>
+              </View>
             </Pressable>
           </View>
           <View style={{ flex: 2.5, height: 100 }}>
@@ -320,7 +257,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.8,
     color: "white",
     textAlign: "center",
-    borderRadius: 25,
+    borderRadius: 10,
     marginTop: 10,
     marginBottom: 40,
   },
