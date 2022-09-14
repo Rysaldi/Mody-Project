@@ -60,15 +60,15 @@ class userController {
 					},
 					{
 						model: UserWallet,
-						attributes: ["id", "WalletId"],
+						attributes: ["id", "WalletId", "role"],
 						include: {
 							model: Wallet,
 							attributes: {
-								exclude: ["password", "createdAt", "updatedAt"],
+								exclude: ["createdAt", "updatedAt"],
 							},
 						}
 					},
-          {
+					{
 						model: Profile
 					}
 				],
