@@ -6,7 +6,7 @@ import {
   LOADING_USER_LOGIN,
   LOADING_USER_LOGOUT,
   LOADING_USER_HISTORY,
-  LOADING_SET,
+  RESET,
 } from "../actionTypes";
 
 // const baseUrl = "https://9251-180-242-194-246.ap.ngrok.io/";
@@ -15,12 +15,6 @@ const baseUrl = "https://mody-server.herokuapp.com/";
 export const userLoginDispatch = (payload) => {
   return {
     type: USER_LOGIN,
-    payload,
-  };
-};
-export const loadingSet = (payload) => {
-  return {
-    type: LOADING_SET,
     payload,
   };
 };
@@ -39,7 +33,7 @@ export const userLogoutDispatch = (payload) => {
   };
 };
 
-export const loadingUserLogin = (payload) => {
+export const loadingUserLoginDispatch = (payload) => {
   return {
     type: LOADING_USER_LOGIN,
     payload,
@@ -75,9 +69,10 @@ export const getAccessToken = async () => {
 
 const clearAccessToken = async () => {
   try {
-    await AsyncStorage.clear();
+    await AsyncStorage.removeItem("access_token");
+    return true;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
@@ -102,39 +97,32 @@ export const userRegister = (registerUserForm) => {
 
 export const userLogin = (loginUserForm) => {
   return async (dispatch) => {
-    dispatch(loadingSet(true));
     return fetch(`${baseUrl}users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(loginUserForm),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((message) => {
-            throw message;
-          });
-        }
-        return response.json();
-      })
-      .then((response) => {
-        setAccessToken(response.access_token);
-        dispatch(userLoginDispatch(true));
-      });
+    }).then((response) => {
+      if (!response.ok) {
+        return response.json().then((message) => {
+          throw message;
+        });
+      }
+      return response.json();
+    });
   };
 };
 
 export const userLogout = () => {
-  return (dispatch) => {
-    clearAccessToken()
+  return async (dispatch) => {
+    clearAccessToken();
     dispatch(userLogoutDispatch(false));
   };
 };
 
 export const userHistory = () => async (dispatch) => {
   const access_token = await getAccessToken();
-
   return fetch(baseUrl + "users/detail", {
     method: "GET",
     headers: {

@@ -72,9 +72,9 @@ export const loadingFetchDetailWallet = (payload) => {
   };
 };
 export const fetchDetail = (id, filter) => {
-  let search = filter
-  if(!filter) {
-    search = ""
+  let search = filter;
+  if (!filter) {
+    search = "";
   }
   return async (dispatch) => {
     const accessToken = await getAccessToken();
@@ -151,7 +151,10 @@ export const deleteWallet = (walletId) => {
         return result.json();
       })
       .then(() => dispatch(successDeleteWallet(walletId)))
-      .then(() => dispatch(fetchWallets()))
+      .then(() => {
+        dispatch(fetchWallets());
+        return;
+      })
       .catch((err) => {
         throw err;
       });

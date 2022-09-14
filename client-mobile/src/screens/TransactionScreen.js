@@ -20,6 +20,7 @@ import {
 } from "../store/actionCreator/category";
 import { addTransaction } from "../store/actionCreator/transaction";
 import LoadingScreen from "../components/LoadingScreen";
+import { userHistory } from "../store/actionCreator/user";
 
 export default function TransactionScreen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ export default function TransactionScreen({ navigation, route }) {
     description: "",
     // photo: "",
   });
+
   const { loadingCategories, categories } = useSelector(
     (state) => state.categoryReducer
   );
@@ -114,6 +116,7 @@ export default function TransactionScreen({ navigation, route }) {
     )
       .then(() => {
         showToast();
+        dispatch(userHistory());
         navigation.navigate("WalletApp");
       })
       .catch((err) => errorAlert(err.message));
@@ -226,10 +229,11 @@ export default function TransactionScreen({ navigation, route }) {
               />
             </View>
             <View style={styles.buttonToAdd}>
-              <Pressable style={styles.buttonAdd}>
-                <Text style={styles.buttonText} onPress={submitNewTransaction}>
-                  Submit
-                </Text>
+              <Pressable
+                style={styles.buttonAdd}
+                onPress={submitNewTransaction}
+              >
+                <Text style={styles.buttonText}>Submit</Text>
               </Pressable>
             </View>
           </View>

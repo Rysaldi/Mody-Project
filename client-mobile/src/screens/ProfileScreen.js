@@ -9,6 +9,7 @@ import {
   ScrollView,
   Pressable,
   ToastAndroid,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
@@ -121,9 +122,7 @@ export default function ProfileScreen({ navigation }) {
       ) : (
         <View style={styles.container}>
           <View style={styles.containerHeader}>
-          <Pressable
-              onPress={() => pickImage()}
-            >
+            <Pressable onPress={() => pickImage()}>
               <View style={styles.frame}>
                 {!image ? (
                   <Image
@@ -137,27 +136,28 @@ export default function ProfileScreen({ navigation }) {
                   />
                 )}
               </View>
-             <View 
-              style={{
-                borderColor:"rgba(255, 255, 255, 0.5)",
-                borderWidth: 2,
-                borderRadius: 30,
-                paddingHorizontal: 10,
-                alignItems: "center",
-                marginVertical: 10,
-                position: "absolute",
-                right: 10,
-                bottom:-12
-              }}>
-              <Text
+              <View
                 style={{
-                  fontSize: 25,
-                  fontWeight: "bold",
-                  color: "rgba(255, 255, 255, 0.5)",
+                  borderColor: "rgba(255, 255, 255, 0.5)",
+                  borderWidth: 2,
+                  borderRadius: 30,
+                  paddingHorizontal: 10,
+                  alignItems: "center",
+                  marginVertical: 10,
+                  position: "absolute",
+                  right: 10,
+                  bottom: -12,
                 }}
               >
-                +
-              </Text>
+                <Text
+                  style={{
+                    fontSize: 25,
+                    fontWeight: "bold",
+                    color: "rgba(255, 255, 255, 0.5)",
+                  }}
+                >
+                  +
+                </Text>
               </View>
             </Pressable>
           </View>
@@ -188,6 +188,36 @@ export default function ProfileScreen({ navigation }) {
                 <Text style={styles.button}>Edit</Text>
               </Pressable>
             </ScrollView>
+            {/* <TouchableOpacity style={styles.row} onPress={feedback}>
+              <FontAwesome name="envelope" size={22} color="black" />
+              <View style={styles.column}>
+                <Text style={styles.textHead}>Feedback</Text>
+                <Text style={styles.text}>
+                  Help us to deliver best quality content by giving us criticism
+                  & suggestions so i can be better
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.row} onPress={feedback}>
+              <Entypo name="star" size={26} color="black" />
+              <View style={styles.column}>
+                <Text style={styles.textHead}>Evaluation</Text>
+                <Text style={styles.text}>
+                  Help us to deliver best quality content by giving us
+                  evaluation so i can understand you better
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.row} onPress={about}>
+              <AntDesign name="questioncircle" size={24} color="black" />
+              <View style={styles.column}>
+                <Text style={styles.textHead}>About</Text>
+                <Text style={styles.text}>
+                  Help us to deliver best quality content by giving us
+                  evaluation so i can understand you better
+                </Text>
+              </View>
+            </TouchableOpacity> */}
           </View>
         </View>
       )}

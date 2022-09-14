@@ -18,6 +18,10 @@ import {
   deleteWallet,
 } from "../store/actionCreator/wallet";
 import LoadingScreen from "../components/LoadingScreen";
+import {
+  userHistory,
+  loadingUserHistoryDispatch,
+} from "../store/actionCreator/user";
 
 export default function WalletScreen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -33,24 +37,39 @@ export default function WalletScreen({ navigation, route }) {
   }, []);
 
   const submitAddWallet = () => {
+    dispatch(loadingUserHistoryDispatch(true));
     dispatch(
       addNewWallet({
         name: walletName,
       })
-    ).then((_) => {
-      setWalletName("");
-    });
+    )
+      .then((_) => {
+        dispatch(userHistory());
+        setWalletName("");
+      })
+      .finally(() => {
+        dispatch(loadingUserHistoryDispatch(false));
+      });
   };
 
   const submitDeleteWallet = (walletId) => {
-    dispatch(deleteWallet(walletId));
+    dispatch(loadingUserHistoryDispatch(true));
+    dispatch(deleteWallet(walletId))
+      .then(() => {
+        dispatch(userHistory());
+      })
+      .finally(() => {
+        dispatch(loadingUserHistoryDispatch(false));
+      });
   };
 
   const renderCategoryList = ({ item }) => {
     return (
       <View style={styles.walletCard}>
         <View style={styles.walletName}>
-          <Text style={{ fontSize: 17, fontWeight: "bold", color: "#424242" }}>{item.name}</Text>
+          <Text style={{ fontSize: 17, fontWeight: "bold", color: "#424242" }}>
+            {item.name}
+          </Text>
         </View>
         <View style={styles.features}>
           <View style={styles.iconGroup}>
@@ -65,51 +84,51 @@ export default function WalletScreen({ navigation, route }) {
                 source={require("../../assets/icons/TrancsactionGreen.png")}
               />
             </Pressable>
-            <Text style={ styles.iconText }>Add Transaction</Text>
-          </View>
-          
-          <View style={styles.iconGroup}>
-          <Pressable
-            style={styles.buttonToTransaction}
-            onPress={() =>
-              navigation.navigate("Report Detail", { id: item.id })
-            }
-          >
-            <Image
-              style={styles.imageIcon}
-              source={require("../../assets/icons/editGreen.png")}
-            />
-          </Pressable>
-          <Text style={ styles.iconText }>Report Detail</Text>
-          </View>
-          <View style={styles.iconGroup}>
-          <Pressable
-            style={styles.buttonToTransaction}
-            onPress={() =>
-              navigation.navigate("Add Collaborator", { id: item.id })
-            }
-          >
-            <Image
-              style={styles.imageIcon}
-              source={require("../../assets/icons/addContributorYellow.png")}
-            />
-          </Pressable>
-          <Text style={ styles.iconText }>Add Contact</Text>
+            <Text style={styles.iconText}>Add Transaction</Text>
           </View>
 
           <View style={styles.iconGroup}>
-          <Pressable
-            style={styles.buttonToTransaction}
-            onPress={() => {
-              submitDeleteWallet(item.id);
-            }}
-          >
-            <Image
-              style={styles.imageIcon}
-              source={require("../../assets/icons/red_trash.png")}
-            />
-          </Pressable>
-          <Text style={ styles.iconText }>Delete</Text>
+            <Pressable
+              style={styles.buttonToTransaction}
+              onPress={() =>
+                navigation.navigate("Report Detail", { id: item.id })
+              }
+            >
+              <Image
+                style={styles.imageIcon}
+                source={require("../../assets/icons/editGreen.png")}
+              />
+            </Pressable>
+            <Text style={styles.iconText}>Report Detail</Text>
+          </View>
+          <View style={styles.iconGroup}>
+            <Pressable
+              style={styles.buttonToTransaction}
+              onPress={() =>
+                navigation.navigate("Add Collaborator", { id: item.id })
+              }
+            >
+              <Image
+                style={styles.imageIcon}
+                source={require("../../assets/icons/addContributorYellow.png")}
+              />
+            </Pressable>
+            <Text style={styles.iconText}>Add Contact</Text>
+          </View>
+
+          <View style={styles.iconGroup}>
+            <Pressable
+              style={styles.buttonToTransaction}
+              onPress={() => {
+                submitDeleteWallet(item.id);
+              }}
+            >
+              <Image
+                style={styles.imageIcon}
+                source={require("../../assets/icons/red_trash.png")}
+              />
+            </Pressable>
+            <Text style={styles.iconText}>Delete</Text>
           </View>
         </View>
       </View>
@@ -146,7 +165,6 @@ export default function WalletScreen({ navigation, route }) {
               renderItem={renderCategoryList}
               keyExtractor={(el) => el.id}
               horizontal={false}
-              style={{ paddingHorizontal: 25 }}
             />
           </View>
         )}
@@ -164,8 +182,6 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height * 0.29,
     backgroundColor: "#2F6FFF",
     paddingTop: 35,
-    paddingLeft: 25,
-    paddingRight: 25,
     borderBottomRightRadius: 40,
   },
 
@@ -191,9 +207,9 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     borderWidth: 2,
     borderColor: "white",
-    backgroundColor:"#fff",
+    backgroundColor: "#fff",
     color: "#424242",
-    borderRadius:7
+    borderRadius: 7,
   },
   buttonToAdd: {
     alignItems: "center",
@@ -221,15 +237,17 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   walletCard: {
+    backgroundColor: "#fff",
     display: "flex",
-    backgroundColor:"#fff",
-    borderRadius:7,
+
+    borderRadius: 7,
     flexDirection: "row",
     marginBottom: 10,
     padding: 10,
     alignItems: "center",
     justifyContent: "space-between",
-    elevation:2
+    elevation: 2,
+    width: Dimensions.get("window").width,
   },
   walletIcon: {
     width: Dimensions.get("window").width * 0.1,
@@ -245,20 +263,19 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     borderWidth: 2,
     padding: 5,
-    borderRadius: 5
+    borderRadius: 5,
   },
   iconGroup: {
     width: 70,
-    alignItems: "center"
+    alignItems: "center",
   },
   iconText: {
     fontSize: 10,
-    textAlign: "center"
+    textAlign: "center",
   },
   features: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: Dimensions.get("window").width * 0.6,
   },
   walletTitle: {
     width: Dimensions.get("window").width * 0.8,
@@ -270,6 +287,6 @@ const styles = StyleSheet.create({
   buttonSymbol: {
     alignItems: "center",
     borderColor: "#ddd",
-    borderWidth: 1
-  }
+    borderWidth: 1,
+  },
 });

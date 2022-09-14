@@ -33,8 +33,6 @@ export default function DashboardScreen() {
       });
   }, []);
 
-  // console.log(JSON.stringify(userDetail, null, 2));
-
   const renderItemUserWallets = ({ item }) => {
     return (
       <View style={{ paddingHorizontal: 20, paddingTop: 15 }}>
@@ -91,10 +89,14 @@ export default function DashboardScreen() {
                 source={require("../../assets/moody_pertama.png")}
               />
               <View style={styles.frameImgNav}>
-                <Image
-                  style={styles.imgNav}
-                  source={{ uri: userDetail.Profile.profilePicture }}
-                />
+                {userDetail.Profile ? (
+                  <Image
+                    style={styles.imgNav}
+                    source={{ uri: userDetail.Profile.profilePicture }}
+                  />
+                ) : (
+                  <LoadingScreen />
+                )}
               </View>
             </View>
 
@@ -249,10 +251,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    elevation:3,
+    elevation: 3,
     width: Dimensions.get("window").width * 0.9,
     height: Dimensions.get("window").height * 0.1,
-    marginBottom:5,
+    marginBottom: 5,
     backgroundColor: "white",
     borderRadius: 10,
   },

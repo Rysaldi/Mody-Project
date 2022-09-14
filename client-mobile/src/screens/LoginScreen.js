@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   Dimensions,
@@ -12,14 +11,21 @@ import {
   Pressable,
   Alert,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingScreen from "../components/LoadingScreen";
-import { loadingUserLogin, userLogin } from "../store/actionCreator/user";
+import {
+  loadingUserLoginDispatch,
+  userLogin,
+  setAccessToken,
+  userLoginDispatch,
+} from "../store/actionCreator/user";
 
 export default function LoginScreen() {
-  const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.userReducer);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { loadingUserLogin } = useSelector((state) => state.userReducer);
+
   const [formAdd, setFormAdd] = React.useState({
     email: "",
     password: "",
@@ -41,17 +47,21 @@ export default function LoginScreen() {
 
   const onSubmit = () => {
     dispatch(userLogin(formAdd))
+      .then((response) => {
+        setAccessToken(response.access_token);
+        dispatch(userLoginDispatch(true));
+      })
       .catch((error) => {
         errorAlert(error.message);
       })
       .finally(() => {
-        dispatch(loadingUserLogin(false));
+        dispatch(loadingUserLoginDispatch(false));
       });
   };
 
   return (
     <>
-      {loading ? (
+      {loadingUserLogin ? (
         <LoadingScreen />
       ) : (
         <View style={styles.container}>
@@ -97,10 +107,8 @@ export default function LoginScreen() {
                   placeholder="Password"
                 />
               </View>
-              <Pressable>
-                <Text style={styles.button} onPress={onSubmit}>
-                  Submit
-                </Text>
+              <Pressable onPress={onSubmit}>
+                <Text style={styles.button}>Submit</Text>
               </Pressable>
               <View
                 style={{

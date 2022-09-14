@@ -8,6 +8,7 @@ import {
   TextInput,
   Pressable,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewUserWallet } from "../store/actionCreator/userWallet";
@@ -64,41 +65,42 @@ export default function AddUserToWallet({ navigation, route }) {
             />
           </View>
         </View>
-
-        <View style={styles.formBannerAdd}>
-          <View style={styles.formAddWallet}>
-            <Text style={styles.textAdd}>Email</Text>
-            <TextInput
-              value={addToWalletEmail}
-              onChangeText={setAddToWalletEmail}
-              style={styles.input}
-              placeholder="input collaborator's email"
-            />
+        <KeyboardAvoidingView>
+          <View style={styles.formBannerAdd}>
+            <View style={styles.formAddWallet}>
+              <Text style={styles.textAdd}>Email</Text>
+              <TextInput
+                value={addToWalletEmail}
+                onChangeText={setAddToWalletEmail}
+                style={styles.input}
+                placeholder="input collaborator's email"
+              />
+            </View>
+            <View style={styles.formAddWallet}>
+              <Text style={styles.textAdd}>Role</Text>
+              <DropDownPicker
+                open={open}
+                value={value}
+                items={role}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setRole}
+                style={{
+                  marginTop: 10,
+                  borderColor: "#ddd",
+                  height: Dimensions.get("window").height * 0.065,
+                }}
+              />
+            </View>
+            <View style={styles.buttonToAdd}>
+              <Pressable style={styles.buttonAdd}>
+                <Text style={styles.buttonText} onPress={submitAddToWallet}>
+                  Add collaborator
+                </Text>
+              </Pressable>
+            </View>
           </View>
-          <View style={styles.formAddWallet}>
-            <Text style={styles.textAdd}>Role</Text>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={role}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setRole}
-              style={{
-                marginTop: 10,
-                borderColor: "#ddd",
-                height: Dimensions.get("window").height * 0.065,
-              }}
-            />
-          </View>
-          <View style={styles.buttonToAdd}>
-            <Pressable style={styles.buttonAdd}>
-              <Text style={styles.buttonText} onPress={submitAddToWallet}>
-                Add collaborator
-              </Text>
-            </Pressable>
-          </View>
-        </View>
+        </KeyboardAvoidingView>
       </View>
     </>
   );

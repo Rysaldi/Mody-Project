@@ -14,7 +14,10 @@ import AddUserToWallet from "./src/screens/AddUserToWallet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { loadingSet, userLoginDispatch } from "./src/store/actionCreator/user";
+import {
+  loadingUserLoginDispatch,
+  userLoginDispatch,
+} from "./src/store/actionCreator/user";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import LoadingScreen from "./src/components/LoadingScreen";
@@ -24,7 +27,9 @@ export default function index() {
   const Tab = createBottomTabNavigator();
 
   const dispatch = useDispatch();
-  const { authenticated, loading } = useSelector((state) => state.userReducer);
+  const { authenticated, loadingUserLogin } = useSelector(
+    (state) => state.userReducer
+  );
 
   const getToken = async () => {
     try {
@@ -34,17 +39,19 @@ export default function index() {
   };
 
   useEffect(() => {
-    dispatch(loadingSet(true));
     getToken()
       .then((response) => {
         if (response) {
           dispatch(userLoginDispatch(true));
-        } else dispatch(userLoginDispatch(false));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
       })
       .finally(() => {
-        dispatch(loadingSet(false));
+        dispatch(loadingUserLoginDispatch(false));
       });
-  }, []);
+  }, [authenticated]);
 
   const StackWallet = () => (
     <Stack.Navigator>
@@ -76,53 +83,60 @@ export default function index() {
 
   return (
     <>
-      {loading && <LoadingScreen />}
-      {authenticated && (
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ color, size }) => {
-              if (route.name === "Home") {
-                return <Entypo name="home" size={size} color={color} />;
-              } else if (route.name === "Wallet") {
-                return <Entypo name="wallet" size={size} color={color} />;
-              } else if (route.name === "Settings") {
-                return <Ionicons name="settings" size={size} color={color} />;
-              }
-            },
-            tabBarActiveTintColor: "#2F6FFF",
-            tabBarInactiveTintColor: "gray",
-          })}
-        >
-          <Tab.Screen
-            name="Home"
-            component={DashboardScreen}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="Wallet"
-            component={StackWallet}
-            options={{ headerShown: false }}
-          />
-          <Tab.Screen
-            name="Settings"
-            component={StackSettings}
-            options={{ headerShown: false }}
-          />
-        </Tab.Navigator>
-      )}
-      {!authenticated && (
-        <Stack.Navigator>
-          <Stack.Screen
-            name="SignIn"
-            component={LoginScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SignUp"
-            component={RegisterUser}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
+      {loadingUserLogin ? (
+        <LoadingScreen />
+      ) : (
+        <>
+          {!loadingUserLogin && authenticated && (
+            <Tab.Navigator
+              screenOptions={({ route }) => ({
+                tabBarIcon: ({ color, size }) => {
+                  if (route.name === "Home") {
+                    return <Entypo name="home" size={size} color={color} />;
+                  } else if (route.name === "Wallet") {
+                    return <Entypo name="wallet" size={size} color={color} />;
+                  } else if (route.name === "Settings") {
+                    return (
+                      <Ionicons name="settings" size={size} color={color} />
+                    );
+                  }
+                },
+                tabBarActiveTintColor: "#2F6FFF",
+                tabBarInactiveTintColor: "gray",
+              })}
+            >
+              <Tab.Screen
+                name="Home"
+                component={DashboardScreen}
+                options={{ headerShown: false }}
+              />
+              <Tab.Screen
+                name="Wallet"
+                component={StackWallet}
+                options={{ headerShown: false }}
+              />
+              <Tab.Screen
+                name="Settings"
+                component={StackSettings}
+                options={{ headerShown: false }}
+              />
+            </Tab.Navigator>
+          )}
+          {!loadingUserLogin && !authenticated && (
+            <Stack.Navigator>
+              <Stack.Screen
+                name="SignIn"
+                component={LoginScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="SignUp"
+                component={RegisterUser}
+                options={{ headerShown: false }}
+              />
+            </Stack.Navigator>
+          )}
+        </>
       )}
     </>
   );

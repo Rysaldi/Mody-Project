@@ -5,12 +5,13 @@ import {
   LOADING_USER_LOGIN,
   LOADING_USER_LOGOUT,
   LOADING_USER_HISTORY,
+  RESET,
 } from "../actionTypes";
 
 const initialState = {
   authenticated: false,
   loadingProfile: true,
-  userDetail: "",
+  userDetail: null,
   loadingUserLogin: true,
   loadingUserLogout: true,
   loadingUserHistory: true,
@@ -49,6 +50,8 @@ function userReducer(state = initialState, action) {
         ...state,
         loadingUserHistory: action.payload,
       };
+    case RESET:
+      return initialState;
 
     default:
       return state;

@@ -7,13 +7,15 @@ import {
   ScrollView,
   Image,
   Pressable,
+  Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
 import { fetchDetail } from "../store/actionCreator/wallet";
 import LoadingScreen from "../components/LoadingScreen";
 import { deleteTransaction } from "../store/actionCreator/transaction";
-import { VictoryPie, VictoryLabel } from "victory-native";
+import { VictoryPie } from "victory-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function ReportScreen({ route }) {
   const { id } = route.params;
@@ -22,8 +24,6 @@ export default function ReportScreen({ route }) {
   const { detailWallet } = useSelector((state) => {
     return state.walletReducer;
   });
-
-  const defaultGraphicData = [{ x: "Empty", y: 100 }];
 
   const setTotalIncome = (transactions) => {
     if (!transactions || transactions.length === 0) {
@@ -59,6 +59,10 @@ export default function ReportScreen({ route }) {
     );
   };
 
+  const errorAlert = (msg) => {
+    return Alert.alert("", `${msg}`, [{ text: "OK" }]);
+  };
+
   const percentageExpenses = (amount) => {
     return (
       (setTotalExpense(amount) /
@@ -83,22 +87,16 @@ export default function ReportScreen({ route }) {
   const hapusTransaction = (transactionId) => {
     dispatch(deleteTransaction(transactionId))
       .then(() => dispatch(fetchDetail(id)))
-      .catch((err) => console.log(err));
+      .catch((err) => errorAlert("You have no permission"));
   };
 
-  const makeNewLine = (string) => {
-    const before = string.split(" ");
-    const after = before.join("\n");
-    return after;
-  };
-  
   const setCategoryName = (transaction) => {
     let obj = {};
     const newArr = [];
     const categoryName = transaction.map((el) => {
       return { name: el.Category.name, amount: el.amount };
     });
-    categoryName.forEach(el => {
+    categoryName.forEach((el) => {
       if (!obj[el.name]) {
         obj[el.name] = el.amount;
       } else {
@@ -136,7 +134,7 @@ export default function ReportScreen({ route }) {
 
   const sameColorCategory = (categories) => {
     const color = [];
-    categories.forEach(el => {
+    categories.forEach((el) => {
       color.push(el.color);
     });
     return color;
@@ -163,13 +161,15 @@ export default function ReportScreen({ route }) {
     );
   };
 
-  
-
   const wantedGraphicDataByCategory = (categoryName) => {
     const wantedGraphicDataByCategories = categoryName.map((el) => {
       return {
         x: " ",
-        y: (el.amount / setTotalIncome(detailWallet.Transactions)) * 100,
+        y:
+          (el.amount /
+            (setTotalIncome(detailWallet.Transactions) +
+              setTotalExpense(detailWallet.Transactions))) *
+          100,
       };
     });
     return wantedGraphicDataByCategories;
@@ -180,7 +180,6 @@ export default function ReportScreen({ route }) {
       <View style={styles.walletCard}>
         <View style={styles.cardDetail}>
           <Text style={styles.roleText}>{item.role}</Text>
-          {/* <Text style={styles.semiColon}>:</Text> */}
           <Text>{item.User.email}</Text>
         </View>
       </View>
@@ -193,8 +192,6 @@ export default function ReportScreen({ route }) {
         <View>
           <View style={styles.cardDetail}>
             <Text style={styles.incomeName}>Type</Text>
-            {/* <Text style={styles.semiColon}>:</Text> */}
-            {/* <Text style={styles.incomeDetails}>{item.Category.type}</Text> */}
             <>
               {item.Category.type === "Income" ? (
                 <Text style={styles.incomeDetailsIncome}>
@@ -209,22 +206,18 @@ export default function ReportScreen({ route }) {
           </View>
           <View style={styles.cardDetail}>
             <Text style={styles.incomeName}>Name</Text>
-            {/* <Text style={styles.semiColon}>:</Text> */}
             <Text style={styles.incomeDetails}>{item.name}</Text>
           </View>
           <View style={styles.cardDetail}>
             <Text style={styles.incomeName}>Amount</Text>
-            {/* <Text style={styles.semiColon}>:</Text> */}
             <Text style={styles.incomeDetails}>{item.amount}</Text>
           </View>
           <View style={styles.cardDetail}>
             <Text style={styles.incomeName}>Category</Text>
-            {/* <Text style={styles.semiColon}>:</Text> */}
             <Text style={styles.incomeDetails}>{item.Category.name}</Text>
           </View>
           <View style={styles.cardDetail}>
             <Text style={styles.incomeName}>Date</Text>
-            {/* <Text style={styles.semiColon}>:</Text> */}
             <Text style={styles.incomeDetails}>
               {new Date(item.date).toLocaleString()}
             </Text>
@@ -252,7 +245,6 @@ export default function ReportScreen({ route }) {
     });
   }, []);
 
-  //<Flatlist data={detailWallet} renderItem={renderUserWallets} keyExtractor={(el) => el.id}/>
   return (
     <View style={styles.container}>
       {loading && <LoadingScreen />}
@@ -278,7 +270,7 @@ export default function ReportScreen({ route }) {
                   style={{
                     data: {
                       stroke: "#fff",
-                      strokeWidth: 2,
+                      strokeWidth: 0.5,
                     },
                   }}
                 />
@@ -308,7 +300,7 @@ export default function ReportScreen({ route }) {
                   data={wantedGraphicDataByCategory(
                     setCategoryName(detailWallet.Transactions)
                   )}
-                  padAngle={({ datum }) => datum.x}
+                  innerRadius={20}
                   width={540}
                   height={300}
                   style={{
@@ -321,7 +313,7 @@ export default function ReportScreen({ route }) {
               </View>
             </>
           )}
-             <View style={styles.categoryList}>
+          <View style={styles.categoryList}>
             <FlatList
               data={setCategoryName(detailWallet.Transactions)}
               renderItem={renderListWalletWithColor}
@@ -503,5 +495,5 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     width: Dimensions.get("window").width,
-  }
+  },
 });
