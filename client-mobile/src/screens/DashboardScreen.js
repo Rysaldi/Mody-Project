@@ -5,6 +5,7 @@ import {
   Text,
   ScrollView,
   StyleSheet,
+  FlatList
 } from "react-native";
 import CardLatesHistory from "../components/CardLatesHistory";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +15,7 @@ import {
   loadingUserHistoryDispatch,
 } from "../store/actionCreator/user";
 import LoadingScreen from "../components/LoadingScreen";
+import { formatCurrency } from "react-native-format-currency";
 
 export default function DashboardScreen() {
   const dispatch = useDispatch();
@@ -31,7 +33,31 @@ export default function DashboardScreen() {
       });
   }, []);
 
-  useEffect(() => {}, []);
+  const renderItemUserWallets = ({ item }) => {
+    return (
+      <View style={{ paddingHorizontal: 20, paddingTop: 15 }}>
+      <View style={styles.mainCard}>
+        <View style={styles.contentMainCard}>
+          <View style={styles.frameMainLogo}>
+            <Image
+              style={styles.mainLogo}
+              source={require("../../assets/icons/wallet_new.png")}
+            />
+          </View>
+          <View>
+            <Text style={styles.textCard}>{item.Wallet.name}</Text>
+            <Text style={styles.textName}>role: {item.role}</Text>
+          </View>
+        
+        </View>
+        <View style={styles.amountDetail}>
+        {item.Wallet.balance < 0 ? <Text style={styles.minusNumber}>{formatCurrency({ amount: 10000, code: "IDR" })[0]}</Text> : <Text style={styles.plusNumber}>{formatCurrency({ amount: item.Wallet.balance, code: "IDR" })[0]}</Text>}
+       </View>
+      </View>
+    </View>
+    )
+  };
+
   return (
     <>
       {loadingUserHistory ? (
@@ -64,72 +90,21 @@ export default function DashboardScreen() {
               </View>
             </View>
 
-            {/* Main Sections */}
-            <View style={{ flex: 2.7, paddingTop: 10 }}>
+            <View>
               <View style={{ paddingHorizontal: 20 }}>
-                <Text style={styles.textHeader}>This week expenses</Text>
+                <Text style={styles.textHeader}>Your Wallets</Text>
               </View>
-              <ScrollView style={{ paddingHorizontal: 20, paddingTop: 15 }}>
-                {/* ITEM */}
-                <View style={styles.mainCard}>
-                  <View style={styles.contentMainCard}>
-                    <View style={styles.frameMainLogo}>
-                      <Image
-                        style={styles.mainLogo}
-                        source={require("../../assets/icons/food.png")}
-                      />
-                    </View>
-                    <Text style={styles.textCard}>Food</Text>
-                  </View>
-                  <Text style={styles.minusNumber}>- Rp. 20.000.,00</Text>
-                </View>
-                {/* ITEM */}
-                <View style={styles.mainCard}>
-                  <View style={styles.contentMainCard}>
-                    <View style={styles.frameMainLogo}>
-                      <Image
-                        style={styles.mainLogo}
-                        source={require("../../assets/icons/entertaiment.png")}
-                      />
-                    </View>
-                    <Text style={styles.textCard}>Entertainment</Text>
-                  </View>
-                  <Text style={styles.minusNumber}>- Rp. 20.000.,00</Text>
-                </View>
-                {/* ITEM */}
-                <View style={styles.mainCard}>
-                  <View style={styles.contentMainCard}>
-                    <View style={styles.frameMainLogo}>
-                      <Image
-                        style={styles.mainLogo}
-                        source={require("../../assets/icons/holiday.png")}
-                      />
-                    </View>
-                    <Text style={styles.textCard}>Holiday</Text>
-                  </View>
-                  <Text style={styles.minusNumber}>- Rp. 20.000.,00</Text>
-                </View>
-                {/* ITEM */}
-                <View style={styles.mainCard}>
-                  <View style={styles.contentMainCard}>
-                    <View style={styles.frameMainLogo}>
-                      <Image
-                        style={styles.mainLogo}
-                        source={require("../../assets/icons/investasi.png")}
-                      />
-                    </View>
-                    <Text style={styles.textCard}>Investasi</Text>
-                  </View>
-                  <Text style={styles.plusNumber}>Rp. 20.000.,00</Text>
-                </View>
-              </ScrollView>
+              <FlatList
+                data={userDetail.UserWallets}
+                renderItem={renderItemUserWallets}
+                keyExtractor={(item) => item.id}
+              />
             </View>
 
-            {/* latest history */}
-            <View style={{ flex: 2, paddingHorizontal: 20, paddingTop: 20 }}>
+            <View style={{ flex: 2, paddingTop: 20 }}>
               <View>
-                <Text style={styles.textHeader}>
-                  Latest Transactions History
+                <Text style={styles.textHeaderTran}>
+                  Your transactions history
                 </Text>
                 <CardLatesHistory />
                 <CardLatesHistory />
@@ -147,7 +122,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     color: "#242525",
-    marginBottom: 10,
+    marginBottom: 5,
+  },
+  textHeaderTran: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#242525",
+    // marginBottom: 20,
+    marginStart: 20,
   },
   frameImgNav: {
     width: 50,
@@ -222,44 +204,68 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   mainCard: {
-    display: "flex",
+
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 10,
+
+
+   width: Dimensions.get("window").width * 0.9,
+   height: Dimensions.get("window").height * 0.1,
+
+   backgroundColor: "white",
+    borderRadius: 10,
+    elevation:5
   },
   frameMainLogo: {
-    width: 45,
-    height: 45,
-    backgroundColor: "#ddd",
-    borderRadius: 50,
+    width: 50,
+    height: 50,
     marginRight: 15,
     overflow: "hidden",
     justifyContent: "center",
-    alignItems: "center",
+    marginLeft:15
+ 
+  
+    
   },
   mainLogo: {
     width: 30,
     height: 30,
   },
   contentMainCard: {
-    display: "flex",
+
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+
   },
   textCard: {
     fontSize: 18,
   },
   minusNumber: {
-    color: "#cc5656",
+    color: "#fff",
     fontWeight: "bold",
     fontSize: 12,
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: "#a21a1a",
+    width : Dimensions.get("window").width * 0.3,
+    textAlign:"center"
   },
   plusNumber: {
-    color: "#7eb764",
+    color: "#fff",
     fontWeight: "bold",
     fontSize: 12,
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: "#388c12",
+    width : Dimensions.get("window").width * 0.3,
+    textAlign:"center"
   },
+  textName: {
+    color: "#808080",
+    fontSize: 12,
+  },amountDetail:{
+    marginRight:15
+  }
 });

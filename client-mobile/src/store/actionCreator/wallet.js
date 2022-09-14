@@ -71,10 +71,14 @@ export const loadingFetchDetailWallet = (payload) => {
     payload,
   };
 };
-export const fetchDetail = (id) => {
+export const fetchDetail = (id, filter) => {
+  let search = filter
+  if(!filter) {
+    search = ""
+  }
   return async (dispatch) => {
     const accessToken = await getAccessToken();
-    return fetch(`${baseUrl}wallets/${id}`, {
+    return fetch(`${baseUrl}wallets/${id}?search=${search}`, {
       method: "GET",
       headers: {
         access_token: accessToken,

@@ -13,7 +13,7 @@ const getAccessToken = async () => {
 export const addTransaction = (payload) => {
   return async (dispatch) => {
     const access_token = await getAccessToken();
-    console.log(payload);
+
     return fetch(`${baseUrl}transactions`, {
       method: "POST",
       headers: {
@@ -31,7 +31,6 @@ export const addTransaction = (payload) => {
 };
 
 export const deleteTransaction = (transactionId) => {
-  console.log(transactionId);
   return async (dispatch) => {
     const access_token = await getAccessToken();
     return fetch(`${baseUrl}transactions/${transactionId}`, {

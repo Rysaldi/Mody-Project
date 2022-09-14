@@ -247,11 +247,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   input: {
-    height: Dimensions.get("window").height * 0.05,
-    borderBottomWidth: 2,
-    borderColor: "#d9d9d9",
-    color: "#000",
-  },
+		height: Dimensions.get("window").height * 0.05,
+		borderWidth: 2,
+		borderRadius:5,
+		paddingHorizontal:10,
+		borderColor: "#d9d9d9",
+		color: "#000",
+		backgroundColor:"#fff"
+	},
   formInput: {
     marginTop: 15,
   },

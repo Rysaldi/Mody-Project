@@ -51,19 +51,17 @@ afterAll(async () => {
 describe("GET /categories", () => {
 	describe("GET /categories - success get categories", () => {
 		it("Should be return an status 200 and array with data of categories", async () => {
-			jest.setTimeout(10000);
 			try {
 				const response = await request(app).get("/categories").set("access_token", access_token);
 				expect(response.status).toBe(200);
 				expect(response.body).toBeInstanceOf(Array);
 				expect(response.body[0]).toBeInstanceOf(Object);
 			} catch (error) { }
-		});
+		},30000);
 	});
 
 	describe("401 unauthorized - failed get categories because access token is not provided", () => {
 		it("Should be return an status 401 and object with message error", async () => {
-			jest.setTimeout(10000);
 			return request(app)
 				.get("/categories")
 				.then((response) => {
@@ -71,14 +69,13 @@ describe("GET /categories", () => {
 					expect(response.body).toBeInstanceOf(Object);
 					expect(response.body).toHaveProperty("message", expect.any(String));
 				});
-		});
+		}, 30000);
 	});
 });
 
 describe("POST /categories", () => {
 	describe("POST /categories - success create category", () => {
 		it("Should be return an status 201 and message", async () => {
-			jest.setTimeout(10000);
 			const payload = {
 				name: "test",
 				type: "test",
@@ -92,12 +89,11 @@ describe("POST /categories", () => {
 					expect(response.body).toBeInstanceOf(Object);
 					expect(response.body).toHaveProperty("message");
 				});
-		});
+		},30000);
 	});
 
 	describe("POST /categories - failed post category", () => {
 		it("Should be return an status 400 and object with message error", async () => {
-			jest.setTimeout(10000);
 			const payload = {
 				name: "",
 				type: "test",
@@ -110,9 +106,8 @@ describe("POST /categories", () => {
 					expect(response.status).toBe(400);
 					expect(response.body).toBeInstanceOf(Object);
 				});
-		});
+		}, 30000);
 		it("Should be return an status 400 and object with message error", async () => {
-			jest.setTimeout(10000);
 			const payload = {
 				name: "test",
 				type: "",
@@ -125,14 +120,13 @@ describe("POST /categories", () => {
 					expect(response.status).toBe(400);
 					expect(response.body).toBeInstanceOf(Object);
 				});
-		});
+		}, 30000);
 	});
 });
 
 describe("PUT /categories/:id", () => {
 	describe("PUT /categories/:id - success update categories", () => {
 		it("Should be return an status 200 and message", async () => {
-			jest.setTimeout(10000);
 			const payload = {
 				name: "test1",
 				type: "test1",
@@ -146,12 +140,11 @@ describe("PUT /categories/:id", () => {
 					expect(response.body).toBeInstanceOf(Object);
 					expect(response.body).toHaveProperty("message");
 				});
-		});
+		}, 30000);
 	});
 
 	describe("PUT /categories/:id - failed post category", () => {
 		it("Should be return an status 400 and object with message error", async () => {
-			jest.setTimeout(10000);
 			const payload = {
 				name: "",
 				type: "test",
@@ -164,7 +157,7 @@ describe("PUT /categories/:id", () => {
 					expect(response.status).toBe(400);
 					expect(response.body).toBeInstanceOf(Object);
 				});
-		});
+		}, 30000);
 		it("Should be return an status 400 and object with message error", async () => {
 			jest.setTimeout(10000);
 			const payload = {
@@ -179,7 +172,7 @@ describe("PUT /categories/:id", () => {
 					expect(response.status).toBe(400);
 					expect(response.body).toBeInstanceOf(Object);
 				});
-		});
+		}, 30000);
 
 		it("Should be return an status 404 and object with message error", async () => {
 			jest.setTimeout(10000);
@@ -195,31 +188,29 @@ describe("PUT /categories/:id", () => {
 					expect(response.status).toBe(404);
 					expect(response.body).toBeInstanceOf(Object);
 				});
-		});
+		}, 30000);
 	});
 });
 
 describe("DELETE /categories:id", () => {
 	describe("DELETE /categories:id - success delete category", () => {
 		it("Should be return an status 200 and message", async () => {
-			jest.setTimeout(10000);
 			try {
 				const response = await request(app).delete("/categories/1").set("access_token", access_token);
 				expect(response.status).toBe(200);
 				expect(response.body).toBeInstanceOf(Object);
 			} catch (error) { }
-		});
+		}, 30000);
 	});
 
 	describe("DELETE /categories:id - failed delete category", () => {
 		it("Should be return an status 404 and message", async () => {
-			jest.setTimeout(10000);
 			try {
 				const response = await request(app).delete("/categories/100").set("access_token", access_token);
 				expect(response.status).toBe(404);
 				expect(response.body).toBeInstanceOf(Object);
 			} catch (error) { }
-		});
+		}, 30000);
 	});
 });
 
@@ -233,7 +224,6 @@ describe("GET /categories - when category data is empty", () => {
 				restartIdentity: true,
 			});
 			const response = await request(app).get("/categories").set("access_token", access_token);
-			console.log(response);
 			expect(response.status).toBe(200);
 			expect(response.body).toBeInstanceOf(Array);
 			expect(response.body[0]).toBeInstanceOf(Object);

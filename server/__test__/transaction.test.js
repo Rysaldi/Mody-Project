@@ -111,7 +111,6 @@ afterAll(() => {
 describe("PUT /transactions/:id", () => {
 	describe("PUT /transactions/:id - Succes test", () => {
 		it("should be return an object message success", async () => {
-			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "updateTest",
@@ -134,7 +133,7 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Succes Edit Transaction with Id " + id);
-		});
+		}, 30000);
 	});
 
 	describe("PUT /transactions/:id - Succes test", () => {
@@ -162,12 +161,11 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Succes Edit Transaction with Id " + id);
-		});
+		}, 30000);
 	});
 
 	describe("PUT /transactions/:id - Succes tes", () => {
 		it("should be return an object message success", async () => {
-			jest.setTimeout(10000);
 			const id = 12;
 			const data = {
 				name: "updateTest",
@@ -190,12 +188,11 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Succes Edit Transaction with Id " + id);
-		});
+		}), 30000;
 	});
 
 	describe("PUT /transactions/:id - Succes test", () => {
 		it("should be return an object message success", async () => {
-			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "updateTest",
@@ -218,11 +215,11 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Succes Edit Transaction with Id " + id);
-		});
+		}, 30000);
 	});
+30000
 	describe("PUT /transactions/:id - Transactions not found", () => {
 		it("should be return an object message", async () => {
-			jest.setTimeout(10000);
 			const id = 100;
 			const data = {
 				name: "updateTest",
@@ -238,11 +235,10 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Transaction cannot be found");
-		});
+		},30000);
 	});
 	describe("PUT /transactions/:id - invalid access token", () => {
 		it("should be return an object message", async () => {
-			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "updateTest",
@@ -258,11 +254,10 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Invalid token");
-		});
+		}, 30000);
 	});
 	describe("PUT /transactions/:id - User Wallet not found", () => {
 		it("should be return an object message", async () => {
-			jest.setTimeout(10000);
 			const id = 1;
 			const data = {
 				name: "updateTest",
@@ -278,11 +273,10 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Forbidden");
-		});
+		}, 30000);
 	});
 	describe("PUT /transactions/:id - unauthorized", () => {
 		it("should be return an object message", async () => {
-			jest.setTimeout(10000);
 			const id = 1;
 			const data = {
 				name: "updateTest",
@@ -299,11 +293,10 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Forbidden");
-		});
+		}, 30000);
 	});
 	describe("PUT /transactions/:id - not provide input name", () => {
 		it("should be return an object message", async () => {
-			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "",
@@ -322,11 +315,10 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBeInstanceOf(Array);
 			expect(response.body.message[0]).toBe("Transaction name is required");
-		});
+		}, 30000);
 	});
 	describe("PUT /transactions/:id - not provide input amount", () => {
 		it("should be return an object message", async () => {
-			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "updateTest",
@@ -345,11 +337,10 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBeInstanceOf(Array);
 			expect(response.body.message[0]).toBe("Minimum transaction amount is 1");
-		});
+		}, 30000);
 	});
 	describe("PUT /transactions/:id - not provide input date", () => {
 		it("should be return an object message", async () => {
-			jest.setTimeout(10000);
 			const id = 6;
 			const data = {
 				name: "updateTest",
@@ -368,17 +359,12 @@ describe("PUT /transactions/:id", () => {
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBeInstanceOf(Array);
 			expect(response.body.message[0]).toBe("Transaction date is required");
-		});
+		}, 30000);
 	});
 });
 
-
-
-
-
 describe("GET /transactions success", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		return request(app)
 			.get("/transactions")
 			.set("access_token", access_token)
@@ -387,12 +373,11 @@ describe("GET /transactions success", () => {
 				expect(response.status).toBe(200);
 				expect(response.body).toBeInstanceOf(Object);
 			});
-	});
+	}, 30000);
 });
 
 describe("GET /transactions Succues but There are no transactions in the wallet", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		const createWallet = await request(app).post("/wallets").set("access_token", access_token).send({ name: "Wallet10" });
 		return request(app)
 			.get("/transactions")
@@ -402,13 +387,12 @@ describe("GET /transactions Succues but There are no transactions in the wallet"
 				expect(response.status).toBe(200);
 				expect(response.body).toBeInstanceOf(Object);
 			});
-	});
+	}, 30000);
 });
 
 
 describe("GET /transactions success", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		return request(app)
 			.get("/transactions?search=a")
 			.set("access_token", access_token)
@@ -417,12 +401,11 @@ describe("GET /transactions success", () => {
 				expect(response.status).toBe(200);
 				expect(response.body).toBeInstanceOf(Object);
 			});
-	});
+	}, 30000);
 });
 
 describe("GET /transactions success", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		const login = await request(app).post("/users/login").send({ email: "user2@mail.com", password: "user2" });
 		return request(app)
 			.get("/transactions")
@@ -433,12 +416,12 @@ describe("GET /transactions success", () => {
 				expect(response.body).toBeInstanceOf(Object);
 				expect(response.body).toHaveProperty("message");
 			});
-	});
+	}, 30000);
 });
 
 describe("GET /transactions fail because wallet not found", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
+
 		return request(app)
 			.get("/transactions?search=a")
 			.set("access_token", access_token)
@@ -447,12 +430,11 @@ describe("GET /transactions fail because wallet not found", () => {
 				expect(response.status).toBe(404);
 				expect(response.body).toBeInstanceOf(Object);
 			});
-	});
+	}, 30000);
 });
 
 describe("POST /transactions success", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		const login = await request(app)
 			.post("/users/login")
 			.send({ email: "admin@mail.com", password: "admin" });
@@ -468,12 +450,11 @@ describe("POST /transactions success", () => {
 				expect(response.body).toHaveProperty("Transaction");
 				expect(response.body).toHaveProperty("Transaction", expect.any(Object));
 			});
-	});
+	} ,30000);
 });
 
 describe("POST /transactions - Fail test", () => {
 	it("should be return an object message", async () => {
-		jest.setTimeout(10000);
 		const data = {
 			name: "uploadTest",
 			amount: 2000,
@@ -494,12 +475,11 @@ describe("POST /transactions - Fail test", () => {
 		expect(response.status).toBe(404);
 		expect(response.body).toBeInstanceOf(Object);
 		expect(response.body).toHaveProperty("message");
-	});
+	}, 30000);
 });
 
 describe("POST /transactions error input field not exist or empty string", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		return request(app)
 			.post("/transactions")
 			.set("access_token", access_token)
@@ -510,13 +490,12 @@ describe("POST /transactions error input field not exist or empty string", () =>
 				expect(response.body).toHaveProperty("message");
 				expect(response.body).toHaveProperty("message", expect.any(Object));
 			});
-	});
+	}, 30000);
 });
 
 
 describe("POST /transactions success", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		const login = await request(app)
 			.post("/users/login")
 			.send({ email: "admin@mail.com", password: "admin" });
@@ -532,12 +511,11 @@ describe("POST /transactions success", () => {
 				expect(response.body).toHaveProperty("Transaction");
 				expect(response.body).toHaveProperty("Transaction", expect.any(Object));
 			});
-	});
+	}, 30000);
 });
 
 describe("GET /transactions/transactionId - Success", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		const id = 6;
 		return request(app)
 			.get("/transactions/" + id)
@@ -554,12 +532,11 @@ describe("GET /transactions/transactionId - Success", () => {
 				expect(response.body).toHaveProperty("CategoryId", expect.any(Number));
 				expect(response.body).toHaveProperty("WalletId", expect.any(Number));
 			});
-	});
+	}, 30000);
 });
 
 describe("GET /transactions/transactionId - Fail because forbidden", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		const id = 6;
 		const login = await request(app)
 			.post("/users/login")
@@ -574,12 +551,11 @@ describe("GET /transactions/transactionId - Fail because forbidden", () => {
 				expect(response.body).toHaveProperty("message");
 				expect(response.body.message).toBe("Forbidden");
 			});
-	});
+	}, 30000);
 });
 
 describe("GET /transactions/transactionId - Fail because not logged in yet", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		const id = 6;
 		return request(app)
 			.get("/transactions/" + id)
@@ -590,12 +566,11 @@ describe("GET /transactions/transactionId - Fail because not logged in yet", () 
 				expect(response.body).toHaveProperty("message");
 				expect(response.body.message).toBe("Invalid token");
 			});
-	});
+	} , 30000);
 });
 
 describe("GET /transactions/transactionId - Fail because give fake access_token", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		const id = 6;
 		return request(app)
 			.get("/transactions/" + id)
@@ -607,12 +582,11 @@ describe("GET /transactions/transactionId - Fail because give fake access_token"
 				expect(response.body).toHaveProperty("message");
 				expect(response.body.message).toBe("Invalid token");
 			});
-	});
+	}, 30000);
 });
 
 describe("GET /transactions/transactionId - Fail because transaction not found", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		const id = 1000;
 		const login = await request(app)
 			.post("/users/login")
@@ -622,18 +596,16 @@ describe("GET /transactions/transactionId - Fail because transaction not found",
 			.set("access_token", login.body.access_token)
 			.send({ WalletId: 1 })
 			.then((response) => {
-				console.log(response);
 				expect(response.status).toBe(404);
 				expect(response.body).toBeInstanceOf(Object);
 				expect(response.body).toHaveProperty("message");
 				expect(response.body.message).toBe("Transaction cannot be found");
 			});
-	});
+	} , 30000);
 });
 
 describe("GET /transactions/transactionId - Fail request params transactionId is not number", () => {
 	it("Should be return an object", async () => {
-		jest.setTimeout(10000);
 		const id = "Ini bukan angka";
 		const login = await request(app)
 			.post("/users/login")
@@ -643,13 +615,13 @@ describe("GET /transactions/transactionId - Fail request params transactionId is
 			.set("access_token", login.body.access_token)
 			.send({ WalletId: 1 })
 			.then((response) => {
-				console.log(response);
+
 				expect(response.status).toBe(400);
 				expect(response.body).toBeInstanceOf(Object);
 				expect(response.body).toHaveProperty("message");
 				expect(response.body.message).toBe("Invalid id");
 			});
-	});
+	}, 30000);
 });
 
 
@@ -658,7 +630,6 @@ describe("GET /transactions/transactionId - Fail request params transactionId is
 describe("Delete /transactions/:id", () => {
 	describe("Delete /transactions/:id - Succes test", () => {
 		it("should return a success message", async () => {
-			jest.setTimeout(10000);
 			const id = 7;
 			const login = await request(app).post("/users/login").send({ email: "user2@mail.com", password: "user2" });
 			const response = await request(app)
@@ -668,12 +639,11 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Success delete Transaction with Id " + id);
-		});
+		}, 30000);
 	});
 
 	describe("Delete /transactions/:id - Succes test", () => {
 		it("should return a success message", async () => {
-			jest.setTimeout(10000);
 			const id = 18;
 			const login = await request(app).post("/users/login").send({ email: "user2@mail.com", password: "user2" });
 			const response = await request(app)
@@ -683,12 +653,11 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Success delete Transaction with Id " + id);
-		});
+		}, 30000);
 	});
 
 	describe("Delete /transactions/:id - Fail because forbidden", () => {
 		it("should return a forbidden message", async () => {
-			jest.setTimeout(10000);
 			const id = 1;
 			const response = await request(app)
 				.delete("/transactions/" + id)
@@ -697,12 +666,11 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Forbidden");
-		});
+		}, 30000);
 	});
 
 	describe("Delete /transactions/:id - Fail because Id is not number", () => {
 		it("should return a message", async () => {
-			jest.setTimeout(10000);
 			const id = "ini salah input";
 			const response = await request(app)
 				.delete("/transactions/" + id)
@@ -711,12 +679,11 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Invalid id");
-		});
+		}, 30000);
 	});
 
 	describe("Delete /transactions/:id - Succes test", () => {
 		it("should return a success message", async () => {
-			jest.setTimeout(10000);
 			const id = 6;
 			const response = await request(app)
 				.delete("/transactions/" + id)
@@ -725,7 +692,7 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Success delete Transaction with Id " + id);
-		});
+		}, 30000);
 	});
 
 	describe("Delete /transactions/:id - Transactions not found", () => {
@@ -739,7 +706,7 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Transaction cannot be found");
-		});
+		}, 30000);
 	});
 
 	describe("Delete /transactions/:id - Transactions not found", () => {
@@ -753,7 +720,7 @@ describe("Delete /transactions/:id", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBe("Invalid id");
-		});
+		}, 30000);
 	});
 });
 

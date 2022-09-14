@@ -157,7 +157,6 @@ export default function ReportScreen({ route }) {
     ];
   };
 
-  // console.log(wantedGraphicData());
   const graphicColor = [
     "#FFE9A0",
     "#367E18",
@@ -184,7 +183,6 @@ export default function ReportScreen({ route }) {
     dispatch(fetchDetail(id)).finally(() => {
       setLoading(false);
     });
-    console.log(detailWallet.Transactions);
   }, []);
 
   const makeNewLine = (string) => {
