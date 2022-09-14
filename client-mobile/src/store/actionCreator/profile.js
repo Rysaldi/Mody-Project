@@ -13,7 +13,7 @@ const getAccessToken = async () => {
   try {
     const accessToken = await AsyncStorage.getItem("access_token");
     return accessToken;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const setProfile = (payload) => {
@@ -62,17 +62,29 @@ export const fetchProfile = () => {
 };
 export const updateProfile = (payload) => {
   return async (dispatch) => {
+    if (!payload.firstName || !payload.lastName || !payload.phone) {
+      if (!payload.firstName) {
+        payload.firstName = "";
+      }
+      if (!payload.lastName) {
+        payload, lastName = "";
+      }
+      if (!payload.phone) {
+        payload.phone = "";
+      }
+    }
     const access_token = await getAccessToken();
-    let localUri = payload.profilePicture.uri;
-    let filename = localUri.split("/").pop();
-    let match = /\.(\w+)$/.exec(filename);
-    let type = match ? `profilePicture/${match[1]}` : `profilePicture`;
     const data = new FormData();
     data.append("firstName", payload.firstName);
     data.append("lastName", payload.lastName);
     data.append("phone", payload.phone);
-    data.append("profilePicture", { uri: localUri, name: filename, type });
-
+    if (payload.profilePicture) {
+      let localUri = payload.profilePicture.uri;
+      let filename = localUri.split("/").pop();
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `profilePicture/${match[1]}` : `profilePicture`;
+      data.append("profilePicture", { uri: localUri, name: filename, type });
+    }
     return fetch(baseUrl + "profiles/update", {
       method: "PUT",
       headers: {
