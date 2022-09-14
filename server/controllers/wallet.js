@@ -62,12 +62,13 @@ class Controller {
             model: Transaction,
             include: {
               model: Category,
-              attributes: ["name", "type"],
+              attributes: ["name", "type", "date", "createdAt"],
             },
           },
         ],
+        order: [[Transaction, "createdAt", "DESC"]],
         attributes: {
-          exclude: ["createdAt", "updatedAt"],
+          exclude: ["updatedAt"],
         },
       };
 
@@ -78,7 +79,7 @@ class Controller {
           },
         };
       }
-      
+
       const wallet = await Wallet.findByPk(walletId, param);
 
       if (!wallet) {
