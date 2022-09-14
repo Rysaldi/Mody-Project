@@ -17,6 +17,7 @@ import {
   updateProfile,
   setLoadingProfile,
 } from "../store/actionCreator/profile";
+import { userHistory } from "../store/actionCreator/user";
 import LoadingScreen from "../components/LoadingScreen";
 
 export default function ProfileScreen({ navigation }) {
@@ -51,7 +52,6 @@ export default function ProfileScreen({ navigation }) {
       })
       .finally(() => {
         dispatch(setLoadingProfile(false));
-        console.log(inputProfile);
       });
 
     (async () => {
@@ -112,7 +112,7 @@ export default function ProfileScreen({ navigation }) {
             </Text>
           </Pressable>
           <Image
-            source={{ uri: inputProfile.uri }}
+            source={{ uri: image.uri }}
             style={{ width: 150, height: 150, borderRadius: 10 }}
           />
         </View>
@@ -132,7 +132,7 @@ export default function ProfileScreen({ navigation }) {
       })
     )
       .then(() => {
-        dispatch(fetchProfile());
+        dispatch(userHistory());
       })
       .catch((error) => {
         console.log(error);

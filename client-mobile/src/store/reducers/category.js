@@ -1,16 +1,16 @@
-const initialState = {
-  categories: [],
-  detailCategory: {},
-  loadingCategories: true,
-  // loadingDetailCategory: true,
-};
-
 import {
   LOADING_FETCH_CATEGORIES,
   // LOADING_FETCH_CATEGORY,
   SUCCESS_FETCH_CATEGORIES,
   // SUCCESS_FETCH_CATEGORY,
 } from "../actionTypes";
+
+const initialState = {
+  categories: [],
+  detailCategory: {},
+  loadingCategories: true,
+  // loadingDetailCategory: true,
+};
 
 function categoryReducer(state = initialState, action) {
   // switch action.type

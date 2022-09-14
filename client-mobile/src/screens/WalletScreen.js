@@ -123,6 +123,39 @@ export default function WalletScreen({ navigation, route }) {
             </Pressable>
           </View>
         </View>
+        <View style={styles.showSymbol}>
+          <View style={styles.featuresSymbol}>
+            <Pressable style={styles.buttonSymbol}>
+              <Image
+                style={styles.imageIcon}
+                source={require("../../assets/icons/TrancsactionGreen.png")}
+              />
+              <Text style={styles.textLegend}>Add Transaction</Text>
+            </Pressable>
+
+            <Pressable style={styles.buttonSymbol}>
+              <Image
+                style={styles.imageIcon}
+                source={require("../../assets/icons/editGreen.png")}
+              />
+              <Text style={styles.textLegend}>Report Detail</Text>
+            </Pressable>
+            <Pressable style={styles.buttonSymbol}>
+              <Image
+                style={styles.imageIcon}
+                source={require("../../assets/icons/addContributorYellow.png")}
+              />
+              <Text style={styles.textLegend}>Add Contributor</Text>
+            </Pressable>
+            <Pressable style={styles.buttonSymbol}>
+              <Image
+                style={styles.imageIcon}
+                source={require("../../assets/icons/red_trash.png")}
+              />
+              <Text style={styles.textLegend}>Delete</Text>
+            </Pressable>
+          </View>
+        </View>
         {loadingWallets ? (
           <LoadingScreen />
         ) : (
@@ -225,7 +258,7 @@ const styles = StyleSheet.create({
   walletName: {
     fontSize: 18,
     color: "#000",
-    marginLeft: 25,
+    marginLeft: 14,
     marginBottom: 5,
     width: Dimensions.get("window").width * 0.8,
     fontWeight: "bold",
@@ -248,11 +281,35 @@ const styles = StyleSheet.create({
   },
   walletTitle: {
     width: Dimensions.get("window").width * 0.8,
-    justifyContent: "center",
-    alignItems: "center",
   },
   imageIcon: {
-    height: Dimensions.get("window").height * 0.035,
-    width: Dimensions.get("window").width * 0.055,
+    height: Dimensions.get("window").height * 0.04,
+    width: Dimensions.get("window").width * 0.077,
+  },
+  showSymbol: {
+    marginTop: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F5EDDC",
+    elevation: 5,
+  },
+  featuresSymbol: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: Dimensions.get("window").height * 0.13,
+    width: Dimensions.get("window").width * 0.9,
+    backgroundColor: "#0000",
+    borderRadius: 5,
+    paddingLeft: 30,
+    paddingRight: 30,
+    opacity: 0.8,
+  },
+  buttonSymbol: {
+    alignItems: "center",
+  },
+  textLegend: {
+    fontSize: 10,
+    marginTop: 5,
   },
 });
