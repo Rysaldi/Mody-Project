@@ -22,25 +22,32 @@ class Controller {
 	static async addNewUserWallet(req, res, next) {
 		try {
 			const { WalletId, role, email } = req.body;
+
 			if (!email) {
 				throw { name: "EmailRequired" };
 			}
+
 			const findUser = await User.findOne({
 				where: {
-					email: email
-				}
+					email: email,
+				},
 			});
-			if (findUser) {
-				const newUserWallet = await UserWallet.create({
+
+			if(!findUser) {
+				throw { name: "NotFound" };
+			}
+			const findUserWalet = await UserWallet.findByPk(findUser.id)
+
+			if(findUserWalet) {
+				throw {name : "Alreadyinthiswallet"}
+			}
+			
+			const newUserWallet = await UserWallet.create({
 					UserId: +findUser.id,
 					WalletId,
 					role,
 				});
 				res.status(201).json(newUserWallet);
-			} else {
-				throw ({ name: "NotFound" });
-			}
-
 		} catch (error) {
 			next(error);
 		}
@@ -56,6 +63,17 @@ class Controller {
 			const deleteUserWallet = await UserWallet.findByPk(userWalletId);
 			if (!deleteUserWallet) {
 				throw { name: "NotFound" };
+			}
+
+			if (deleteUserWallet.id === req.user.id) {
+				await UserWallet.destroy({
+					where: {
+						id: userWalletId,
+					},
+				});
+			res.status(200).json({ message: `successfully delete userwallet with id ${userWalletId}` });
+			} else if (deleteUserWallet.role !== "Owner") {
+				throw { name: "Forbidden" };
 			}
 
 			await UserWallet.destroy({

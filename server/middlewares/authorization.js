@@ -72,7 +72,8 @@ async function deleteAuthorization(req, res, next) {
 
 		if (!findUserWallet) {
 			throw { name: "Forbidden" };
-		} else if (findUserWallet.role !== "Owner") {
+		}
+		if (findUserWallet.role !== "Owner") {
 			throw { name: "Forbidden" };
 		}
 		next();

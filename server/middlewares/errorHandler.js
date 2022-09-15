@@ -31,6 +31,8 @@ function errorHandler(error, req, res, next) {
 		res.status(400).json({ message: "Email Required!" });
 	} else if (error.name === "File needs to be an image") {
 		res.status(400).json({ message: "File needs to be an image" });
+	} else if (error.name === "Alreadyinthiswallet") {
+		res.status(400).json({ message: "This user is registered in this wallet" });
 	} else {
 		res.status(500).json({ message: "Internal server error" });
 	}
