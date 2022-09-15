@@ -21,6 +21,7 @@ import {
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import LoadingScreen from "./src/components/LoadingScreen";
+import EditTransactionScreen from "./src/screens/EditTransactionScreen";
 
 export default function index() {
   const Stack = createNativeStackNavigator();
@@ -63,6 +64,7 @@ export default function index() {
       <Stack.Screen name="Add Transaction" component={TransactionScreen} />
       <Stack.Screen name="Report Detail" component={ReportScreen} />
       <Stack.Screen name="Add Collaborator" component={AddUserToWallet} />
+      <Stack.Screen name="Edit Transaction" component={EditTransactionScreen}/>
     </Stack.Navigator>
   );
 

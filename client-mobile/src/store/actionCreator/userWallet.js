@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   SUCCESS_ADD_USER_TO_WALLET,
+  SUCCESS_DELETE_USER_WALLET,
   LOADING_ADD_USER_TO_WALLET,
 } from "../actionTypes/index";
 
@@ -22,6 +23,7 @@ export const setLoadingAddUserToWallet = () => {
     payload,
   };
 };
+
 export const addNewUserWallet = (payload) => {
   // console.log(payload);
   return async (dispatch) => {
@@ -53,3 +55,27 @@ export const addNewUserWallet = (payload) => {
       });
   };
 };
+
+export const deleteUserWallet = (userWalletId) =>{
+  return async (dispatch) => {
+    const accessToken = await getAccessToken();
+    return fetch(`${baseUrl}userWallets/${userWalletId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        access_token: accessToken,
+      },
+    })
+      .then((result) => {
+        if (!result.ok) {
+          return result.json().then((message) => {
+            throw message;
+          });
+        }
+        return result.json();
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+}

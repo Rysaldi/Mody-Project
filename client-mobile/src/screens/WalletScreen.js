@@ -22,6 +22,7 @@ import {
   userHistory,
   loadingUserHistoryDispatch,
 } from "../store/actionCreator/user";
+import EditTransactionScreen from "./EditTransactionScreen";
 
 export default function WalletScreen({ navigation, route }) {
   const dispatch = useDispatch();

@@ -47,3 +47,44 @@ export const deleteTransaction = (transactionId) => {
     });
   };
 };
+
+export const editTransactions = (transactionId, payload) => {
+  return async (dispatch) => {
+    const access_token = await getAccessToken();
+    return fetch(`${baseUrl}transactions/${transactionId}`, {
+      method : "PUT",
+      headers: {
+        access_token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }).then((result) => {
+      if (!result.ok) {
+        return result.json().then(data => {
+          throw data
+        });
+      }
+      return result.json();
+    });
+  }
+}
+
+export const getTransactionDetailhandle = (transactionId) => {
+  return async (dispatch) => {
+    const access_token = await getAccessToken();
+    return fetch(`${baseUrl}transactions/${transactionId}` , {
+      method : "get",
+      headers: {
+        access_token,
+        "Content-Type": "application/json",
+      },
+    }).then((result) => {
+      if (!result.ok) {
+        return result.json().then(data => {
+          throw data
+        });
+      }
+      return result.json();
+    });
+  }
+}

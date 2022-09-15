@@ -44,5 +44,6 @@ export const LOADING_UPDATE_PROFILE = "profile/loadingUpdate";
 
 export const SUCCESS_ADD_USER_TO_WALLET = "/userWallet/successAdd";
 export const LOADING_ADD_USER_TO_WALLET = "/userWallet/loadingAdd";
+export const SUCCESS_DELETE_USER_WALLET = "/userWallet/deleteUserWallet";
 
 export const RESET = "users/reset";
