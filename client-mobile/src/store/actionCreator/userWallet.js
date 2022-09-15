@@ -25,7 +25,7 @@ export const setLoadingAddUserToWallet = () => {
 };
 
 export const addNewUserWallet = (payload) => {
-  // console.log(payload);
+  console.log(payload);
   return async (dispatch) => {
     const accessToken = await getAccessToken();
     return fetch(`${baseUrl}userWallets`, {
@@ -34,24 +34,15 @@ export const addNewUserWallet = (payload) => {
         "Content-Type": "application/json",
         access_token: accessToken,
       },
-      body: JSON.stringify({
-        role: payload.role,
-        WalletId: payload.WalletId,
-        email: payload.email,
-        UserId: payload.UserId,
-      }),
+      body: JSON.stringify(payload)
     })
       .then((result) => {
-        console.log(result);
         if (!result.ok) {
           return result.json().then((message) => {
             throw message;
           });
         }
         return result.json();
-      })
-      .catch((error) => {
-        throw error;
       });
   };
 };

@@ -38,11 +38,16 @@ class Controller {
 			});
 
 			if (!findUser) {
-				throw { name: "NotFound" };
+				throw { name: "EmailNotFound" };
 			}
-			const findUserWalet = await UserWallet.findByPk(findUser.id);
+			const findUserWallet = await UserWallet.findOne({
+				where: {
+					WalletId: WalletId,
+					UserId: findUser.id
+				}
+			});
 
-			if (findUserWalet) {
+			if (findUserWallet) {
 				throw { name: "Alreadyinthiswallet" };
 			}
 
@@ -60,33 +65,51 @@ class Controller {
 	static async deleteUserWallet(req, res, next) {
 		try {
 			const { userWalletId } = req.params;
+
 			if (isNaN(+userWalletId)) {
 				throw { name: "Invalid Id" };
 			}
+			console.log(userWalletId);
+			const findUserWalletById = await UserWallet.findByPk(userWalletId);
 
-			const deleteUserWallet = await UserWallet.findByPk(userWalletId);
-			if (!deleteUserWallet) {
+			if (!findUserWalletById) {
 				throw { name: "NotFound" };
 			}
+			console.log(findUserWalletById);
 
-			if (deleteUserWallet.id === req.user.id) {
+			const useWantDelete = await UserWallet.findOne({
+				where: {
+					UserId: req.user.id,
+					WalletId: findUserWalletById.WalletId
+				}
+			});
+			console.log(useWantDelete);
+			if (!useWantDelete) {
+				throw { name: "Forbidden" };
+			}
+
+
+			if (findUserWalletById.UserId === req.user.id && useWantDelete.role !== "Owner") {
 				await UserWallet.destroy({
 					where: {
 						id: userWalletId,
 					},
 				});
 				res.status(200).json({ message: `successfully delete userwallet with id ${userWalletId}` });
-			} else if (deleteUserWallet.role !== "Owner") {
+			} else if (useWantDelete.role === "Member") {
 				throw { name: "Forbidden" };
+			} else {
+				if (findUserWalletById.role === "Owner") {
+					throw { name: "Cantdeleteowner" };
+				}
+
+				await UserWallet.destroy({
+					where: {
+						id: userWalletId,
+					},
+				});
+				res.status(200).json({ message: `successfully delete userwallet with id ${userWalletId}` });
 			}
-
-			await UserWallet.destroy({
-				where: {
-					id: userWalletId,
-				},
-			});
-
-			res.status(200).json({ message: `successfully delete userwallet with id ${userWalletId}` });
 		} catch (error) {
 			next(error);
 		}

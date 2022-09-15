@@ -1,5 +1,5 @@
 function errorHandler(error, req, res, next) {
-	console.log(error);
+	console.log(error.name);
 	if (
 		error.name === "SequelizeValidationError" ||
 		error.name === "SequelizeUniqueConstraintError"
@@ -33,6 +33,10 @@ function errorHandler(error, req, res, next) {
 		res.status(400).json({ message: "File needs to be an image" });
 	} else if (error.name === "Alreadyinthiswallet") {
 		res.status(400).json({ message: "This user is registered in this wallet" });
+	} else if (error.name === "Cantdeleteowner") {
+		res.status(400).json({ message: "Can't delete owner" });
+	} else if (error.name === "EmailNotFound") {
+		res.status(404).json({ message: `The user with this email is not registered yet` });
 	} else {
 		res.status(500).json({ message: "Internal server error" });
 	}

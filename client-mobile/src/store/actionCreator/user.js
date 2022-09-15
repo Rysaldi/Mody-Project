@@ -132,7 +132,9 @@ export const userHistory = () => async (dispatch) => {
   })
     .then((result) => {
       if (!result.ok) {
-        throw new Error("fetching user history failed");
+        return result.json().then((message) => {
+          throw message;
+        });
       }
       return result.json();
     })

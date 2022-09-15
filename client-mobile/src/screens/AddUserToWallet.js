@@ -11,7 +11,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewUserWallet } from "../store/actionCreator/userWallet";
+import { addNewUserWallet, setLoadingAddUserToWallet } from "../store/actionCreator/userWallet";
 import DropDownPicker from "react-native-dropdown-picker";
 
 export default function AddUserToWallet({ navigation, route }) {
@@ -28,10 +28,10 @@ export default function AddUserToWallet({ navigation, route }) {
     { label: "Member", value: "Member" },
   ]);
 
-  const errorAlert = () => {
+  const errorAlert = (error) => {
     return Alert.alert(
       "",
-      "Uh oh... \nwe can't find the user you're looking for.",
+      error,
       [{ text: "OK" }]
     );
   };
@@ -48,11 +48,13 @@ export default function AddUserToWallet({ navigation, route }) {
         setAddToWalletEmail("");
         navigation.navigate("WalletApp");
       })
-      .catch(() => {
-        errorAlert();
+      .catch((error) => {
+        errorAlert(error.message);
       })
-      .finally(() => dispatch(setLoadingAddUserToWallet(false)));
+     
   };
+
+
 
   return (
     <>
@@ -71,7 +73,7 @@ export default function AddUserToWallet({ navigation, route }) {
               <Text style={styles.textAdd}>Email</Text>
               <TextInput
                 value={addToWalletEmail}
-                onChangeText={setAddToWalletEmail}
+                onChangeText={(e) => setAddToWalletEmail(e)}
                 style={styles.input}
                 placeholder="input collaborator's email"
               />
@@ -94,7 +96,7 @@ export default function AddUserToWallet({ navigation, route }) {
             </View>
             <View style={styles.buttonToAdd}>
               <Pressable style={styles.buttonAdd}>
-                <Text style={styles.buttonText} onPress={submitAddToWallet}>
+                <Text style={styles.buttonText} onPress={(e) => submitAddToWallet()}>
                   Add collaborator
                 </Text>
               </Pressable>

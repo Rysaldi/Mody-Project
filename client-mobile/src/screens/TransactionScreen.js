@@ -106,6 +106,7 @@ export default function TransactionScreen({ navigation, route }) {
   };
 
   const submitNewTransaction = () => {
+    dispatch(setLoadingCategories(true))
     dispatch(
       addTransaction({
         ...formAddTransaction,
@@ -119,7 +120,10 @@ export default function TransactionScreen({ navigation, route }) {
         dispatch(userHistory());
         navigation.navigate("WalletApp");
       })
-      .catch((err) => errorAlert(err.message));
+      .catch((err) => errorAlert(err.message))
+      .finally(() => {
+        dispatch(setLoadingCategories(false))
+      })
   };
 
   return (

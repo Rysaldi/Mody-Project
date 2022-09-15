@@ -42,7 +42,9 @@ export const fetchWallets = () => {
     })
       .then((result) => {
         if (!result.ok) {
-          throw new Error("fetching wallets failed");
+          return result.json().then((message) => {
+            throw message;
+          });
         }
         return result.json();
       })
@@ -87,13 +89,14 @@ export const fetchDetail = (id, filter) => {
     })
       .then((result) => {
         if (!result.ok) {
-          throw new Error("fetching wallet detail failed");
+          return result.json().then((message) => {
+            throw message;
+          });
         }
         return result.json();
       })
       .then((data) => {
         dispatch(successFetchDetailWallet(data));
-        console.log(data)
         return data;
       });
   };
@@ -147,9 +150,10 @@ export const deleteWallet = (walletId) => {
       },
     })
     .then((result) => {
-      console.log(result)
       if (!result.ok) {
-        throw new Error("fetching wallet detail failed");
+        return result.json().then((message) => {
+          throw message;
+        });
       }
       return result.json();
     })

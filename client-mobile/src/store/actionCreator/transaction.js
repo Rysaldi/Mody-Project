@@ -23,7 +23,9 @@ export const addTransaction = (payload) => {
       body: JSON.stringify(payload),
     }).then((result) => {
       if (!result.ok) {
-        throw new Error("post new transaction failed");
+        return result.json().then((message) => {
+          throw message;
+        });
       }
       return result.json();
     });
@@ -41,7 +43,9 @@ export const deleteTransaction = (transactionId) => {
       },
     }).then((result) => {
       if (!result.ok) {
-        throw new Error("error deleting transaction");
+        return result.json().then((message) => {
+          throw message;
+        });
       }
       return result.json();
     });

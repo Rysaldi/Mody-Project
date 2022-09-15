@@ -21,7 +21,7 @@ import { deleteUserWallet } from "../store/actionCreator/userWallet";
 import { loadingFetchDetailWallet, successFetchDetailWallet } from "../store/actionCreator/wallet";
 
 export default function ReportScreen({ navigation, route }) {
-	const { id } = route.params;
+	const { id, sesuatu } = route.params;
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(true);
 	const [startDate, setStartDate] = React.useState(null);
@@ -32,6 +32,7 @@ export default function ReportScreen({ navigation, route }) {
 		return state.walletReducer;
 	});
 	const [showFilteredData, setshowFilteredData] = useState(null);
+	const [adaperubahan, setAdaPerubahan] = useState(false)
 
 	const setTotalIncome = (transactions) => {
 		if (!transactions || transactions.length === 0) {
@@ -90,16 +91,21 @@ export default function ReportScreen({ navigation, route }) {
 				dispatch(fetchDetail(id))
 					.then(() => {
 						setLoading(true);
+						if(adaperubahan === false) {
+							setAdaPerubahan(true)
+						} else {
+							setAdaPerubahan(false)
+						}
 					})
 					.catch((err) => {
-						errorAlert("You have no permission");
+						errorAlert(err.message);
 					})
 					.finally(() => {
 						dispatch(loadingFetchDetailWallet(false))
 						setLoading(false);
 					});
 			})
-			.catch((err) => errorAlert("You have no permission"));
+			.catch((err) => errorAlert(err.name));
 	};
 
 	const setCategoryName = (transaction) => {
@@ -184,10 +190,18 @@ export default function ReportScreen({ navigation, route }) {
 		return wantedGraphicDataByCategories;
 	};
 
+	function toastSuccessDeleteCollaborator() {
+    ToastAndroid.show("Successfully delete a collaborator!", ToastAndroid.SHORT);
+  }
+
 	const deleteCollaborator = (userWalletId) => {
+		
 		dispatch(deleteUserWallet(userWalletId))
-			.then(() => dispatch(fetchDetail(id)))
-			.catch((err) => errorAlert("You have no permission"))
+			.then(() => {
+				toastSuccessDeleteCollaborator()
+				dispatch(fetchDetail(id))}
+				)
+			.catch((err) => errorAlert(err.message))
 			.finally(() => {
 				dispatch(loadingFetchDetailWallet(false))
 			})
@@ -352,9 +366,10 @@ export default function ReportScreen({ navigation, route }) {
 	};
 
 	useEffect(() => {
+		dispatch(loadingFetchDetailWallet(true))
+		setLoading(true);
 		dispatch(fetchDetail(id))
 			.then((data) => {
-				dispatch(loadingFetchDetailWallet(true))
 				dispatch(successFetchDetailWallet(data));
 				setshowFilteredData(data.Transactions);
 			})
@@ -362,7 +377,7 @@ export default function ReportScreen({ navigation, route }) {
 				setLoading(false);
 				dispatch(loadingFetchDetailWallet(false))
 			});
-	}, []);
+	}, [adaperubahan, sesuatu]);
 
 	useEffect(() => {
 		filterDate(detailWallet.Transactions, startDate, endDate);
@@ -374,7 +389,7 @@ export default function ReportScreen({ navigation, route }) {
 				<LoadingScreen />
 			) : (
 				<View style={styles.container}>
-					<View style={{ flexDirection: "row" }}>
+					<View style={{flexDirection: "row"}}>
 						<View style={styles.formInput}>
 							<Text style={styles.inputName}>Start date</Text>
 							<Pressable onPress={showPickerStartDate}>
@@ -390,7 +405,7 @@ export default function ReportScreen({ navigation, route }) {
 										alignItems: "center",
 										justifyContent: "space-between",
 									}}>
-									<Text>{!startDate ? null : startDate.toLocaleString()}</Text>
+									<Text>{!startDate ? null : startDate.toLocaleString().slice(0,10)}</Text>
 									<Image
 										style={{ width: 14, height: 14 }}
 										source={require("../../assets/icons/arrowBottom.png")}
@@ -424,7 +439,7 @@ export default function ReportScreen({ navigation, route }) {
 										alignItems: "center",
 										justifyContent: "space-between",
 									}}>
-									<Text>{!endDate ? null : endDate.toLocaleString()}</Text>
+									<Text>{!endDate ? null : endDate.toLocaleString().slice(0,10)}</Text>
 									<Image
 										style={{ width: 14, height: 14 }}
 										source={require("../../assets/icons/arrowBottom.png")}
