@@ -17,8 +17,8 @@ import { deleteTransaction } from "../store/actionCreator/transaction";
 import { VictoryPie } from "victory-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { formatCurrency } from "react-native-format-currency";
-import { FontAwesome } from "@expo/vector-icons";
 import { deleteUserWallet } from "../store/actionCreator/userWallet";
+import { loadingFetchDetailWallet, successFetchDetailWallet } from "../store/actionCreator/wallet";
 
 export default function ReportScreen({ navigation, route }) {
 	const { id } = route.params;
@@ -28,7 +28,7 @@ export default function ReportScreen({ navigation, route }) {
 	const [endDate, setEndDate] = React.useState(null);
 	const [pickerStartDateShow, setPickerStartDateShow] = React.useState(false);
 	const [pickerEndDateShow, setPickerEndDateShow] = React.useState(false);
-	const { detailWallet } = useSelector((state) => {
+	const { detailWallet, loadingDetail } = useSelector((state) => {
 		return state.walletReducer;
 	});
 	const [showFilteredData, setshowFilteredData] = useState(null);
@@ -86,7 +86,19 @@ export default function ReportScreen({ navigation, route }) {
 
 	const hapusTransaction = (transactionId) => {
 		dispatch(deleteTransaction(transactionId))
-			.then(() => dispatch(fetchDetail(id)))
+			.then(() => {
+				dispatch(fetchDetail(id))
+					.then(() => {
+						setLoading(true);
+					})
+					.catch((err) => {
+						errorAlert("You have no permission");
+					})
+					.finally(() => {
+						dispatch(loadingFetchDetailWallet(false))
+						setLoading(false);
+					});
+			})
 			.catch((err) => errorAlert("You have no permission"));
 	};
 
@@ -175,7 +187,10 @@ export default function ReportScreen({ navigation, route }) {
 	const deleteCollaborator = (userWalletId) => {
 		dispatch(deleteUserWallet(userWalletId))
 			.then(() => dispatch(fetchDetail(id)))
-			.catch((err) => errorAlert("You have no permission"));
+			.catch((err) => errorAlert("You have no permission"))
+			.finally(() => {
+				dispatch(loadingFetchDetailWallet(false))
+			})
 	};
 
 	const renderUserWallets = ({ item, index }) => {
@@ -199,7 +214,6 @@ export default function ReportScreen({ navigation, route }) {
 						/>
 					</Pressable>
 				</View>
-
 			</>
 		);
 	};
@@ -309,33 +323,29 @@ export default function ReportScreen({ navigation, route }) {
 						<Text style={styles.incomeName}>Date</Text>
 						<Text style={styles.incomeDetails}>{new Date(item.date).toLocaleString()}</Text>
 					</View>
-				<View style={styles.iconPositions}>
-					<Pressable
-						style={styles.backgroundButtonEdit}
-						onPress={() =>
-							navigation.navigate("Edit Transaction", { id: item.id })
-						}
-					>
-						<Image
-							source={require("../../assets/icons/editReport.png")}
-							style={styles.buttonEdit}
-						/>
-						<Text style={{color:"#8d6e03"}}>Edit</Text>
-					</Pressable>
+					<View style={styles.iconPositions}>
+						<Pressable
+							style={styles.backgroundButtonEdit}
+							onPress={() => navigation.navigate("Edit Transaction", { id: item.id })}>
+							<Image
+								source={require("../../assets/icons/editReport.png")}
+								style={styles.buttonEdit}
+							/>
+							<Text style={{ color: "#8d6e03" }}>Edit</Text>
+						</Pressable>
 
-					<Pressable
-						style={styles.backgroundButtonDelete}
-						onPress={() => {
-							hapusTransaction(item.id);
-						}}>
-						<Image
-							source={require("../../assets/icons/red_trash.png")}
-							style={styles.buttonDeleteTrans}
-						/>
-						<Text style={{color:"#c70404"}}>Delete</Text>
-					</Pressable>
-
-				</View>
+						<Pressable
+							style={styles.backgroundButtonDelete}
+							onPress={() => {
+								hapusTransaction(item.id);
+							}}>
+							<Image
+								source={require("../../assets/icons/red_trash.png")}
+								style={styles.buttonDeleteTrans}
+							/>
+							<Text style={{ color: "#c70404" }}>Delete</Text>
+						</Pressable>
+					</View>
 				</View>
 			</View>
 		);
@@ -344,10 +354,13 @@ export default function ReportScreen({ navigation, route }) {
 	useEffect(() => {
 		dispatch(fetchDetail(id))
 			.then((data) => {
+				dispatch(loadingFetchDetailWallet(true))
+				dispatch(successFetchDetailWallet(data));
 				setshowFilteredData(data.Transactions);
 			})
 			.finally(() => {
 				setLoading(false);
+				dispatch(loadingFetchDetailWallet(false))
 			});
 	}, []);
 
@@ -356,185 +369,191 @@ export default function ReportScreen({ navigation, route }) {
 	}, [startDate, endDate]);
 
 	return (
-		<View style={styles.container}>
-			<View style={{ flexDirection: "row" }}>
-				<View style={styles.formInput}>
-					<Text style={styles.inputName}>Start date</Text>
-					<Pressable onPress={showPickerStartDate}>
-						<View
-							style={{
-								borderColor: "#ddd",
-								borderWidth: 1,
-								padding: 15,
-								backgroundColor: "white",
-								borderRadius: 7,
-								display: "flex",
-								flexDirection: "row",
-								alignItems: "center",
-								justifyContent: "space-between",
-							}}>
-							<Text>{!startDate ? null : startDate.toLocaleString()}</Text>
-							<Image
-								style={{ width: 14, height: 14 }}
-								source={require("../../assets/icons/arrowBottom.png")}
-							/>
-						</View>
-					</Pressable>
-					<>
-						{pickerStartDateShow && (
-							<DateTimePicker
-								value={startDate}
-								mode="date"
-								positiveButtonLabel="Confirm"
-								display="default"
-								onChange={onChangeStartDate}
-							/>
-						)}
-					</>
-				</View>
-				<View style={styles.formInput}>
-					<Text style={styles.inputName}>End date</Text>
-					<Pressable onPress={showPickerEndDate}>
-						<View
-							style={{
-								borderColor: "#ddd",
-								borderWidth: 1,
-								padding: 15,
-								backgroundColor: "white",
-								borderRadius: 7,
-								display: "flex",
-								flexDirection: "row",
-								alignItems: "center",
-								justifyContent: "space-between",
-							}}>
-							<Text>{!endDate ? null : endDate.toLocaleString()}</Text>
-							<Image
-								style={{ width: 14, height: 14 }}
-								source={require("../../assets/icons/arrowBottom.png")}
-							/>
-						</View>
-					</Pressable>
-					<>
-						{pickerEndDateShow && (
-							<DateTimePicker
-								value={endDate}
-								mode="date"
-								positiveButtonLabel="Confirm"
-								display="default"
-								onChange={onChangeEndDate}
-							/>
-						)}
-					</>
-				</View>
-				<View style={styles.buttonToAdd}>
-					<Pressable style={styles.buttonAdd} onPress={resetFilter}>
-						<Text style={styles.buttonText}>Reset</Text>
-					</Pressable>
-				</View>
-			</View>
-			{loading && <LoadingScreen />}
-			{!loading && (
-				<ScrollView style={styles.scrollView}>
-					{showFilteredData.length === 0 ? (
-						<View style={styles.boxEmpty}>
-							<Text style={styles.emptyValue}>Opss... no transaction data available</Text>
-						</View>
-					) : (
-						<>
-							<View style={styles.pieChart}>
-								<Text style={styles.walletName}>{detailWallet.name}</Text>
-
-								<VictoryPie
-									colorScale={["#cc5656", "#7eb764"]}
-									animate={{ easing: "exp", duration: 2000 }}
-									data={wantedGraphicData(showFilteredData)}
-									innerRadius={20}
-									width={400}
-									height={300}
+		<>
+			{loadingDetail ? (
+				<LoadingScreen />
+			) : (
+				<View style={styles.container}>
+					<View style={{ flexDirection: "row" }}>
+						<View style={styles.formInput}>
+							<Text style={styles.inputName}>Start date</Text>
+							<Pressable onPress={showPickerStartDate}>
+								<View
 									style={{
-										data: {
-											stroke: "#fff",
-											strokeWidth: 0.5,
-										},
-									}}
-								/>
+										borderColor: "#ddd",
+										borderWidth: 1,
+										padding: 15,
+										backgroundColor: "white",
+										borderRadius: 7,
+										display: "flex",
+										flexDirection: "row",
+										alignItems: "center",
+										justifyContent: "space-between",
+									}}>
+									<Text>{!startDate ? null : startDate.toLocaleString()}</Text>
+									<Image
+										style={{ width: 14, height: 14 }}
+										source={require("../../assets/icons/arrowBottom.png")}
+									/>
+								</View>
+							</Pressable>
+							<>
+								{pickerStartDateShow && (
+									<DateTimePicker
+										value={startDate}
+										mode="date"
+										positiveButtonLabel="Confirm"
+										display="default"
+										onChange={onChangeStartDate}
+									/>
+								)}
+							</>
+						</View>
+						<View style={styles.formInput}>
+							<Text style={styles.inputName}>End date</Text>
+							<Pressable onPress={showPickerEndDate}>
+								<View
+									style={{
+										borderColor: "#ddd",
+										borderWidth: 1,
+										padding: 15,
+										backgroundColor: "white",
+										borderRadius: 7,
+										display: "flex",
+										flexDirection: "row",
+										alignItems: "center",
+										justifyContent: "space-between",
+									}}>
+									<Text>{!endDate ? null : endDate.toLocaleString()}</Text>
+									<Image
+										style={{ width: 14, height: 14 }}
+										source={require("../../assets/icons/arrowBottom.png")}
+									/>
+								</View>
+							</Pressable>
+							<>
+								{pickerEndDateShow && (
+									<DateTimePicker
+										value={endDate}
+										mode="date"
+										positiveButtonLabel="Confirm"
+										display="default"
+										onChange={onChangeEndDate}
+									/>
+								)}
+							</>
+						</View>
+						<View style={styles.buttonToAdd}>
+							<Pressable style={styles.buttonAdd} onPress={resetFilter}>
+								<Text style={styles.buttonText}>Reset</Text>
+							</Pressable>
+						</View>
+					</View>
+					{loading && <LoadingScreen />}
+					{!loading && (
+						<ScrollView style={styles.scrollView}>
+							{showFilteredData.length === 0 ? (
+								<View style={styles.boxEmpty}>
+									<Text style={styles.emptyValue}>Opss... no transaction data available</Text>
+								</View>
+							) : (
+								<>
+									<View style={styles.pieChart}>
+										<Text style={styles.walletName}>{detailWallet.name}</Text>
 
-								<View style={styles.total}>
-									<View style={styles.income}>
-										<Text style={styles.incomeText}>Income</Text>
-										<Text style={styles.amountIncome}>
-											{
-												formatCurrency({
-													amount: setTotalIncome(showFilteredData),
-													code: "IDR",
-												})[0]
-											}
-										</Text>
+										<VictoryPie
+											colorScale={["#cc5656", "#7eb764"]}
+											animate={{ easing: "exp", duration: 2000 }}
+											data={wantedGraphicData(showFilteredData)}
+											innerRadius={20}
+											width={400}
+											height={300}
+											style={{
+												data: {
+													stroke: "#fff",
+													strokeWidth: 0.5,
+												},
+											}}
+										/>
+
+										<View style={styles.total}>
+											<View style={styles.income}>
+												<Text style={styles.incomeText}>Income</Text>
+												<Text style={styles.amountIncome}>
+													{
+														formatCurrency({
+															amount: setTotalIncome(showFilteredData),
+															code: "IDR",
+														})[0]
+													}
+												</Text>
+											</View>
+											<View style={styles.outcome}>
+												<Text style={styles.incomeText}>Expenses</Text>
+												<Text style={styles.amountOutcome}>
+													{
+														formatCurrency({
+															amount: setTotalExpense(showFilteredData),
+															code: "IDR",
+														})[0]
+													}
+												</Text>
+											</View>
+										</View>
 									</View>
-									<View style={styles.outcome}>
-										<Text style={styles.incomeText}>Expenses</Text>
-										<Text style={styles.amountOutcome}>
-											{
-												formatCurrency({
-													amount: setTotalExpense(showFilteredData),
-													code: "IDR",
-												})[0]
-											}
-										</Text>
+
+									<View style={styles.pieChartbyCategory}>
+										<VictoryPie
+											colorScale={sameColorCategory(setCategoryName(showFilteredData))}
+											animate={{ easing: "exp", duration: 2000 }}
+											data={wantedGraphicDataByCategory(setCategoryName(showFilteredData))}
+											innerRadius={20}
+											width={540}
+											height={300}
+											style={{
+												data: {
+													stroke: "#fff",
+													strokeWidth: 0.5,
+												},
+											}}
+										/>
 									</View>
+								</>
+							)}
+							<View style={styles.categoryList}>
+								<FlatList
+									data={setCategoryName(showFilteredData)}
+									renderItem={renderListWalletWithColor}
+									keyExtractor={(item, index) => index}
+									horizontal={true}
+									persistentScrollbar={true}
+									style={{ height: 30 }}
+								/>
+							</View>
+							<View style={styles.walletList}>
+								<View style={styles.collaborator}>
+									<Text style={styles.textCollaborator}>Collaborator</Text>
+									<FlatList
+										data={detailWallet.UserWallets}
+										renderItem={renderUserWallets}
+										keyExtractor={(el) => el.id}
+									/>
+								</View>
+
+								<View style={styles.transaction}>
+									<Text style={styles.textTransaction}>Transaction Detail</Text>
+									<FlatList
+										data={showFilteredData}
+										renderItem={renderItem}
+										keyExtractor={(el) => el.id}
+									/>
 								</View>
 							</View>
-
-							<View style={styles.pieChartbyCategory}>
-								<VictoryPie
-									colorScale={sameColorCategory(setCategoryName(showFilteredData))}
-									animate={{ easing: "exp", duration: 2000 }}
-									data={wantedGraphicDataByCategory(setCategoryName(showFilteredData))}
-									innerRadius={20}
-									width={540}
-									height={300}
-									style={{
-										data: {
-											stroke: "#fff",
-											strokeWidth: 0.5,
-										},
-									}}
-								/>
-							</View>
-						</>
+						</ScrollView>
 					)}
-					<View style={styles.categoryList}>
-						<FlatList
-							data={setCategoryName(showFilteredData)}
-							renderItem={renderListWalletWithColor}
-							keyExtractor={(item, index) => index}
-							horizontal={true}
-							persistentScrollbar={true}
-							style={{ height: 30 }}
-						/>
-					</View>
-					<View style={styles.walletList}>
-						<View style={styles.collaborator}>
-							<Text style={styles.textCollaborator}>Collaborator</Text>
-							<FlatList
-								data={detailWallet.UserWallets}
-								renderItem={renderUserWallets}
-								keyExtractor={(el) => el.id}
-							/>
-						</View>
-
-						<View style={styles.transaction}>
-							<Text style={styles.textTransaction}>Transaction Detail</Text>
-							<FlatList
-								data={showFilteredData}
-								renderItem={renderItem}
-								keyExtractor={(el) => el.id}
-							/>
-						</View>
-					</View>
-				</ScrollView>
+				</View>
 			)}
-		</View>
+		</>
 	);
 }
 
@@ -658,40 +677,40 @@ const styles = StyleSheet.create({
 		width: Dimensions.get("window").width * 0.04,
 		height: Dimensions.get("window").height * 0.03,
 	},
-	backgroundButtonEdit:{
-		display:"flex", 
-		flexDirection:"row", 
-		borderWidth:1, 
-		paddingVertical:3, 
-		paddingHorizontal:10, 
-		borderRadius:10, 
-		borderColor:"#8d6e03", 
-		backgroundColor:"#fffbeb", 
-		justifyContent:"center", 
-		alignItems:"center",
-		marginEnd:5
+	backgroundButtonEdit: {
+		display: "flex",
+		flexDirection: "row",
+		borderWidth: 1,
+		paddingVertical: 3,
+		paddingHorizontal: 10,
+		borderRadius: 10,
+		borderColor: "#8d6e03",
+		backgroundColor: "#fffbeb",
+		justifyContent: "center",
+		alignItems: "center",
+		marginEnd: 5,
 	},
-	backgroundButtonDelete:{
-		display:"flex", 
-		flexDirection:"row", 
-		borderWidth:1, 
-		paddingVertical:3, 
-		paddingHorizontal:10, 
-		borderRadius:10, 
-		borderColor:"#c70404", 
-		backgroundColor:"#ffeaea", 
-		justifyContent:"center", 
-		alignItems:"center"
+	backgroundButtonDelete: {
+		display: "flex",
+		flexDirection: "row",
+		borderWidth: 1,
+		paddingVertical: 3,
+		paddingHorizontal: 10,
+		borderRadius: 10,
+		borderColor: "#c70404",
+		backgroundColor: "#ffeaea",
+		justifyContent: "center",
+		alignItems: "center",
 	},
 	buttonEdit: {
 		width: Dimensions.get("window").width * 0.03,
 		height: Dimensions.get("window").height * 0.018,
-		marginEnd:6
+		marginEnd: 6,
 	},
 	buttonDeleteTrans: {
 		width: Dimensions.get("window").width * 0.03,
 		height: Dimensions.get("window").height * 0.018,
-		marginEnd:6
+		marginEnd: 6,
 	},
 	trashPosition: {
 		position: "absolute",

@@ -19,6 +19,8 @@ import {
   userLogin,
   setAccessToken,
   userLoginDispatch,
+  userHistory,
+  loadingUserHistoryDispatch
 } from "../store/actionCreator/user";
 
 export default function LoginScreen() {
@@ -47,8 +49,8 @@ export default function LoginScreen() {
 
   const onSubmit = () => {
     dispatch(userLogin(formAdd))
-      .then((response) => {
-        setAccessToken(response.access_token);
+    .then((response) => {
+      setAccessToken(response.access_token);
         dispatch(userLoginDispatch(true));
       })
       .catch((error) => {

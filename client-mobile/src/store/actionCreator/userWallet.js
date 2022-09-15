@@ -74,8 +74,5 @@ export const deleteUserWallet = (userWalletId) =>{
         }
         return result.json();
       })
-      .catch((error) => {
-        throw error;
-      });
   };
 }

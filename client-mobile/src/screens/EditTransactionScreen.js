@@ -20,7 +20,7 @@ import {
   fetchCategories,
   setLoadingCategories,
 } from "../store/actionCreator/category";
-import { fetchDetail } from "../store/actionCreator/wallet";
+import { fetchDetail, loadingFetchDetailWallet } from "../store/actionCreator/wallet";
 
 
 export default function EditTransactionScreen({ navigation, route }) {
@@ -88,7 +88,12 @@ export default function EditTransactionScreen({ navigation, route }) {
               setValueType(data.Category.type);
               setValue(data.Category.id);
               setWallet(data.Wallet.id);
-          });
+          })
+          .catch(err => {
+            navigation.navigate("Report Detail", { id: Wallet })
+            errorAlert(err.message)
+
+          })
   }, []);
 
   const handleChange = (e) => {
@@ -115,7 +120,7 @@ export default function EditTransactionScreen({ navigation, route }) {
   };
 
   function showToast() {
-      ToastAndroid.show("Successfully add new transaction!", ToastAndroid.SHORT);
+      ToastAndroid.show("Successfully edit transaction!", ToastAndroid.SHORT);
   }
 
   const errorAlert = (msg) => {
@@ -131,10 +136,17 @@ export default function EditTransactionScreen({ navigation, route }) {
       }))
           .then(() => {
               showToast();
-              dispatch(fetchDetail(Wallet));
-              navigation.navigate("Report Detail", { id: Wallet });
+              dispatch(fetchDetail(Wallet))
+              .finally(() => {
+                dispatch(loadingFetchDetailWallet(false))
+                navigation.navigate("Report Detail", { id: Wallet });
+              })
           })
-          .catch((err) => errorAlert(err.message));
+          .catch((err) => {
+            errorAlert(err.message)
+        }
+            )
+ 
   };
 
   return (

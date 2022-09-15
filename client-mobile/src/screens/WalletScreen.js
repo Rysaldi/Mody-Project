@@ -9,6 +9,7 @@ import {
   Pressable,
   Image,
   FlatList,
+  Alert
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -16,13 +17,14 @@ import {
   fetchWallets,
   addNewWallet,
   deleteWallet,
+  successDeleteWallet,
 } from "../store/actionCreator/wallet";
 import LoadingScreen from "../components/LoadingScreen";
 import {
   userHistory,
   loadingUserHistoryDispatch,
 } from "../store/actionCreator/user";
-import EditTransactionScreen from "./EditTransactionScreen";
+
 
 export default function WalletScreen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -36,6 +38,10 @@ export default function WalletScreen({ navigation, route }) {
       console.log(error);
     });
   }, []);
+
+  const errorAlert = (msg) => {
+    return Alert.alert("", `${msg}`, [{ text: "OK" }]);
+  };
 
   const submitAddWallet = () => {
     dispatch(loadingUserHistoryDispatch(true));
@@ -57,7 +63,12 @@ export default function WalletScreen({ navigation, route }) {
     dispatch(loadingUserHistoryDispatch(true));
     dispatch(deleteWallet(walletId))
       .then(() => {
+        dispatch(successDeleteWallet(walletId))
+        dispatch(fetchWallets())
         dispatch(userHistory());
+      })
+      .catch(() => {
+        errorAlert("You are not the owner of the wallet")
       })
       .finally(() => {
         dispatch(loadingUserHistoryDispatch(false));

@@ -77,6 +77,7 @@ export const fetchDetail = (id, filter) => {
     search = "";
   }
   return async (dispatch) => {
+    dispatch(loadingFetchDetailWallet(true))
     const accessToken = await getAccessToken();
     return fetch(`${baseUrl}wallets/${id}?search=${search}`, {
       method: "GET",
@@ -92,6 +93,7 @@ export const fetchDetail = (id, filter) => {
       })
       .then((data) => {
         dispatch(successFetchDetailWallet(data));
+        console.log(data)
         return data;
       });
   };
@@ -137,26 +139,19 @@ export const successDeleteWallet = (payload) => {
 export const deleteWallet = (walletId) => {
   return async (dispatch) => {
     const accessToken = await getAccessToken();
-    fetch(`${baseUrl}wallets/${walletId}`, {
+    return fetch(`${baseUrl}wallets/${walletId}`, {
       method: "delete",
       headers: {
         "Content-Type": "application/json",
         access_token: accessToken,
       },
     })
-      .then((result) => {
-        if (!result.ok) {
-          throw new Error("error deleting wallet");
-        }
-        return result.json();
-      })
-      .then(() => dispatch(successDeleteWallet(walletId)))
-      .then(() => {
-        dispatch(fetchWallets());
-        return;
-      })
-      .catch((err) => {
-        throw err;
-      });
+    .then((result) => {
+      console.log(result)
+      if (!result.ok) {
+        throw new Error("fetching wallet detail failed");
+      }
+      return result.json();
+    })
   };
 };
