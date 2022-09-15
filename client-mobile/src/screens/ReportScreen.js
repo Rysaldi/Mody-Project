@@ -188,18 +188,17 @@ export default function ReportScreen({ navigation, route }) {
 					</View>
 				</View>
 
-					<View style={styles.deleteCollaborator}>
-						<Pressable
-							style={{borderWidth:1, width:25, height:25, borderRadius:5}}
-							onPress={() => {
+				<View style={styles.deleteCollaborator}>
+					<Pressable
+						onPress={() => {
 							deleteCollaborator(item.id);
-							}}>
-							<Image
-								source={require("../../assets/icons/red_trash.png")}
-								style={styles.buttonDelete}
-							/>
-						</Pressable>
-					</View>
+						}}>
+						<Image
+							source={require("../../assets/icons/red_trash.png")}
+							style={styles.buttonDelete}
+						/>
+					</Pressable>
+				</View>
 
 			</>
 		);
@@ -310,24 +309,33 @@ export default function ReportScreen({ navigation, route }) {
 						<Text style={styles.incomeName}>Date</Text>
 						<Text style={styles.incomeDetails}>{new Date(item.date).toLocaleString()}</Text>
 					</View>
-				</View>
-				<View style={styles.trashPosition}>
+				<View style={styles.iconPositions}>
 					<Pressable
+						style={styles.backgroundButtonEdit}
+						onPress={() =>
+							navigation.navigate("Edit Transaction", { id: item.id })
+						}
+					>
+						<Image
+							source={require("../../assets/icons/editReport.png")}
+							style={styles.buttonEdit}
+						/>
+						<Text style={{color:"#8d6e03"}}>Edit</Text>
+					</Pressable>
+
+					<Pressable
+						style={styles.backgroundButtonDelete}
 						onPress={() => {
 							hapusTransaction(item.id);
 						}}>
 						<Image
 							source={require("../../assets/icons/red_trash.png")}
-							style={styles.buttonDelete}
+							style={styles.buttonDeleteTrans}
 						/>
+						<Text style={{color:"#c70404"}}>Delete</Text>
 					</Pressable>
-					<Pressable
-          onPress={()=> 
-            navigation.navigate("Edit Transaction", { id: item.id })
-          }
-          >
-            <Text>Edit</Text>
-          </Pressable>
+
+				</View>
 				</View>
 			</View>
 		);
@@ -516,7 +524,6 @@ export default function ReportScreen({ navigation, route }) {
 						</View>
 
 						<View style={styles.transaction}>
-							{/* <FontAwesome name="pencil-square-o" size={24} color="black" /> */}
 							<Text style={styles.textTransaction}>Transaction Detail</Text>
 							<FlatList
 								data={showFilteredData}
@@ -648,16 +655,58 @@ const styles = StyleSheet.create({
 		marginLeft: 15,
 	},
 	buttonDelete: {
-		width: Dimensions.get("window").width * 0.06,
-		height: Dimensions.get("window").height * 0.035,
+		width: Dimensions.get("window").width * 0.04,
+		height: Dimensions.get("window").height * 0.03,
+	},
+	backgroundButtonEdit:{
+		display:"flex", 
+		flexDirection:"row", 
+		borderWidth:1, 
+		paddingVertical:3, 
+		paddingHorizontal:10, 
+		borderRadius:10, 
+		borderColor:"#8d6e03", 
+		backgroundColor:"#fffbeb", 
+		justifyContent:"center", 
+		alignItems:"center",
+		marginEnd:5
+	},
+	backgroundButtonDelete:{
+		display:"flex", 
+		flexDirection:"row", 
+		borderWidth:1, 
+		paddingVertical:3, 
+		paddingHorizontal:10, 
+		borderRadius:10, 
+		borderColor:"#c70404", 
+		backgroundColor:"#ffeaea", 
+		justifyContent:"center", 
+		alignItems:"center"
+	},
+	buttonEdit: {
+		width: Dimensions.get("window").width * 0.03,
+		height: Dimensions.get("window").height * 0.018,
+		marginEnd:6
+	},
+	buttonDeleteTrans: {
+		width: Dimensions.get("window").width * 0.03,
+		height: Dimensions.get("window").height * 0.018,
+		marginEnd:6
 	},
 	trashPosition: {
 		position: "absolute",
 		right: 10,
-		top: 65,
+		top: 0,
 		alignItems: "center",
 		justifyContent: "center",
-		// height: Dimensions.get("window").height * 0.1,
+	},
+	iconPositions: {
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "flex-start",
+		width: Dimensions.get("window").width * 0.5,
+		height: Dimensions.get("window").height * 0.05,
 	},
 	textCollaborator: {
 		fontWeight: "bold",
@@ -718,7 +767,7 @@ const styles = StyleSheet.create({
 	deleteCollaborator: {
 		position: "absolute",
 		right: 15,
-		top: 30,
+		top: 37,
 		alignItems: "center",
 		justifyContent: "center",
 	},
