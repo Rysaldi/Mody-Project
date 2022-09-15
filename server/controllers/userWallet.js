@@ -23,6 +23,17 @@ class Controller {
 		try {
 			const { WalletId, role, email } = req.body;
 
+			const userWantAdd = await UserWallet.findOne({
+				where: {
+					UserId: req.user.id,
+					WalletId: WalletId
+				}
+			});
+
+			if (!userWantAdd || userWantAdd.role === "Member") {
+				throw { name: "Forbidden" };
+			}
+
 			if (!email) {
 				throw { name: "EmailRequired" };
 			}
