@@ -235,12 +235,12 @@ const styles = StyleSheet.create({
   walletList: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.6,
+    paddingHorizontal: 15,
     marginTop: 15,
   },
   walletCard: {
     backgroundColor: "#fff",
     display: "flex",
-
     borderRadius: 7,
     flexDirection: "row",
     marginBottom: 10,
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     elevation: 2,
-    width: Dimensions.get("window").width,
+    width: Dimensions.get("window").width * 0.93,
   },
   walletIcon: {
     width: Dimensions.get("window").width * 0.1,
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.25,
   },
   buttonToTransaction: {
-    width: 40,
+    width: Dimensions.get("window").width * 0.09,
     justifyContent: "center",
     alignItems: "center",
     borderColor: "#ddd",
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   iconGroup: {
-    width: 70,
+    width: Dimensions.get("window").width * 0.15,
     alignItems: "center",
   },
   iconText: {

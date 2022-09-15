@@ -57,7 +57,11 @@ export default function LogoutScreen() {
                 </View>
               </View>
             </View>
-            <View style={{ flex: 2, marginTop: 30 }}>
+            <View
+              style={{
+                marginTop: 30,
+              }}
+            >
               <Text
                 style={{
                   backgroundColor: "#ddd",
@@ -74,32 +78,41 @@ export default function LogoutScreen() {
                   style={{
                     display: "flex",
                     flexDirection: "row",
-                    marginTop: 20,
-                    justifyContent: "space-between",
-                    alignItems: "center",
+                    marginTop: 10,
                   }}
                 >
                   <View
                     style={{
-                      display: "flex",
                       flexDirection: "row",
-                      alignItems: "center",
                     }}
                   >
-                    <View>
+                    <View style={styles.descriptionSymbol}>
                       <Image
-                        style={{ width: 30, height: 30, marginRight: 10 }}
+                        style={{ width: 30, height: 30 }}
                         source={require("../../assets/icons/logout.png")}
                       />
                     </View>
-                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                      Sign out
-                    </Text>
                   </View>
-                  <Image
-                    style={{ width: 12, height: 12 }}
-                    source={require("../../assets/icons/arrowRight.png")}
-                  />
+                  <View style={styles.descriptionPreferences}>
+                    <View style={styles.descriptionName}>
+                      <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                        Sign out
+                      </Text>
+                    </View>
+                    <View style={styles.descriptionDetail}>
+                      <Text style={{ fontSize: 12, color: "#424242" }}>
+                        Lorem Ipsum is simply dummy text of the printing and
+                        typesetting industry. Lorem Ipsum has been the
+                        industry's standard dummy text ever since the 1500s
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.descriptionArrow}>
+                    <Image
+                      style={{ width: 12, height: 12 }}
+                      source={require("../../assets/icons/arrowRight.png")}
+                    />
+                  </View>
                 </View>
               </Pressable>
             </View>
@@ -124,7 +137,6 @@ const styles = StyleSheet.create({
     marginTop: 35,
   },
   containerHeader: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -178,5 +190,29 @@ const styles = StyleSheet.create({
   textBotton: {
     fontSize: 15,
     color: "white",
+  },
+  descriptionPreferences: {
+    width: Dimensions.get("window").width * 0.74,
+    height: Dimensions.get("window").height * 0.1,
+    flexDirection: "column",
+    paddingLeft: 10,
+  },
+  descriptionSymbol: {
+    width: Dimensions.get("window").width * 0.08,
+    height: Dimensions.get("window").height * 0.05,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  descriptionArrow: {
+    width: Dimensions.get("window").width * 0.035,
+    height: Dimensions.get("window").height * 0.05,
+    justifyContent: "flex-end",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  descriptionName: {
+    height: Dimensions.get("window").height * 0.05,
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
