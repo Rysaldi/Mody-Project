@@ -126,6 +126,7 @@ describe("POST /login - user login", () => {
 	}, 10000);
 });
 
+
 describe("UserWallets routes test", () => {
 	describe("GET /userWallets - success get all userwallets", () => {
 		test("200 Success get - should return an array of object contain list of userwallet", (done) => {
@@ -180,9 +181,53 @@ describe("UserWallets routes test", () => {
 	describe("POST /userWallets - success create new userwallets", () => {
 		test("201 OK - should return success message", async () => {
 			const response = await request(app).post("/userWallets")
-				.send({ UserId: 2, WalletId: 1, role: "Member", email: "user2@mail.com" })
+				.send({ UserId: 2, WalletId: 1, role: "Manager", email: "user2@mail.com" })
 				.set("access_token", access_token);
+			expect(response.status).toBe(201);
+			expect(response.body).toEqual(expect.any(Object));
+		}, 10000);
+	});
+
+	describe("POST /userWallets - fail because access_token is fake", () => {
+		test("401  - should return  message", async () => {
+			const response = await request(app).post("/userWallets")
+				.send({ UserId: 2, WalletId: 1, role: "Manager", email: "user2@mail.com" })
+				.set("access_token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYzMjM4NjUyfQ.ybUYimgnwG0GYZCYGyKummozLmCVanojjhxDEpg6Mss");
+			expect(response.status).toBe(401);
+			expect(response.body).toEqual(expect.any(Object));
+		}, 10000);
+	});
+
+	describe("POST /userWallets - fail because email not registered in this app", () => {
+		test("404 - should return  message", async () => {
+			const response = await request(app).post("/userWallets")
+				.send({ UserId: 2, WalletId: 1, role: "Manager", email: "ryunosuka188888@mail.com" })
+				.set("access_token", access_token);
+			expect(response.status).toBe(404);
+			expect(response.body).toEqual(expect.any(Object));
+		}, 10000);
+	});
+
+	describe("POST /userWallets - fail add useWallet because user already in the wallet", () => {
+		test("400 - should return message", async () => {
+			const login = await request(app).post("/users/login").send({ email: "user1@mail.com", password: "user1" });
+			const response = await request(app).post("/userWallets")
+				.send({ WalletId: 2, role: "Manager", email: "user2@mail.com" })
+				.set("access_token", login.body.access_token);
+			console.log(response.body);
 			expect(response.status).toBe(400);
+			expect(response.body).toEqual(expect.any(Object));
+		}, 10000);
+	});
+
+	describe("POST /userWallets - fail add useWallet because user is member", () => {
+		test("403 - should return message", async () => {
+			const login = await request(app).post("/users/login").send({ email: "admin@mail.com", password: "admin" });
+			const response = await request(app).post("/userWallets")
+				.send({ WalletId: 2, role: "Manager", email: "rafie@mail.com" })
+				.set("access_token", login.body.access_token);
+			console.log(response.body);
+			expect(response.status).toBe(403);
 			expect(response.body).toEqual(expect.any(Object));
 		}, 10000);
 	});
@@ -192,12 +237,11 @@ describe("UserWallets routes test", () => {
 		test("404 Not Found - should return an error if wallet is not found", (done) => {
 			request(app)
 				.post("/userWallets")
-				.send({ role: "Manager", WalletId: 10, UserId: 2, email: "sahedTamvan@mail.com" })
+				.send({ role: "Manager", WalletId: 10, email: "sahedTamvan@mail.com" })
 				.set("access_token", access_token)
 				.end((err, res) => {
 					if (err) return done(err);
 					const { body, status } = res;
-
 					expect(status).toBe(404);
 					expect(body).toEqual(expect.any(Object));
 					expect(body).toHaveProperty("message", expect.any(String));
@@ -215,7 +259,6 @@ describe("UserWallets routes test", () => {
 				.end((err, res) => {
 					if (err) return done(err);
 					const { body, status } = res;
-
 					expect(status).toBe(400);
 					expect(body).toEqual(expect.any(Object));
 					expect(body).toHaveProperty("message", expect.any(String));
@@ -225,194 +268,247 @@ describe("UserWallets routes test", () => {
 	});
 
 	describe("POST /userWallets - failed create new userwallets", () => {
-		test("400 Bad Request - should return an error if role is not provided", (done) => {
-			request(app)
+		test("400 Bad Request - should return an error if role is not provided", async () => {
+			const response = await request(app)
 				.post("/userWallets")
 				.send({ WalletId: 1, email: "user1@mail.com" })
-				.set("access_token", access_token)
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-
-					expect(status).toBe(400);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(String));
-					return done();
-				});
-		}, 10000);
-	});
-
-	describe("POST /userWallets - failed create new userwallets", () => {
-		test("400 Bad Request - should return an error if wallet is not provided", (done) => {
-			request(app)
-				.post("/userWallets")
-				.send({ role: "Member", email: "user1@mail.com" })
-				.set("access_token", access_token)
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-
-					expect(status).toBe(400);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(String));
-					return done();
-				});
-		}, 10000);
-	});
-
-	describe("PUT /userWallets - success edit userwallets", () => {
-		test("200 OK - should return an object of success message", (done) => {
-			request(app)
-				.put("/userWallets/2")
-				.send({ UserId: 2, role: "Member" })
-				.set("access_token", access_token)
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-
-					expect(status).toBe(200);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(String));
-					return done();
-				});
-		}, 10000);
-	});
-
-	describe("PUT /userWallets - failed edit userwallets", () => {
-		test("400 Bad request - should return an error if user id is not provided", (done) => {
-			request(app)
-				.put("/userWallets/2")
-				.send({ role: "Member" })
-				.set("access_token", access_token)
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-
-					expect(status).toBe(400);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(String));
-					return done();
-				});
-		}, 10000);
-	});
-
-	describe("PUT /userWallets - failed edit userwallets", () => {
-		test("400 Bad request - should return an error if role is not provided", (done) => {
-			request(app)
-				.put("/userWallets/2")
-				.send({ UserId: 2 })
-				.set("access_token", access_token)
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-
-					expect(status).toBe(400);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(String));
-					return done();
-				});
-		}, 10000);
-	});
-
-	describe("PUT /userWallets - failed edit userwallets", () => {
-		test("401 Unauthorized - should return an error if access token not provided", (done) => {
-			request(app)
-				.put("/userWallets/2")
-				.send({ role: "Member", UserId: 2 })
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-
-					expect(status).toBe(401);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(String));
-					return done();
-				});
-		}, 10000);
-	});
-
-	describe("PUT /userWallets - failed edit userwallets", () => {
-		test("404 Not Found - should return an error if data is not found", (done) => {
-			request(app)
-				.put("/userWallets/100")
-				.send({ role: "Manager", UserId: 2 })
-				.set("access_token", access_token)
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-
-					expect(status).toBe(404);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(String));
-					return done();
-				});
-		}, 10000);
-	});
-
-	describe("DELETE /userWallets - success delete userwallets", () => {
-		test("200 OK - should return success message", (done) => {
-			request(app)
-				.delete("/userWallets/1")
-				.set("access_token", access_token)
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-
-					expect(status).toBe(200);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(String));
-					return done();
-				});
-		}, 10000);
-	});
-
-	describe("DELETE /userWallets - failed delete userwallets", () => {
-		test("404 Not Found - should return error message", (done) => {
-			request(app)
-				.delete("/userWallets/10")
-				.set("access_token", access_token)
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-
-					expect(status).toBe(404);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(String));
-					return done();
-				});
-		}, 10000);
-	});
-
-	describe("DELETE /userWallets - failed delete userwallets", () => {
-		test("401 Unauthorized - should return error message", (done) => {
-			request(app)
-				.delete("/userWallets/10")
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-
-					expect(status).toBe(401);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(String));
-					return done();
-				});
-		}, 10000);
-	});
-
-	describe("DELETE /userWallets - failed delete userwallets", () => {
-		test("400 Bad Request - should return error message", (done) => {
-			request(app)
-				.delete("/userWallets/asd")
-				.set("access_token", access_token)
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-
-					expect(status).toBe(400);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(String));
-					return done();
-				});
-		}, 10000);
-	});
+				.set("access_token", access_token);
+			expect(response.status).toBe(400);
+			expect(response.body).toEqual(expect.any(Object));
+			expect(response.body).toHaveProperty("message");
+		});
+	}, 10000);
 });
+
+describe("POST /userWallets - failed create new userwallets", () => {
+	test("400 Bad Request - should return an error if wallet is not provided", (done) => {
+		request(app)
+			.post("/userWallets")
+			.send({ role: "Member", email: "user1@mail.com" })
+			.set("access_token", access_token)
+			.end((err, res) => {
+				if (err) return done(err);
+				const { body, status } = res;
+
+				expect(status).toBe(400);
+				expect(body).toEqual(expect.any(Object));
+				expect(body).toHaveProperty("message", expect.any(String));
+				return done();
+			});
+	}, 10000);
+});
+
+describe("PUT /userWallets - success edit userwallets", () => {
+	test("200 OK - should return an object of success message", (done) => {
+		request(app)
+			.put("/userWallets/2")
+			.send({ UserId: 2, role: "Member" })
+			.set("access_token", access_token)
+			.end((err, res) => {
+				if (err) return done(err);
+				const { body, status } = res;
+
+				expect(status).toBe(200);
+				expect(body).toEqual(expect.any(Object));
+				expect(body).toHaveProperty("message", expect.any(String));
+				return done();
+			});
+	}, 10000);
+});
+
+describe("PUT /userWallets - success edit userwallets", () => {
+	test("400  - should return an object of message", async () => {
+		const response = await request(app).put("/userWallets/inisalahid")
+			.send({ UserId: 2, role: "Member" })
+			.set("access_token", access_token);
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual(expect.any(Object));
+		expect(response.body).toHaveProperty("message", expect.any(String));
+	}, 10000);
+});
+
+describe("PUT /userWallets - failed edit userwallets", () => {
+	test("400 Bad request - should return an error if user id is not provided", (done) => {
+		request(app)
+			.put("/userWallets/2")
+			.send({ role: "Member" })
+			.set("access_token", access_token)
+			.end((err, res) => {
+				if (err) return done(err);
+				const { body, status } = res;
+
+				expect(status).toBe(400);
+				expect(body).toEqual(expect.any(Object));
+				expect(body).toHaveProperty("message", expect.any(String));
+				return done();
+			});
+	}, 10000);
+});
+
+describe("PUT /userWallets - failed edit userwallets", () => {
+	test("400 Bad request - should return an error if role is not provided", (done) => {
+		request(app)
+			.put("/userWallets/2")
+			.send({ UserId: 2 })
+			.set("access_token", access_token)
+			.end((err, res) => {
+				if (err) return done(err);
+				const { body, status } = res;
+
+				expect(status).toBe(400);
+				expect(body).toEqual(expect.any(Object));
+				expect(body).toHaveProperty("message", expect.any(String));
+				return done();
+			});
+	}, 10000);
+});
+
+describe("PUT /userWallets - failed edit userwallets", () => {
+	test("401 Unauthorized - should return an error if access token not provided", (done) => {
+		request(app)
+			.put("/userWallets/2")
+			.send({ role: "Member", UserId: 2 })
+			.end((err, res) => {
+				if (err) return done(err);
+				const { body, status } = res;
+
+				expect(status).toBe(401);
+				expect(body).toEqual(expect.any(Object));
+				expect(body).toHaveProperty("message", expect.any(String));
+				return done();
+			});
+	}, 10000);
+});
+
+describe("PUT /userWallets - failed edit userwallets", () => {
+	test("404 Not Found - should return an error if data is not found", (done) => {
+		request(app)
+			.put("/userWallets/100")
+			.send({ role: "Manager", UserId: 2 })
+			.set("access_token", access_token)
+			.end((err, res) => {
+				if (err) return done(err);
+				const { body, status } = res;
+
+				expect(status).toBe(404);
+				expect(body).toEqual(expect.any(Object));
+				expect(body).toHaveProperty("message", expect.any(String));
+				return done();
+			});
+	}, 10000);
+});
+
+describe("DELETE /userWallets - fail delete because cant delete wallet owner", () => {
+	test("403  - should return  message", async () => {
+		const login = await request(app).post("/users/login").send({ email: "user2@mail.com", password: "user2" });
+		const response = await request(app).delete("/userWallets/3").set("access_token", login.body.access_token);
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual(expect.any(Object));
+		expect(response.body).toHaveProperty("message", expect.any(String));
+	}, 10000);
+});
+
+describe("DELETE /userWallets - fail delete userwallets because role is Owner", () => {
+	test("400 - should return message", async () => {
+		const response = await request(app)
+			.delete("/userWallets/1")
+			.set("access_token", access_token);
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual(expect.any(Object));
+		expect(response.body).toHaveProperty("message", expect.any(String));
+	}, 10000);
+});
+
+describe("DELETE /userWallets - success delete userwallets", () => {
+	test("400 - should return message", async () => {
+		const response = await request(app)
+			.delete("/userWallets/5")
+			.set("access_token", access_token);
+		expect(response.status).toBe(200);
+		expect(response.body).toEqual(expect.any(Object));
+		expect(response.body).toHaveProperty("message", expect.any(String));
+		request(app);
+	}, 10000);
+});
+
+describe("DELETE /userWallets - failed delete userwallets", () => {
+	test("404 Not Found - should return error message", (done) => {
+		request(app)
+			.delete("/userWallets/10")
+			.set("access_token", access_token)
+			.end((err, res) => {
+				if (err) return done(err);
+				const { body, status } = res;
+
+				expect(status).toBe(404);
+				expect(body).toEqual(expect.any(Object));
+				expect(body).toHaveProperty("message", expect.any(String));
+				return done();
+			});
+	}, 10000);
+});
+
+describe("DELETE /userWallets - failed delete userwallets", () => {
+	test("401 Unauthorized - should return error message", (done) => {
+		request(app)
+			.delete("/userWallets/10")
+			.end((err, res) => {
+				if (err) return done(err);
+				const { body, status } = res;
+
+				expect(status).toBe(401);
+				expect(body).toEqual(expect.any(Object));
+				expect(body).toHaveProperty("message", expect.any(String));
+				return done();
+			});
+	}, 10000);
+});
+
+describe("DELETE /userWallets - failed delete userwallets", () => {
+	test("400 Bad Request - should return error message", (done) => {
+		request(app)
+			.delete("/userWallets/asd")
+			.set("access_token", access_token)
+			.end((err, res) => {
+				if (err) return done(err);
+				const { body, status } = res;
+
+				expect(status).toBe(400);
+				expect(body).toEqual(expect.any(Object));
+				expect(body).toHaveProperty("message", expect.any(String));
+				return done();
+			});
+	}, 10000);
+});
+
+describe("DELETE /userWallets - failed delete userwallets", () => {
+	test("403 Bad Request - should return error message", async () => {
+		const login = await request(app).post("/users/login").send({ email: "user1@mail.com", password: "user1" });
+		const response = await request(app).delete("/userWallets/1").set("access_token", login.body.access_token);
+		expect(response.status).toBe(403);
+		expect(response.body).toEqual(expect.any(Object));
+		expect(response.body).toHaveProperty("message", expect.any(String));
+	}, 10000);
+});
+
+describe("DELETE /userWallets - succes delete when user want to delete it self from wallet", () => {
+	test("200 OK - should return success message", async () => {
+		const login = await request(app).post("/users/login").send({ email: "user2@mail.com", password: "user2" });
+		const response = await request(app).delete("/userWallets/4").set("access_token", login.body.access_token);
+		expect(response.status).toBe(200);
+		expect(response.body).toEqual(expect.any(Object));
+		expect(response.body).toHaveProperty("message", expect.any(String));
+	}, 10000);
+});
+
+describe("DELETE /userWallets - fail delete because forbidden", () => {
+	test("403  - should return  message", async () => {
+		const login = await request(app).post("/users/login").send({ email: "admin@mail.com", password: "admin" });
+		const response = await request(app).delete("/userWallets/6").set("access_token", login.body.access_token);
+		expect(response.status).toBe(403);
+		expect(response.body).toEqual(expect.any(Object));
+		expect(response.body).toHaveProperty("message", expect.any(String));
+	}, 10000);
+});
+
+

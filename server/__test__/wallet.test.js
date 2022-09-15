@@ -265,6 +265,25 @@ describe("PUT /wallets/:walletId", () => {
 			}
 		}, 10000);
 	});
+	describe("Failed update wallet because wallet not found", () => {
+		it("Should return a status 404 and message", async () => {
+			try {
+				const walletInputUpdate = {
+					name: "ada",
+				};
+				return request(app)
+					.put("/wallets/94234")
+					.send(walletInputUpdate)
+					.set("access_token", access_token)
+					.then((response) => {
+						expect(response.status).toBe(404);
+						expect(response.body).toBeInstanceOf(Object);
+					});
+			} catch (error) {
+				console.log(error);
+			}
+		}, 10000);
+	});
 	describe("Failed update wallet because wallet name is null", () => {
 		it("Should return a status 400 and message", async () => {
 			try {
@@ -295,7 +314,7 @@ describe("DELETE /wallets/:walletId - Fail because forbidden", () => {
 		expect(response.status).toBe(403);
 		expect(response.body).toBeInstanceOf(Object);
 		expect(response.body).toHaveProperty("message", expect.any(String));
-	});
+	}, 10000);
 });
 
 describe("PUT /wallets/:walletId - Fail because wallet not found", () => {
@@ -306,7 +325,7 @@ describe("PUT /wallets/:walletId - Fail because wallet not found", () => {
 		expect(response.status).toBe(404);
 		expect(response.body).toBeInstanceOf(Object);
 		expect(response.body).toHaveProperty("message", expect.any(String));
-	});
+	}, 10000);
 });
 
 

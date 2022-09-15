@@ -12,14 +12,14 @@ const authentication = async (request, response, next) => {
     const { id } = payload;
     const currentUser = await User.findByPk(id);
     // check if token valid
-    if (!currentUser) {
+    if (!payload && !currentUser) {
       throw { name: "Unauthorized" };
     }
     // assign user id to request
     request.user = {
       id: currentUser.id,
     };
-    
+
     next();
   } catch (error) {
     next(error);

@@ -8,6 +8,7 @@ import {
 	Image,
 	Pressable,
 	Alert,
+	ToastAndroid,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useState, useEffect } from "react";
@@ -32,7 +33,7 @@ export default function ReportScreen({ navigation, route }) {
 		return state.walletReducer;
 	});
 	const [showFilteredData, setshowFilteredData] = useState(null);
-	const [adaperubahan, setAdaPerubahan] = useState(false)
+	const [adaperubahan, setAdaPerubahan] = useState(false);
 
 	const setTotalIncome = (transactions) => {
 		if (!transactions || transactions.length === 0) {
@@ -91,17 +92,17 @@ export default function ReportScreen({ navigation, route }) {
 				dispatch(fetchDetail(id))
 					.then(() => {
 						setLoading(true);
-						if(adaperubahan === false) {
-							setAdaPerubahan(true)
+						if (adaperubahan === false) {
+							setAdaPerubahan(true);
 						} else {
-							setAdaPerubahan(false)
+							setAdaPerubahan(false);
 						}
 					})
 					.catch((err) => {
 						errorAlert(err.message);
 					})
 					.finally(() => {
-						dispatch(loadingFetchDetailWallet(false))
+						dispatch(loadingFetchDetailWallet(false));
 						setLoading(false);
 					});
 			})
@@ -191,20 +192,22 @@ export default function ReportScreen({ navigation, route }) {
 	};
 
 	function toastSuccessDeleteCollaborator() {
-    ToastAndroid.show("Successfully delete a collaborator!", ToastAndroid.SHORT);
-  }
+		console.log("ERROR DISINI");
+		ToastAndroid.show("Successfully delete a collaborator!", ToastAndroid.SHORT);
+	}
 
 	const deleteCollaborator = (userWalletId) => {
-		
+
 		dispatch(deleteUserWallet(userWalletId))
 			.then(() => {
-				toastSuccessDeleteCollaborator()
-				dispatch(fetchDetail(id))}
-				)
+				toastSuccessDeleteCollaborator();
+				dispatch(fetchDetail(id));
+			}
+			)
 			.catch((err) => errorAlert(err.message))
 			.finally(() => {
-				dispatch(loadingFetchDetailWallet(false))
-			})
+				dispatch(loadingFetchDetailWallet(false));
+			});
 	};
 
 	const renderUserWallets = ({ item, index }) => {
@@ -366,7 +369,7 @@ export default function ReportScreen({ navigation, route }) {
 	};
 
 	useEffect(() => {
-		dispatch(loadingFetchDetailWallet(true))
+		dispatch(loadingFetchDetailWallet(true));
 		setLoading(true);
 		dispatch(fetchDetail(id))
 			.then((data) => {
@@ -375,7 +378,7 @@ export default function ReportScreen({ navigation, route }) {
 			})
 			.finally(() => {
 				setLoading(false);
-				dispatch(loadingFetchDetailWallet(false))
+				dispatch(loadingFetchDetailWallet(false));
 			});
 	}, [adaperubahan, sesuatu]);
 
@@ -389,7 +392,7 @@ export default function ReportScreen({ navigation, route }) {
 				<LoadingScreen />
 			) : (
 				<View style={styles.container}>
-					<View style={{flexDirection: "row"}}>
+					<View style={{ flexDirection: "row" }}>
 						<View style={styles.formInput}>
 							<Text style={styles.inputName}>Start date</Text>
 							<Pressable onPress={showPickerStartDate}>
@@ -405,7 +408,7 @@ export default function ReportScreen({ navigation, route }) {
 										alignItems: "center",
 										justifyContent: "space-between",
 									}}>
-									<Text>{!startDate ? null : startDate.toLocaleString().slice(0,10)}</Text>
+									<Text>{!startDate ? null : startDate.toLocaleString().slice(0, 10)}</Text>
 									<Image
 										style={{ width: 14, height: 14 }}
 										source={require("../../assets/icons/arrowBottom.png")}
@@ -439,7 +442,7 @@ export default function ReportScreen({ navigation, route }) {
 										alignItems: "center",
 										justifyContent: "space-between",
 									}}>
-									<Text>{!endDate ? null : endDate.toLocaleString().slice(0,10)}</Text>
+									<Text>{!endDate ? null : endDate.toLocaleString().slice(0, 10)}</Text>
 									<Image
 										style={{ width: 14, height: 14 }}
 										source={require("../../assets/icons/arrowBottom.png")}

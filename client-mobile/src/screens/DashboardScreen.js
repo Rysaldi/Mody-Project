@@ -35,43 +35,43 @@ export default function DashboardScreen() {
 
   const renderItemUserWallets = ({ item }) => {
     return (
-      <View style={{ paddingHorizontal: 20, paddingTop: 15 }}>
-        <View style={styles.mainCard}>
-          <View style={styles.contentMainCard}>
-            <View style={styles.frameMainLogo}>
-              <Image
-                style={styles.mainLogo}
-                source={require("../../assets/icons/wallet_new.png")}
-              />
-            </View>
-            <View>
-              <Text style={styles.textCard}>{item.Wallet.name}</Text>
-              <Text style={styles.textName}>role: {item.role}</Text>
-            </View>
+
+      <View style={styles.mainCard}>
+        <View style={styles.contentMainCard}>
+          <View style={styles.frameMainLogo}>
+            <Image
+              style={styles.mainLogo}
+              source={require("../../assets/icons/wallet_new.png")}
+            />
           </View>
-          <View style={styles.amountDetail}>
-            {item.Wallet.balance < 0 ? (
-              <Text style={styles.minusNumber}>
-                {
-                  formatCurrency({
-                    amount: item.Wallet.balance,
-                    code: "IDR",
-                  })[0]
-                }
-              </Text>
-            ) : (
-              <Text style={styles.plusNumber}>
-                {
-                  formatCurrency({
-                    amount: item.Wallet.balance,
-                    code: "IDR",
-                  })[0]
-                }
-              </Text>
-            )}
+          <View>
+            <Text style={styles.textCard}>{item.Wallet.name}</Text>
+            <Text style={styles.textName}>role: {item.role}</Text>
           </View>
         </View>
+        <View style={styles.amountDetail}>
+          {item.Wallet.balance < 0 ? (
+            <Text style={styles.minusNumber}>
+              {
+                formatCurrency({
+                  amount: item.Wallet.balance,
+                  code: "IDR",
+                })[0]
+              }
+            </Text>
+          ) : (
+            <Text style={styles.plusNumber}>
+              {
+                formatCurrency({
+                  amount: item.Wallet.balance,
+                  code: "IDR",
+                })[0]
+              }
+            </Text>
+          )}
+        </View>
       </View>
+
     );
   };
 
@@ -124,12 +124,15 @@ export default function DashboardScreen() {
                   </View>
                 </View>
               ) : (
-                <FlatList
-                  data={userDetail.UserWallets}
-                  renderItem={renderItemUserWallets}
-                  keyExtractor={(item) => item.id}
-                />
+                <View style={{ paddingTop: 15, height: Dimensions.get("window").height * 0.34, width: Dimensions.get("window").width }}>
+                  <FlatList
+                    data={userDetail.UserWallets}
+                    renderItem={renderItemUserWallets}
+                    keyExtractor={(item) => item.id}
+                  />
+                </View>
               )}
+
             </View>
 
             <View
@@ -257,6 +260,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     backgroundColor: "white",
     borderRadius: 10,
+    marginLeft: 20
   },
   frameMainLogo: {
     width: 50,

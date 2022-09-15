@@ -18,5 +18,15 @@
 		"UserId": 3,
 		"WalletId": 2,
 		"role": "Manager"
+	},
+	{
+		"UserId": 2,
+		"WalletId": 1,
+		"role": "Member"
+	},
+	{
+		"UserId": 4,
+		"WalletId": 2,
+		"role": "Member"
 	}
 ]

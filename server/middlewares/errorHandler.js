@@ -27,9 +27,7 @@ function errorHandler(error, req, res, next) {
 		res.status(404).json({ message: "Wallet cannot be found" });
 	} else if (error.name === "SequelizeForeignKeyConstraintError") {
 		res.status(404).json({ message: "Category or Wallet not found" });
-	} else if (error.name === "EmailRequired") {
-		res.status(400).json({ message: "Email Required!" });
-	} else if (error.name === "File needs to be an image") {
+	}  else if (error.name === "File needs to be an image") {
 		res.status(400).json({ message: "File needs to be an image" });
 	} else if (error.name === "Alreadyinthiswallet") {
 		res.status(400).json({ message: "This user is registered in this wallet" });

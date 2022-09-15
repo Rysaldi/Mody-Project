@@ -131,12 +131,6 @@ class Controller {
         throw { name: "Invalid input" };
       }
 
-      const findWallet = await Wallet.findByPk(walletId);
-
-      if (!findWallet) {
-        throw { name: "WalletNotFound" };
-      }
-
       const updatedWallet = await Wallet.update(
         { name },
         {

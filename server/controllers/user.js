@@ -81,9 +81,6 @@ class userController {
         ],
         order: [[Transaction, "createdAt", "DESC"]],
       });
-      if (!findUser) {
-        throw { name: "NotFound" };
-      }
       res.status(200).json(findUser);
     } catch (error) {
       next(error);

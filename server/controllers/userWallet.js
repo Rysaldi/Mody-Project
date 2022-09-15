@@ -23,6 +23,14 @@ class Controller {
 		try {
 			const { WalletId, role, email } = req.body;
 
+			if (!email || !WalletId || !role) {
+				throw { name: "Invalid input" };
+			}
+			const findWallet = await Wallet.findByPk(WalletId);
+			if (!findWallet) {
+				throw { name: "WalletNotFound" };
+			}
+			
 			const userWantAdd = await UserWallet.findOne({
 				where: {
 					UserId: req.user.id,
@@ -32,14 +40,6 @@ class Controller {
 
 			if (!userWantAdd || userWantAdd.role === "Member") {
 				throw { name: "Forbidden" };
-			}
-
-			if (!email) {
-				throw { name: "EmailRequired" };
-			}
-
-			if (!WalletId) {
-				throw { name: "Invalid input" };
 			}
 
 			const findUser = await User.findOne({
@@ -80,7 +80,7 @@ class Controller {
 			if (isNaN(+userWalletId)) {
 				throw { name: "Invalid Id" };
 			}
-			console.log(userWalletId);
+
 			const findUserWalletById = await UserWallet.findByPk(userWalletId);
 
 			if (!findUserWalletById) {
@@ -94,7 +94,7 @@ class Controller {
 					WalletId: findUserWalletById.WalletId
 				}
 			});
-			console.log(useWantDelete);
+			
 			if (!useWantDelete) {
 				throw { name: "Forbidden" };
 			}

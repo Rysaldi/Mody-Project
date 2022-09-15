@@ -25,8 +25,8 @@ export const setLoadingAddUserToWallet = () => {
 };
 
 export const addNewUserWallet = (payload) => {
-  console.log(payload);
   return async (dispatch) => {
+    console.log(payload);
     const accessToken = await getAccessToken();
     return fetch(`${baseUrl}userWallets`, {
       method: "POST",
