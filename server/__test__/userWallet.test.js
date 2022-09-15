@@ -123,7 +123,7 @@ describe("POST /login - user login", () => {
 				access_token = body.access_token;
 				return done();
 			});
-	}, 100000);
+	}, 10000);
 });
 
 describe("UserWallets routes test", () => {
@@ -144,7 +144,7 @@ describe("UserWallets routes test", () => {
 					expect(body[0]).toHaveProperty("role", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("GET /userWallets - failed get all userwallets", () => {
@@ -160,28 +160,33 @@ describe("UserWallets routes test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("POST /userWallets - success create new userwallets", () => {
-		test("201 OK - should return an error if access token is not provided", (done) => {
-			request(app)
-				.post("/userWallets")
-				.send({ UserId: 2, WalletId: 1, role: "Member", email: "user1@mail.com" })
-				.set("access_token", access_token)
-				.end((err, res) => {
-					if (err) return done(err);
-					const { body, status } = res;
-					expect(status).toBe(201);
-					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("id", expect.any(Number));
-					expect(body).toHaveProperty("UserId", expect.any(Number));
-					expect(body).toHaveProperty("WalletId", expect.any(Number));
-					expect(body).toHaveProperty("role", expect.any(String));
-					return done();
-				});
-		}, 100000);
+		test("201 OK - should return success message", async () => {
+			const response = await request(app).post("/userWallets")
+				.send({ UserId: 2, WalletId: 1, role: "Member", email: "rohmat@mail.com" })
+				.set("access_token", access_token);
+			expect(response.status).toBe(201);
+			expect(response.body).toEqual(expect.any(Object));
+			expect(response.body).toHaveProperty("id", expect.any(Number));
+			expect(response.body).toHaveProperty("UserId", expect.any(Number));
+			expect(response.body).toHaveProperty("WalletId", expect.any(Number));
+			expect(response.body).toHaveProperty("role", expect.any(String));
+		}, 10000);
 	});
+
+	describe("POST /userWallets - success create new userwallets", () => {
+		test("201 OK - should return success message", async () => {
+			const response = await request(app).post("/userWallets")
+				.send({ UserId: 2, WalletId: 1, role: "Member", email: "user2@mail.com" })
+				.set("access_token", access_token);
+			expect(response.status).toBe(400);
+			expect(response.body).toEqual(expect.any(Object));
+		}, 10000);
+	});
+
 
 	describe("POST /userWallets - failed create new userwallets", () => {
 		test("404 Not Found - should return an error if wallet is not found", (done) => {
@@ -198,7 +203,7 @@ describe("UserWallets routes test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("POST /userWallets - failed create new userwallets", () => {
@@ -216,7 +221,7 @@ describe("UserWallets routes test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("POST /userWallets - failed create new userwallets", () => {
@@ -231,17 +236,17 @@ describe("UserWallets routes test", () => {
 
 					expect(status).toBe(400);
 					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(Object));
+					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("POST /userWallets - failed create new userwallets", () => {
 		test("400 Bad Request - should return an error if wallet is not provided", (done) => {
 			request(app)
 				.post("/userWallets")
-				.send({ role: "Member", email : "user1@mail.com" })
+				.send({ role: "Member", email: "user1@mail.com" })
 				.set("access_token", access_token)
 				.end((err, res) => {
 					if (err) return done(err);
@@ -249,10 +254,10 @@ describe("UserWallets routes test", () => {
 
 					expect(status).toBe(400);
 					expect(body).toEqual(expect.any(Object));
-					expect(body).toHaveProperty("message", expect.any(Object));
+					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("PUT /userWallets - success edit userwallets", () => {
@@ -270,7 +275,7 @@ describe("UserWallets routes test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("PUT /userWallets - failed edit userwallets", () => {
@@ -288,7 +293,7 @@ describe("UserWallets routes test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("PUT /userWallets - failed edit userwallets", () => {
@@ -306,7 +311,7 @@ describe("UserWallets routes test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("PUT /userWallets - failed edit userwallets", () => {
@@ -323,7 +328,7 @@ describe("UserWallets routes test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("PUT /userWallets - failed edit userwallets", () => {
@@ -341,7 +346,7 @@ describe("UserWallets routes test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("DELETE /userWallets - success delete userwallets", () => {
@@ -358,7 +363,7 @@ describe("UserWallets routes test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("DELETE /userWallets - failed delete userwallets", () => {
@@ -375,7 +380,7 @@ describe("UserWallets routes test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("DELETE /userWallets - failed delete userwallets", () => {
@@ -391,7 +396,7 @@ describe("UserWallets routes test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("DELETE /userWallets - failed delete userwallets", () => {
@@ -408,6 +413,6 @@ describe("UserWallets routes test", () => {
 					expect(body).toHaveProperty("message", expect.any(String));
 					return done();
 				});
-		}, 100000);
+		}, 10000);
 	});
 });

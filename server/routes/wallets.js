@@ -7,6 +7,6 @@ wallets.get("/", WalletController.getAllWallet);
 wallets.get("/:walletId", WalletController.getDetailWallet);
 wallets.post("/", WalletController.addNewWallet);
 wallets.delete("/:walletId", deleteAuthorization, WalletController.deleteWallet);
-wallets.put("/:walletId", WalletController.updateWallet);
+wallets.put("/:walletId",deleteAuthorization, WalletController.updateWallet);
 
 module.exports = wallets;

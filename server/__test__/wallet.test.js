@@ -122,7 +122,7 @@ describe("POST /login - user login", () => {
 				access_token = body.access_token;
 				return done();
 			});
-	}, 100000);
+	}, 10000);
 });
 
 describe("POST /wallets", () => {
@@ -138,7 +138,7 @@ describe("POST /wallets", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("id", expect.any(Number));
 			expect(response.body).toHaveProperty("name", expect.any(String));
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("failed create wallet because name is empty", () => {
@@ -153,7 +153,7 @@ describe("POST /wallets", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBeInstanceOf(Object);
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("failed create wallet because name is null", () => {
@@ -163,7 +163,7 @@ describe("POST /wallets", () => {
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message");
 			expect(response.body.message).toBeInstanceOf(Object);
-		}, 100000);
+		}, 10000);
 	});
 });
 
@@ -176,7 +176,7 @@ describe("GET /wallets", () => {
 			expect(response.body[0]).toHaveProperty("id", expect.any(Number));
 			expect(response.body[0]).toHaveProperty("name", expect.any(String));
 			expect(response.body[0]).toHaveProperty("balance", expect.any(Number));
-		}, 100000);
+		}, 10000);
 	});
 });
 
@@ -204,7 +204,7 @@ describe("GET /wallets/:walletId", () => {
 			expect(response.body.Transactions[0].Category).toBeInstanceOf(Object);
 			expect(response.body.Transactions[0].Category).toHaveProperty("name", expect.any(String));
 			expect(response.body.Transactions[0].Category).toHaveProperty("type", expect.any(String));
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("failed read detail wallet because id is not valid", () => {
@@ -213,7 +213,7 @@ describe("GET /wallets/:walletId", () => {
 			expect(response.status).toBe(400);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
-		}, 100000);
+		}, 10000);
 	});
 
 	describe("failed read detail wallet because wallet is not found", () => {
@@ -222,78 +222,19 @@ describe("GET /wallets/:walletId", () => {
 			expect(response.status).toBe(404);
 			expect(response.body).toBeInstanceOf(Object);
 			expect(response.body).toHaveProperty("message", expect.any(String));
-		}, 100000);
+		}, 10000);
 	});
 });
 
-describe("DELETE /wallets/:walletId", () => {
-	describe("Wallet deletion successful", () => {
-		it("Should be return an status 200 and message", async () => {
-			try {
-				const response = await request(app).delete("/wallets/1").set("access_token", access_token);
-				expect(response.status).toBe(200);
-				expect(response.body).toBeInstanceOf(Object);
-				expect(response.body).toHaveProperty("message", expect.any(String));
-			} catch (error) {
-				console.log(error);
-			}
-		}, 100000);
-	});
 
-	describe("Wallet deletion failed because wallet not found", () => {
-		it("Should be return an status 404 and message", async () => {
-			try {
-				const response = await request(app)
-					.delete("/wallets/100")
-					.set("access_token", access_token);
-				expect(response.status).toBe(404);
-				expect(response.body).toBeInstanceOf(Object);
-				expect(response.body).toHaveProperty("message", expect.any(String));
-			} catch (error) {
-				console.log(error);
-			}
-		}, 100000);
-	});
-
-	describe("Wallet deletion failed because role is not owner", () => {
-		it("Should be return an status 403 and message", async () => {
-			try {
-				const response = await request(app).delete("/wallets/2").set("access_token", access_token);
-				expect(response.status).toBe(403);
-				expect(response.body).toBeInstanceOf(Object);
-				expect(response.body).toHaveProperty("message", expect.any(String));
-			} catch (error) {
-				console.log(error);
-			}
-		}, 100000);
-	});
-
-	describe("Wallet deletion failed because wallet Id is not a number", () => {
-		it("Should be return an status 400 and message", async () => {
-			try {
-				const response = await request(app)
-					.delete("/wallets/stringhere")
-					.set("access_token", access_token);
-				expect(response.status).toBe(400);
-				expect(response.body).toBeInstanceOf(Object);
-				expect(response.body).toHaveProperty("message", expect.any(String));
-			} catch (error) {
-				console.log(error);
-			}
-		} , 100000);
-	});
-});
 
 describe("PUT /wallets/:walletId", () => {
 	describe("Success update Wallet", () => {
 		it("Should return a status 200 and message", async () => {
 			try {
-				const walletInputUpdate = {
-					name: "test1",
-				};
 				return request(app)
 					.put("/wallets/1")
-					.send(walletInputUpdate)
+					.send({ name: "test" })
 					.set("access_token", access_token)
 					.then((response) => {
 						expect(response.status).toBe(200);
@@ -303,7 +244,7 @@ describe("PUT /wallets/:walletId", () => {
 			} catch (error) {
 				console.log(error);
 			}
-		}, 100000);
+		}, 10000);
 	});
 	describe("Failed update wallet because wallet name is empty", () => {
 		it("Should return a status 400 and message", async () => {
@@ -322,7 +263,7 @@ describe("PUT /wallets/:walletId", () => {
 			} catch (error) {
 				console.log(error);
 			}
-		}, 100000);
+		}, 10000);
 	});
 	describe("Failed update wallet because wallet name is null", () => {
 		it("Should return a status 400 and message", async () => {
@@ -339,6 +280,91 @@ describe("PUT /wallets/:walletId", () => {
 			} catch (error) {
 				console.log(error);
 			}
-		} , 100000);
+		}, 10000);
+	});
+});
+
+describe("DELETE /wallets/:walletId - Fail because forbidden", () => {
+	it("Should return a status 403 and message", async () => {
+		const id = 2;
+		const login = await request(app).post("/users/login").send({
+			email: "rohmat@mail.com", password: "rohmat"
+		});
+		const response = await request(app).delete("/wallets/" + id).set("access_token", login.body.access_token);
+		console.log(response);
+		expect(response.status).toBe(403);
+		expect(response.body).toBeInstanceOf(Object);
+		expect(response.body).toHaveProperty("message", expect.any(String));
+	});
+});
+
+describe("PUT /wallets/:walletId - Fail because wallet not found", () => {
+	it("Should return a status 403 and message", async () => {
+		const id = 100;
+		const response = await request(app).put("/wallets/" + id).set("access_token", access_token).send({ name: "BEBAN HIDUP KU" });
+		console.log(response);
+		expect(response.status).toBe(404);
+		expect(response.body).toBeInstanceOf(Object);
+		expect(response.body).toHaveProperty("message", expect.any(String));
+	});
+});
+
+
+
+describe("DELETE /wallets/:walletId", () => {
+	describe("Wallet deletion successful", () => {
+		it("Should be return an status 200 and message", async () => {
+			try {
+				const response = await request(app).delete("/wallets/1").set("access_token", access_token);
+				expect(response.status).toBe(200);
+				expect(response.body).toBeInstanceOf(Object);
+				expect(response.body).toHaveProperty("message", expect.any(String));
+			} catch (error) {
+				console.log(error);
+			}
+		}, 10000);
+	});
+
+	describe("Wallet deletion failed because wallet not found", () => {
+		it("Should be return an status 404 and message", async () => {
+			try {
+				const response = await request(app)
+					.delete("/wallets/100")
+					.set("access_token", access_token);
+				expect(response.status).toBe(404);
+				expect(response.body).toBeInstanceOf(Object);
+				expect(response.body).toHaveProperty("message", expect.any(String));
+			} catch (error) {
+				console.log(error);
+			}
+		}, 10000);
+	});
+
+	describe("Wallet deletion failed because role is not owner", () => {
+		it("Should be return an status 403 and message", async () => {
+			try {
+				const response = await request(app).delete("/wallets/2").set("access_token", access_token);
+				expect(response.status).toBe(403);
+				expect(response.body).toBeInstanceOf(Object);
+				expect(response.body).toHaveProperty("message", expect.any(String));
+			} catch (error) {
+				console.log(error);
+			}
+		}, 10000);
+	});
+
+	describe("Wallet deletion failed because wallet Id is not a number", () => {
+		it("Should be return an status 400 and message", async () => {
+			try {
+				const response = await request(app)
+					.delete("/wallets/stringhere")
+					.set("access_token", access_token);
+				expect(response.status).toBe(400);
+				expect(response.body).toBeInstanceOf(Object);
+				expect(response.body).toHaveProperty("message", expect.any(String));
+			} catch (error) {
+				console.log(error);
+			}
+		}, 10000);
 	});
 });

@@ -27,27 +27,31 @@ class Controller {
 				throw { name: "EmailRequired" };
 			}
 
+			if (!WalletId) {
+				throw { name: "Invalid input" };
+			}
+
 			const findUser = await User.findOne({
 				where: {
 					email: email,
 				},
 			});
 
-			if(!findUser) {
+			if (!findUser) {
 				throw { name: "NotFound" };
 			}
-			const findUserWalet = await UserWallet.findByPk(findUser.id)
+			const findUserWalet = await UserWallet.findByPk(findUser.id);
 
-			if(findUserWalet) {
-				throw {name : "Alreadyinthiswallet"}
+			if (findUserWalet) {
+				throw { name: "Alreadyinthiswallet" };
 			}
-			
+
 			const newUserWallet = await UserWallet.create({
-					UserId: +findUser.id,
-					WalletId,
-					role,
-				});
-				res.status(201).json(newUserWallet);
+				UserId: +findUser.id,
+				WalletId,
+				role,
+			});
+			res.status(201).json(newUserWallet);
 		} catch (error) {
 			next(error);
 		}
@@ -71,7 +75,7 @@ class Controller {
 						id: userWalletId,
 					},
 				});
-			res.status(200).json({ message: `successfully delete userwallet with id ${userWalletId}` });
+				res.status(200).json({ message: `successfully delete userwallet with id ${userWalletId}` });
 			} else if (deleteUserWallet.role !== "Owner") {
 				throw { name: "Forbidden" };
 			}

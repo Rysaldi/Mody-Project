@@ -4,6 +4,7 @@ const {
   Transaction,
   User,
   Category,
+  Profile
 } = require("../models");
 const { Op } = require("sequelize");
 
@@ -41,7 +42,6 @@ class Controller {
   static async getDetailWallet(req, res, next) {
     try {
       const { walletId } = req.params;
-      const { search } = req.query;
       if (isNaN(+walletId)) {
         throw { name: "Invalid Id" };
       }
@@ -61,7 +61,6 @@ class Controller {
             model: Transaction,
             include: {
               model: Category,
-              attributes: ["name", "type", "date", "createdAt"],
             },
           },
         ],
@@ -70,14 +69,6 @@ class Controller {
           exclude: ["updatedAt"],
         },
       };
-
-      if (search) {
-        param.include[1].where = {
-          name: {
-            [Op.iLike]: `%${search}%`,
-          },
-        };
-      }
 
       const wallet = await Wallet.findByPk(walletId, param);
 
@@ -140,6 +131,12 @@ class Controller {
         throw { name: "Invalid input" };
       }
 
+      const findWallet = await Wallet.findByPk(walletId);
+
+      if (!findWallet) {
+        throw { name: "WalletNotFound" };
+      }
+
       const updatedWallet = await Wallet.update(
         { name },
         {
@@ -148,13 +145,8 @@ class Controller {
           },
         }
       );
-      if (updatedWallet) {
-        res
-          .status(200)
-          .json({ message: `Wallet with id ${walletId} successfully updated` });
-      } else {
-        throw { name: "NotFound" };
-      }
+
+      res.status(200).json({ message: `Wallet with id ${walletId} successfully updated` });
     } catch (error) {
       next(error);
     }
